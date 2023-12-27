@@ -1,15 +1,15 @@
+import CardClass from "@/components/Card/CardClass";
+import { CardType } from "./types";
+
 export class GameState {
-  deck: string[];
+  deck: CardType[];
+  suits: string[];
+  values: string[];
 
   constructor() {
     this.deck = [];
-    this.createDeck();
-  }
-
-  createDeck() {
-    this.deck = [];
-    const suits = ["hearts", "spades", "clubs", "diamonds"];
-    const values = [
+    this.suits = ["hearts", "spades", "clubs", "diamonds"];
+    this.values = [
       "ace",
       "2",
       "3",
@@ -24,11 +24,20 @@ export class GameState {
       "queen",
       "king"
     ];
-    for (let suit in suits) {
-      for (let value in values) {
-        this.deck.push(`${values[value]} of ${suits[suit]}`);
+    this.createDeck();
+  }
+
+  createDeck() {
+    this.deck = [];
+
+    for (let suit in this.suits) {
+      for (let value in this.values) {
+        const card = new CardClass(this.values[value], this.suits[suit]);
+        this.deck.push(card);
       }
     }
+
+    this.shuffleDeck();
   }
 
   printDeck() {

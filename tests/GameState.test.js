@@ -1,3 +1,4 @@
+// const { GameState } = require("../logic/GameState");
 import { GameState } from "../logic/GameState";
 
 describe("GameState Class", () => {
@@ -12,26 +13,13 @@ describe("GameState Class", () => {
   });
 
   test("deck contains all suits and values", () => {
-    const suits = ["hearts", "spades", "clubs", "diamonds"];
-    const values = [
-      "ace",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "jack",
-      "queen",
-      "king"
-    ];
-
-    suits.forEach((suit) => {
-      values.forEach((value) => {
-        expect(gameState.deck).toContain(`${value} of ${suit}`);
+    gameState.suits.forEach((suit) => {
+      gameState.values.forEach((value) => {
+        expect(gameState.deck).toContainEqual({
+          suit,
+          value,
+          id: `${value}_of_${suit}`
+        });
       });
     });
   });
