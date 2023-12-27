@@ -15,7 +15,6 @@ const Board = observer(() => {
 
   useEffect(() => {
     gameState.shuffleDeck();
-    console.log("the deck has been shuffled", gameState.deck);
   }, []);
 
   return (
@@ -42,7 +41,7 @@ const Board = observer(() => {
       </BoardContainer>
 
       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-        {gameState.deck.map((card) => (
+        {gameState.deck.map((card, idx) => (
           <CardUI key={`${card.value}_of_${card.suit}`} card={card} />
         ))}
       </div>

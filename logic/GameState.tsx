@@ -1,11 +1,11 @@
 import CardClass from "@/components/Card/CardClass";
-import { CardType } from "./types";
+import { CardType, SuitsArray, ValuesArray } from "./types";
 import { makeAutoObservable } from "mobx";
 
 export class GameState {
   deck: CardType[] = [];
-  suits = ["hearts", "spades", "clubs", "diamonds"];
-  values = [
+  suits: SuitsArray = ["hearts", "spades", "clubs", "diamonds"];
+  values: ValuesArray = [
     "ace",
     "2",
     "3",

@@ -1,24 +1,64 @@
 import gameState from "@/logic/GameState";
-import { CardType } from "@/logic/types";
+import { CardType, Value } from "@/logic/types";
 import React from "react";
-import styled from "styled-components";
+import { CardStyle } from "./CardUI.styles";
 
-const CardStyle = styled.div`
-  background-color: white;
-  color: black;
-  border: 2px solid transparent;
-  border-radius: 5px;
-  height: 210px;
-  width: 150px;
-`;
+export default function CardUI({ card }: { card: CardType }) {
+  let suitIcon = "";
 
-export default function Card({ card }: { card: CardType }) {
+  switch (card.suit) {
+    case "hearts":
+      suitIcon = "♥️";
+      break;
+    case "spades":
+      suitIcon = "♠️";
+      break;
+    case "clubs":
+      suitIcon = "♣️";
+      break;
+    case "diamonds":
+      suitIcon = "♦️";
+      break;
+  }
+
+  function createIcons() {
+    const icons = [];
+
+    const maxIndex = gameState.values.indexOf("10") + 1;
+
+    if (card.value === "ace") {
+      icons.push(suitIcon, "A");
+    } else if (card.value === "jack") {
+      icons.push("J", suitIcon, "J");
+    } else if (card.value === "queen") {
+      icons.push("Q", suitIcon, "Q");
+    } else if (card.value === "king") {
+      icons.push("K", suitIcon, "K");
+    } else {
+      for (let i = 0; i < maxIndex; i++) {
+        icons.push(suitIcon);
+      }
+    }
+
+    return icons;
+  }
+
   return (
     <CardStyle
+      key={`${card.value}_of_${card.suit}`}
       id={`${card.value}_of_${card.suit}`}
       data-testid={`${card.value}_of_${card.suit}`}
+      $suit={card.suit}
+      $value={card.value}
     >
-      {card.value} of {card.suit}
+      <h1>{card.value}</h1>
+      <div className="emojis">
+        {createIcons().map((icon) => (
+          <div>
+            <span>{icon}</span>
+          </div>
+        ))}
+      </div>
     </CardStyle>
   );
 }
