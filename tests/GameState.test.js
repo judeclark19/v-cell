@@ -18,7 +18,8 @@ describe("GameState Class", () => {
           suit,
           value,
           id: `${value}_of_${suit}`,
-          isActive: false
+          isActive: false,
+          isFaceUp: false
         });
       });
     });

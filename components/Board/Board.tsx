@@ -34,6 +34,7 @@ const Board = observer(() => {
                     card={card}
                     zIndex={i + 1}
                     isActive={card.isActive}
+                    isFaceUp={card.isFaceUp}
                   />
                 );
               })}
@@ -59,6 +60,7 @@ const Board = observer(() => {
                         zIndex={i + 1}
                         offset={i * 30}
                         isActive={card.isActive}
+                        isFaceUp={card.isFaceUp}
                       />
                     );
                   }

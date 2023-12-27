@@ -7,12 +7,14 @@ export default function CardUI({
   card,
   zIndex,
   offset,
-  isActive = false
+  isActive,
+  isFaceUp
 }: {
   card: CardClass;
   zIndex: number;
   offset?: number;
-  isActive?: boolean;
+  isActive: boolean;
+  isFaceUp: boolean;
 }) {
   let suitIcon = "";
 
@@ -63,17 +65,23 @@ export default function CardUI({
       $zIndex={zIndex}
       $offset={offset}
       $isActive={isActive}
+      $isFaceUp={isFaceUp}
       onClick={() => {
         console.log("clicked on card", card.value, "of", card.suit);
       }}
     >
-      <h1>{card.value}</h1>
-      <div className="emojis">
-        {createIcons().map((icon, i) => (
-          <div key={`${icon}${i}`}>
-            <span>{icon}</span>
-          </div>
-        ))}
+      <div className="card-front">
+        <h1>{card.value}</h1>
+        <div className="emojis">
+          {createIcons().map((icon, i) => (
+            <div key={`${icon}${i}`}>
+              <span>{icon}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="card-back">
+        <h2>the back</h2>
       </div>
     </CardStyle>
   );

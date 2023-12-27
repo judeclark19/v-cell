@@ -6,6 +6,7 @@ class CardClass {
   suit: Suit;
   id: string;
   isActive: boolean;
+  isFaceUp: boolean;
 
   constructor(value: Value, suit: Suit) {
     makeAutoObservable(this); // This makes all properties observable
@@ -13,10 +14,15 @@ class CardClass {
     this.suit = suit;
     this.id = `${value}_of_${suit}`;
     this.isActive = false;
+    this.isFaceUp = false;
   }
 
   setIsActive(isActive: boolean) {
     this.isActive = isActive;
+  }
+
+  setIsFaceUp(isFaceUp: boolean) {
+    this.isFaceUp = isFaceUp;
   }
 }
 

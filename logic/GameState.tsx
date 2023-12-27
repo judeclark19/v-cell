@@ -100,6 +100,7 @@ export class GameState {
         const columnIndex = `column${i + 1}` as keyof BoardType;
         if (j === i) {
           card?.setIsActive(true);
+          card?.setIsFaceUp(true);
         }
         if (card) {
           this.board[columnIndex].push(card);

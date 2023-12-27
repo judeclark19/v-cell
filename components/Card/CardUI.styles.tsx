@@ -7,6 +7,7 @@ export const CardStyle = styled.div<{
   $zIndex: number;
   $offset?: number;
   $isActive?: boolean;
+  $isFaceUp?: boolean;
 }>`
   cursor: ${(props) => (props.$isActive ? "pointer" : "default")};
   pointer-events: ${(props) => (props.$isActive ? "auto" : "none")};
@@ -37,51 +38,54 @@ export const CardStyle = styled.div<{
     }
 `}
 
-  h3 {
-    pointer-events: none;
-    user-select: none;
-  }
+  .card-front {
+    display: ${(props) => (props.$isFaceUp ? "block" : "none")};
 
-  .emojis {
-    pointer-events: none;
-    user-select: none;
-    flex-grow: 1;
-    font-size: ${(props) => {
-      switch (props.$value) {
-        case "ace":
-          return "70px";
-        case "jack":
-        case "queen":
-        case "king":
-          return "42px";
-        default:
-          return "40px";
-      }
-    }};
-    display: ${(props) => {
-      switch (props.$value) {
-        case "ace":
-        case "jack":
-        case "queen":
-        case "king":
-          return "flex";
-        default:
-          return "grid";
-      }
-    }};
+    h3 {
+      pointer-events: none;
+      user-select: none;
+    }
 
-    ${(props) => {
-      switch (props.$value) {
-        case "ace":
-        case "jack":
-        case "queen":
-        case "king":
-          return `
+    .emojis {
+      pointer-events: none;
+      user-select: none;
+      flex-grow: 1;
+      font-size: ${(props) => {
+        switch (props.$value) {
+          case "ace":
+            return "70px";
+          case "jack":
+          case "queen":
+          case "king":
+            return "42px";
+          default:
+            return "40px";
+        }
+      }};
+      display: ${(props) => {
+        switch (props.$value) {
+          case "ace":
+          case "jack":
+          case "queen":
+          case "king":
+            return "flex";
+          default:
+            return "grid";
+        }
+      }};
+
+      ${(props) => {
+        switch (props.$value) {
+          case "ace":
+          case "jack":
+          case "queen":
+          case "king":
+            return `
                     flex-direction: column;
                     align-items: center;
                     `;
-        default:
-          return `
+          default:
+            return `
                           grid-template-columns: repeat(3, 1fr);
           grid-auto-rows: 40px;
 
@@ -94,7 +98,22 @@ export const CardStyle = styled.div<{
             }
           }
             `;
-      }
-    }}
+        }
+      }}
+    }
+  }
+
+  .card-back {
+    display: ${(props) => (props.$isFaceUp ? "none" : "block")};
+    height: 100%;
+    padding: 4px;
+    h2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      background-color: #c33f34;
+      color: white;
+    }
   }
 `;
