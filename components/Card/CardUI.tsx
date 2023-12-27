@@ -1,7 +1,7 @@
 import gameState from "@/logic/GameState";
-import { CardType } from "@/logic/types";
 import React from "react";
 import { CardStyle } from "./CardUI.styles";
+import CardClass from "./CardClass";
 
 export default function CardUI({
   card,
@@ -9,7 +9,7 @@ export default function CardUI({
   offset,
   isActive = false
 }: {
-  card: CardType;
+  card: CardClass;
   zIndex: number;
   offset?: number;
   isActive?: boolean;

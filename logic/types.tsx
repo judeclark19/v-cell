@@ -1,3 +1,5 @@
+import CardClass from "@/components/Card/CardClass";
+
 export type Suit = "hearts" | "spades" | "clubs" | "diamonds";
 export type SuitsArray = ["hearts", "spades", "clubs", "diamonds"];
 
@@ -31,25 +33,20 @@ export type ValuesArray = [
   "king"
 ];
 
-export interface CardType {
-  value: Value;
-  suit: Suit;
-}
-
 export type Column = `column${number}`;
 
 export interface BoardType {
-  stock: CardType[];
-  waste: CardType[];
-  foundation1: CardType[];
-  foundation2: CardType[];
-  foundation3: CardType[];
-  foundation4: CardType[];
-  column1: CardType[];
-  column2: CardType[];
-  column3: CardType[];
-  column4: CardType[];
-  column5: CardType[];
-  column6: CardType[];
-  column7: CardType[];
+  stock: CardClass[];
+  waste: CardClass[];
+  foundation1: CardClass[];
+  foundation2: CardClass[];
+  foundation3: CardClass[];
+  foundation4: CardClass[];
+  column1: CardClass[];
+  column2: CardClass[];
+  column3: CardClass[];
+  column4: CardClass[];
+  column5: CardClass[];
+  column6: CardClass[];
+  column7: CardClass[];
 }

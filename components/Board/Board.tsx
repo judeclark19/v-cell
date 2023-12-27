@@ -33,7 +33,7 @@ const Board = observer(() => {
                     key={`${card.value}_of_${card.suit}`}
                     card={card}
                     zIndex={i + 1}
-                    isActive={i === gameState.board.stock.length - 1}
+                    isActive={card.isActive}
                   />
                 );
               })}
@@ -58,12 +58,7 @@ const Board = observer(() => {
                         card={card}
                         zIndex={i + 1}
                         offset={i * 30}
-                        isActive={
-                          i ===
-                          gameState.board[`column${column}` as keyof BoardType]
-                            .length -
-                            1
-                        }
+                        isActive={card.isActive}
                       />
                     );
                   }

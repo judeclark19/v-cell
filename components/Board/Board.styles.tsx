@@ -8,7 +8,6 @@ export const BoardContainer = styled.div`
 `;
 
 export const TopRow = styled.div`
-  border: 1px solid lime;
   display: flex;
   justify-content: space-between;
   gap: 100px;
@@ -23,7 +22,6 @@ export const Tableau = styled.div`
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  border: 1px solid red;
   width: 100%;
 `;
 

@@ -1,9 +1,9 @@
 import CardClass from "@/components/Card/CardClass";
-import { BoardType, CardType, SuitsArray, ValuesArray } from "./types";
+import { BoardType, SuitsArray, ValuesArray } from "./types";
 import { makeAutoObservable } from "mobx";
 
 export class GameState {
-  deck: CardType[] = [];
+  deck: CardClass[] = [];
   suits: SuitsArray = ["hearts", "spades", "clubs", "diamonds"];
   values: ValuesArray = [
     "ace",
@@ -98,6 +98,9 @@ export class GameState {
       for (let j = 0; j < i + 1; j++) {
         const card = this.deck.pop();
         const columnIndex = `column${i + 1}` as keyof BoardType;
+        if (j === i) {
+          card?.setIsActive(true);
+        }
         if (card) {
           this.board[columnIndex].push(card);
         }
@@ -105,6 +108,7 @@ export class GameState {
     }
 
     this.board.stock = this.deck;
+    this.board.stock[this.board.stock.length - 1].setIsActive(true);
   }
 }
 

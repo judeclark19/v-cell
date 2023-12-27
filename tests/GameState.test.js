@@ -17,7 +17,8 @@ describe("GameState Class", () => {
         expect(gameState.deck).toContainEqual({
           suit,
           value,
-          id: `${value}_of_${suit}`
+          id: `${value}_of_${suit}`,
+          isActive: false
         });
       });
     });
