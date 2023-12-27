@@ -26,8 +26,26 @@ describe("GameState Class", () => {
   test("shuffling the deck changes the order of the cards", () => {
     const originalDeck = [...gameState.deck];
     gameState.shuffleDeck();
+    expect(gameState.deck.length).toBe(originalDeck.length);
     expect(gameState.deck).not.toEqual(originalDeck);
   });
 
-  // Additional tests for other methods and behaviors can be added here
+  test("clearBoard should empty all board areas", () => {
+    gameState.clearBoard();
+    const boardAreas = Object.values(gameState.board);
+    boardAreas.forEach((area) => expect(area).toEqual([]));
+  });
+
+  test("dealCards should deal the correct number of cards to each column", () => {
+    gameState.dealCards();
+    for (let i = 1; i <= 7; i++) {
+      const columnIndex = `column${i}`;
+      expect(gameState.board[columnIndex].length).toBe(i);
+    }
+  });
+
+  test("dealCards should leave the remaining cards in stock", () => {
+    gameState.dealCards();
+    expect(gameState.board.stock.length).toBe(24);
+  });
 });

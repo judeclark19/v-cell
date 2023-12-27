@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { CardStyle } from "../Card/CardUI.styles";
 
 export const BoardContainer = styled.div`
   background-color: #5c5c5c;
@@ -31,4 +32,9 @@ export const Spot = styled.div`
   border-radius: 5px;
   height: 210px;
   width: 150px;
+  position: relative;
+
+  ${CardStyle} {
+    position: absolute;
+  }
 `;

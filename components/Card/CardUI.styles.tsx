@@ -1,10 +1,19 @@
 import styled from "styled-components";
 import { Suit, Value } from "@/logic/types";
 
-export const CardStyle = styled.div<{ $suit: Suit; $value: Value }>`
+export const CardStyle = styled.div<{
+  $suit: Suit;
+  $value: Value;
+  $zIndex: number;
+  $offset?: number;
+  $isActive?: boolean;
+}>`
+  cursor: ${(props) => (props.$isActive ? "pointer" : "default")};
+  pointer-events: ${(props) => (props.$isActive ? "auto" : "none")};
+  position: absolute;
   background-color: white;
   color: black;
-  border: 2px solid transparent;
+  border: 1px solid gray;
   border-radius: 5px;
   height: 210px;
   width: 150px;
@@ -13,8 +22,29 @@ export const CardStyle = styled.div<{ $suit: Suit; $value: Value }>`
 
   display: flex;
   flex-direction: column;
+  z-index: ${(props) => props.$zIndex};
+  top: ${(props) => (props.$offset ? `${props.$offset}px` : "0")};
+  transition: all 0.2s ease-in-out;
+
+  filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+
+  ${(props) =>
+    props.$isActive &&
+    `
+    &:hover {
+        filter: drop-shadow(5px 5px 5px rgba(255, 215, 0, 0.8));
+        border: 1px solid gold;
+    }
+`}
+
+  h3 {
+    pointer-events: none;
+    user-select: none;
+  }
 
   .emojis {
+    pointer-events: none;
+    user-select: none;
     flex-grow: 1;
     font-size: ${(props) => {
       switch (props.$value) {

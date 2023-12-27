@@ -35,3 +35,21 @@ export interface CardType {
   value: Value;
   suit: Suit;
 }
+
+export type Column = `column${number}`;
+
+export interface BoardType {
+  stock: CardType[];
+  waste: CardType[];
+  foundation1: CardType[];
+  foundation2: CardType[];
+  foundation3: CardType[];
+  foundation4: CardType[];
+  column1: CardType[];
+  column2: CardType[];
+  column3: CardType[];
+  column4: CardType[];
+  column5: CardType[];
+  column6: CardType[];
+  column7: CardType[];
+}

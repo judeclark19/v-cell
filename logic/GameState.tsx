@@ -1,5 +1,5 @@
 import CardClass from "@/components/Card/CardClass";
-import { CardType, SuitsArray, ValuesArray } from "./types";
+import { BoardType, CardType, SuitsArray, ValuesArray } from "./types";
 import { makeAutoObservable } from "mobx";
 
 export class GameState {
@@ -20,6 +20,21 @@ export class GameState {
     "queen",
     "king"
   ];
+  board: BoardType = {
+    stock: [],
+    waste: [],
+    foundation1: [],
+    foundation2: [],
+    foundation3: [],
+    foundation4: [],
+    column1: [],
+    column2: [],
+    column3: [],
+    column4: [],
+    column5: [],
+    column6: [],
+    column7: []
+  };
 
   constructor() {
     makeAutoObservable(this);
@@ -55,6 +70,41 @@ export class GameState {
       this.deck[m] = this.deck[i];
       this.deck[i] = t;
     }
+  }
+
+  clearBoard() {
+    this.board = {
+      stock: [],
+      waste: [],
+      foundation1: [],
+      foundation2: [],
+      foundation3: [],
+      foundation4: [],
+      column1: [],
+      column2: [],
+      column3: [],
+      column4: [],
+      column5: [],
+      column6: [],
+      column7: []
+    };
+  }
+
+  dealCards() {
+    this.clearBoard();
+    this.createDeck(true);
+
+    for (let i = 0; i < 7; i++) {
+      for (let j = 0; j < i + 1; j++) {
+        const card = this.deck.pop();
+        const columnIndex = `column${i + 1}` as keyof BoardType;
+        if (card) {
+          this.board[columnIndex].push(card);
+        }
+      }
+    }
+
+    this.board.stock = this.deck;
   }
 }
 
