@@ -1,33 +1,32 @@
 import CardClass from "@/components/Card/CardClass";
 import { CardType } from "./types";
+import { makeAutoObservable } from "mobx";
 
 export class GameState {
-  deck: CardType[];
-  suits: string[];
-  values: string[];
+  deck: CardType[] = [];
+  suits = ["hearts", "spades", "clubs", "diamonds"];
+  values = [
+    "ace",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "jack",
+    "queen",
+    "king"
+  ];
 
   constructor() {
-    this.deck = [];
-    this.suits = ["hearts", "spades", "clubs", "diamonds"];
-    this.values = [
-      "ace",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "jack",
-      "queen",
-      "king"
-    ];
+    makeAutoObservable(this);
     this.createDeck();
   }
 
-  createDeck() {
+  createDeck(shuffle = false) {
     this.deck = [];
 
     for (let suit in this.suits) {
@@ -37,7 +36,9 @@ export class GameState {
       }
     }
 
-    this.shuffleDeck();
+    if (shuffle) {
+      this.shuffleDeck();
+    }
   }
 
   printDeck() {

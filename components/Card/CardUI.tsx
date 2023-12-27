@@ -1,3 +1,4 @@
+import gameState from "@/logic/GameState";
 import { CardType } from "@/logic/types";
 import React from "react";
 import styled from "styled-components";

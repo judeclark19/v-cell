@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   TopRow,
   Tableau,
@@ -8,9 +8,15 @@ import {
 } from "./Board.styles";
 import gameState from "@/logic/GameState";
 import CardUI from "../Card/CardUI";
+import { observer } from "mobx-react-lite";
 
-export default function Board() {
+const Board = observer(() => {
   const columns = Array.from({ length: 7 }, (_, i) => i + 1);
+
+  useEffect(() => {
+    gameState.shuffleDeck();
+    console.log("the deck has been shuffled", gameState.deck);
+  }, []);
 
   return (
     <>
@@ -42,4 +48,6 @@ export default function Board() {
       </div>
     </>
   );
-}
+});
+
+export default Board;

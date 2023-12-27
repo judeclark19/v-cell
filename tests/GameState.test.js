@@ -1,4 +1,3 @@
-// const { GameState } = require("../logic/GameState");
 import { GameState } from "../logic/GameState";
 
 describe("GameState Class", () => {
