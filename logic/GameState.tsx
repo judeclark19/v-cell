@@ -111,6 +111,22 @@ export class GameState {
     this.board.stock = this.deck;
     this.board.stock[this.board.stock.length - 1].setIsActive(true);
   }
+
+  stockToWaste(card: CardClass) {
+    // pop card from the stock
+    this.board.stock.pop();
+    // push card to the waste
+    this.board.waste.push(card);
+
+    // set the last card in the stock to active
+    if (this.board.stock.length > 0) {
+      this.board.stock[this.board.stock.length - 1].setIsActive(true);
+    }
+
+    // set the card in the waste to face up and not active
+    card.setIsActive(false);
+    card.setIsFaceUp(true);
+  }
 }
 
 const gameState = new GameState();

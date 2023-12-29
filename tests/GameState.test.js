@@ -1,4 +1,5 @@
 import { GameState } from "../logic/GameState";
+import CardClass from "../components/Card/CardClass";
 
 describe("GameState Class", () => {
   let gameState;
@@ -49,5 +50,51 @@ describe("GameState Class", () => {
   test("dealCards should leave the remaining cards in stock", () => {
     gameState.dealCards();
     expect(gameState.board.stock.length).toBe(24);
+  });
+
+  // test that cards are dealt face up or face down correctly
+  test("dealCards should deal the first card in each column face up", () => {
+    gameState.dealCards();
+    for (let i = 1; i <= 7; i++) {
+      const columnIndex = `column${i}`;
+      expect(gameState.board[columnIndex][i - 1].isFaceUp).toBe(true);
+    }
+  });
+});
+
+describe("GameState Class - stockToWaste Method", () => {
+  let gameState;
+  let mockCard;
+
+  beforeEach(() => {
+    gameState = new GameState();
+    mockCard = new CardClass("ace", "hearts");
+    gameState.board.stock.push(mockCard);
+  });
+
+  test("should move a card from stock to waste", () => {
+    gameState.stockToWaste(mockCard);
+    expect(gameState.board.stock).not.toContain(mockCard);
+    expect(gameState.board.waste).toContain(mockCard);
+
+    expect(gameState.board.stock.length).toBe(0);
+    expect(gameState.board.waste.length).toBe(1);
+  });
+
+  test("should set the last card in stock to active if stock is not empty", () => {
+    // Add another card to ensure stock is not empty after moving one card
+    const anotherCard = new CardClass("2", "spades");
+    gameState.board.stock.push(anotherCard);
+
+    gameState.stockToWaste(anotherCard);
+    const lastCardInStock =
+      gameState.board.stock[gameState.board.stock.length - 1];
+    expect(lastCardInStock.isActive).toBeTruthy();
+  });
+
+  test("should set the moved card to face up and not active", () => {
+    gameState.stockToWaste(mockCard);
+    expect(mockCard.isFaceUp).toBeTruthy();
+    expect(mockCard.isActive).toBeFalsy();
   });
 });

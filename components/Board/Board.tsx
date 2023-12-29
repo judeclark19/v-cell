@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TopRow,
   Tableau,
@@ -13,10 +13,16 @@ import { BoardType } from "@/logic/types";
 
 const Board = observer(() => {
   const columns = Array.from({ length: 7 }, (_, i) => i + 1);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     gameState.dealCards();
+    setIsLoading(false);
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -25,7 +31,12 @@ const Board = observer(() => {
       >
         <TopRow>
           <div style={{ display: "flex", gap: "50px" }}>
-            <Spot data-testid="stock">
+            <Spot
+              data-testid="stock"
+              onClick={() => {
+                console.log("the stock is empty");
+              }}
+            >
               {/* stock */}
               {gameState.board.stock.map((card, i) => {
                 return (
@@ -35,11 +46,26 @@ const Board = observer(() => {
                     zIndex={i + 1}
                     isActive={card.isActive}
                     isFaceUp={card.isFaceUp}
+                    handleCardClick={(e) => {
+                      e.stopPropagation();
+                      gameState.stockToWaste(card);
+                    }}
                   />
                 );
               })}
             </Spot>
-            <Spot style={{ borderStyle: "dashed" }}>Waste</Spot>
+            <Spot style={{ borderStyle: "dashed" }} data-testid="waste">
+              {/* waste */}
+              {gameState.board.waste.map((card, i) => (
+                <CardUI
+                  key={`${card.value}_of_${card.suit}`}
+                  card={card}
+                  zIndex={i + 1}
+                  isActive={card.isActive}
+                  isFaceUp={card.isFaceUp}
+                />
+              ))}
+            </Spot>
           </div>
           <Foundations>
             {gameState.suits.map((i) => (

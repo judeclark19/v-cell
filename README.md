@@ -6,3 +6,6 @@
 - [x] Card front and back
 - [x] Render correct front/back initial state
 - [ ] Cycle through stock and waste piles
+- [ ] Flip animation
+- [ ] Loading state
+- [ ] Dragging

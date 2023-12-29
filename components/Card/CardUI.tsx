@@ -8,13 +8,15 @@ export default function CardUI({
   zIndex,
   offset,
   isActive,
-  isFaceUp
+  isFaceUp,
+  handleCardClick
 }: {
   card: CardClass;
   zIndex: number;
   offset?: number;
   isActive: boolean;
   isFaceUp: boolean;
+  handleCardClick?: (event: React.MouseEvent) => void;
 }) {
   let suitIcon = "";
 
@@ -35,8 +37,6 @@ export default function CardUI({
 
   function createIcons() {
     const icons = [];
-
-    const maxIndex = gameState.values.indexOf("10") + 1;
 
     if (card.value === "ace") {
       icons.push(suitIcon, "A");
@@ -66,8 +66,10 @@ export default function CardUI({
       $offset={offset}
       $isActive={isActive}
       $isFaceUp={isFaceUp}
-      onClick={() => {
-        console.log("clicked on card", card.value, "of", card.suit);
+      onClick={(e) => {
+        if (handleCardClick) handleCardClick(e);
+        else
+          console.log("no funciton for card", `${card.value}_of_${card.suit}`);
       }}
     >
       <div className="card-front">

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Board from "@/components/Board/Board";
 import gameState from "@/logic/GameState";
 
@@ -10,7 +10,7 @@ describe("Board Component", () => {
 
   test("renders the stock and waste spots", () => {
     expect(screen.getByTestId("stock")).toBeInTheDocument();
-    expect(screen.getByText("Waste")).toBeInTheDocument();
+    expect(screen.getByTestId("waste")).toBeInTheDocument();
   });
 
   test("renders the correct number of foundation spots", () => {
@@ -47,5 +47,32 @@ describe("Board Component", () => {
       }
       expect(columnElement.lastChild).toHaveStyle("pointer-events: auto");
     });
+  });
+});
+
+describe("stockToWaste functionality", () => {
+  test("moves a card from stock to waste on click", () => {
+    const { getByTestId } = render(<Board />);
+
+    // Get the stock and waste elements by test ID
+    const stockPile = getByTestId("stock");
+    const wastePile = getByTestId("waste");
+
+    // Count the number of children (cards) initially in stock and waste
+    const initialStockCardCount = stockPile.childElementCount;
+    const initialWasteCardCount = wastePile.childElementCount;
+
+    // Simulate click on the stock pile
+    fireEvent.click(stockPile.lastElementChild);
+
+    // Count the number of children (cards) after the click in stock and waste
+    const updatedStockCardCount = stockPile.childElementCount;
+    const updatedWasteCardCount = wastePile.childElementCount;
+
+    // Check if the stock has one less card
+    expect(updatedStockCardCount).toBe(initialStockCardCount - 1);
+
+    // Check if the waste has one more card
+    expect(updatedWasteCardCount).toBe(initialWasteCardCount + 1);
   });
 });

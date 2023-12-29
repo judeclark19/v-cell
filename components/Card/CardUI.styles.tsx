@@ -41,7 +41,8 @@ export const CardStyle = styled.div<{
   .card-front {
     display: ${(props) => (props.$isFaceUp ? "block" : "none")};
 
-    h3 {
+    padding: 4px;
+    h1 {
       pointer-events: none;
       user-select: none;
     }
@@ -86,17 +87,17 @@ export const CardStyle = styled.div<{
                     `;
           default:
             return `
-                          grid-template-columns: repeat(3, 1fr);
-          grid-auto-rows: 40px;
+                 grid-template-columns: repeat(3, 1fr);
+                 grid-auto-rows: 40px;
 
-          div {
-            display: grid;
+                    div {
+                        display: grid;
 
-            span {
-              justify-self: center;
-              margin-top: -8px;
-            }
-          }
+                     span {
+                        justify-self: center;
+                        margin-top: -8px;
+                        }
+                    }
             `;
         }
       }}
@@ -114,6 +115,7 @@ export const CardStyle = styled.div<{
       height: 100%;
       background-color: #c33f34;
       color: white;
+      user-select: none;
     }
   }
 `;
