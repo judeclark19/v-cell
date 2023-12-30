@@ -3,8 +3,8 @@ import { Suit, Value } from "@/logic/types";
 
 export const cardSizes = {
   large: {
-    height: "210px",
-    width: "150px"
+    height: 210,
+    width: 150
   }
 };
 
@@ -23,8 +23,8 @@ export const CardStyle = styled.div<{
   color: black;
   border: 1px solid gray;
   border-radius: 5px;
-  height: ${cardSizes.large.height};
-  width: ${cardSizes.large.width};
+  height: ${cardSizes.large.height}px;
+  width: ${cardSizes.large.width}px;
   color: ${(props) =>
     props.$suit === "hearts" || props.$suit === "diamonds" ? "red" : "black"};
 

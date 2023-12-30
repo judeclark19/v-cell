@@ -28,8 +28,8 @@ export const Tableau = styled.div`
 export const Spot = styled.div`
   border: 2px solid gold;
   border-radius: 5px;
-  height: ${cardSizes.large.height};
-  width: ${cardSizes.large.width};
+  height: ${cardSizes.large.height + 4}px;
+  width: ${cardSizes.large.width + 4}px;
   position: relative;
 
   ${CardStyle} {
@@ -50,9 +50,6 @@ export const IsFlipping = styled(Spot)`
   position: absolute;
   top: 0px;
   left: 0px;
-  font-size: 30px;
-  background-color: aqua;
-  color: black;
   z-index: 100;
   animation: ${moveRight} 1s ease-in-out;
 `;

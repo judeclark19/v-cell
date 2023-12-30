@@ -66,24 +66,19 @@ export default function CardUI({
           console.log("no funciton for card", `${card.value}_of_${card.suit}`);
       }}
     >
-      {card.isFlipping && <div>me flip</div>}
-      {!card.isFlipping && (
-        <>
-          <div className="card-front">
-            <h1>{card.value}</h1>
-            <div className="emojis">
-              {createIcons().map((icon, i) => (
-                <div key={`${icon}${i}`}>
-                  <span>{icon}</span>
-                </div>
-              ))}
+      <div className="card-front">
+        <h1>{card.value}</h1>
+        <div className="emojis">
+          {createIcons().map((icon, i) => (
+            <div key={`${icon}${i}`}>
+              <span>{icon}</span>
             </div>
-          </div>
-          <div className="card-back">
-            <h2>the back</h2>
-          </div>
-        </>
-      )}
+          ))}
+        </div>
+      </div>
+      <div className="card-back">
+        <h2>the back</h2>
+      </div>
     </CardStyle>
   );
 }

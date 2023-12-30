@@ -118,6 +118,7 @@ export class GameState {
     this.board.stock.pop();
     this.cardIsFlipping = card;
     card.setIsFlipping(true);
+    card.setIsFaceUp(true);
 
     setTimeout(() => {
       this.finishWasteFlip(card);
@@ -133,9 +134,6 @@ export class GameState {
       this.board.stock[this.board.stock.length - 1].setIsActive(true);
     }
 
-    // set the card in the waste to face up
-
-    card.setIsFaceUp(true);
     card.setIsFlipping(false);
     this.cardIsFlipping = null;
   }
