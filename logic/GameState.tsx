@@ -118,14 +118,14 @@ export class GameState {
     this.board.stock.pop();
     this.cardIsFlipping = card;
     card.setIsFlipping(true);
-    card.setIsFaceUp(true);
 
     setTimeout(() => {
       this.finishWasteFlip(card);
-    }, 1000);
+    }, 200);
   }
 
   finishWasteFlip(card: CardClass) {
+    card.setIsFaceUp(true);
     // push card to the waste
     this.board.waste.push(card);
 
@@ -136,6 +136,17 @@ export class GameState {
 
     card.setIsFlipping(false);
     this.cardIsFlipping = null;
+  }
+
+  resetStock() {
+    const cardsToReset = this.board.waste.splice(0, this.board.waste.length);
+    cardsToReset.forEach((card) => {
+      card.setIsFaceUp(false);
+      card.setIsActive(false);
+    });
+    this.board.stock = cardsToReset.reverse();
+    this.board.stock[this.board.stock.length - 1].setIsActive(true);
+    this.board.waste = [];
   }
 }
 

@@ -85,7 +85,7 @@ describe("GameState class methods", () => {
     // Check if setTimeout was called
     expect(jest.isMockFunction(setTimeout)).toBeTruthy();
     expect(setTimeout).toHaveBeenCalledTimes(1);
-    expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 1000);
+    expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 200);
 
     gameState.finishWasteFlip(mockCard2);
     expect(gameState.board.waste).toContain(mockCard2);

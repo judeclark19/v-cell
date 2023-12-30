@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import { CardStyle, cardSizes } from "../Card/CardUI.styles";
+import Image from "next/image";
 
 export const BoardContainer = styled.div`
   background-color: #5c5c5c;
@@ -37,6 +38,19 @@ export const Spot = styled.div`
   }
 `;
 
+export const Stock = styled(Spot)<{
+  $isClickable: boolean;
+}>`
+  display: grid;
+  place-items: center;
+  cursor: ${({ $isClickable }) => ($isClickable ? "pointer" : "default")};
+
+  img {
+    user-select: none;
+    pointer-events: none;
+  }
+`;
+
 const moveRight = keyframes`
  0% {
    transform: translateX(0);
@@ -51,5 +65,5 @@ export const IsFlipping = styled(Spot)`
   top: 0px;
   left: 0px;
   z-index: 100;
-  animation: ${moveRight} 1s ease-in-out;
+  animation: ${moveRight} 200ms ease-in-out;
 `;

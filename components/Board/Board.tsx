@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   TopRow,
   Tableau,
   Spot,
   Foundations,
   BoardContainer,
-  IsFlipping
+  IsFlipping,
+  Stock
 } from "./Board.styles";
 import gameState from "@/logic/GameState";
 import CardUI from "../Card/CardUI";
 import { observer } from "mobx-react-lite";
 import { BoardType } from "@/logic/types";
+import Image from "next/image";
+import replayArrow from "./icons8-replay-90.png";
+import emptyX from "./icons8-multiply-100.png";
 
 const Board = observer(() => {
   const columns = Array.from({ length: 7 }, (_, i) => i + 1);
@@ -32,13 +36,27 @@ const Board = observer(() => {
       >
         <TopRow>
           <div style={{ display: "flex", gap: "50px" }}>
-            <Spot
+            <Stock
               data-testid="stock"
               onClick={() => {
-                console.log("the stock is empty");
+                if (gameState.cardIsFlipping) return;
+                if (gameState.board.stock.length > 0) return;
+                if (gameState.board.waste.length > 0) {
+                  console.log("reset the stock");
+                  gameState.resetStock();
+                }
               }}
+              $isClickable={gameState.board.waste.length > 0}
             >
               {/* stock */}
+              {gameState.board.waste.length > 0 && (
+                // <a target="_blank" href="https://icons8.com/icon/91644/replay">Replay</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+                <Image src={replayArrow} alt="replay" width={90} height={90} />
+              )}
+              {gameState.board.waste.length === 0 && (
+                // <a target="_blank" href="https://icons8.com/icon/6483/multiply">Multiply</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+                <Image src={emptyX} alt="empty" width={90} height={90} />
+              )}
               {gameState.board.stock.map((card, i) => {
                 return (
                   <CardUI
@@ -47,6 +65,7 @@ const Board = observer(() => {
                     zIndex={i + 1}
                     handleCardClick={(e) => {
                       e.stopPropagation();
+                      if (gameState.cardIsFlipping) return;
                       gameState.startWasteFlip(card);
                     }}
                   />
@@ -59,9 +78,10 @@ const Board = observer(() => {
                   <CardUI card={gameState.cardIsFlipping} zIndex={100} />
                 </IsFlipping>
               )}
-            </Spot>
+            </Stock>
             <Spot style={{ borderStyle: "dashed" }} data-testid="waste">
               {/* waste */}
+
               {gameState.board.waste.map((card, i) => (
                 <CardUI
                   key={`${card.value}_of_${card.suit}`}
