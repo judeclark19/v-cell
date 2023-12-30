@@ -7,15 +7,11 @@ export default function CardUI({
   card,
   zIndex,
   offset,
-  isActive,
-  isFaceUp,
   handleCardClick
 }: {
   card: CardClass;
   zIndex: number;
   offset?: number;
-  isActive: boolean;
-  isFaceUp: boolean;
   handleCardClick?: (event: React.MouseEvent) => void;
 }) {
   let suitIcon = "";
@@ -64,8 +60,8 @@ export default function CardUI({
       $value={card.value}
       $zIndex={zIndex}
       $offset={offset}
-      $isActive={isActive}
-      $isFaceUp={isFaceUp}
+      $isActive={card.isActive}
+      $isFaceUp={card.isFaceUp}
       onClick={(e) => {
         if (handleCardClick) handleCardClick(e);
         else

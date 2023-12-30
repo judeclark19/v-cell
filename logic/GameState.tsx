@@ -123,8 +123,7 @@ export class GameState {
       this.board.stock[this.board.stock.length - 1].setIsActive(true);
     }
 
-    // set the card in the waste to face up and not active
-    card.setIsActive(false);
+    // set the card in the waste to face up
     card.setIsFaceUp(true);
   }
 }
