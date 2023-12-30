@@ -30,7 +30,6 @@ const Board = observer(() => {
       <BoardContainer
         style={{ display: "flex", flexDirection: "column", gap: "100px" }}
       >
-        {gameState.cardIsFlipping && <IsFlipping>Card is flipping</IsFlipping>}
         <TopRow>
           <div style={{ display: "flex", gap: "50px" }}>
             <Spot
@@ -53,6 +52,13 @@ const Board = observer(() => {
                   />
                 );
               })}
+
+              {/* card being flipped */}
+              {gameState.cardIsFlipping && (
+                <IsFlipping id="card-being-flipped">
+                  <CardUI card={gameState.cardIsFlipping} zIndex={100} />
+                </IsFlipping>
+              )}
             </Spot>
             <Spot style={{ borderStyle: "dashed" }} data-testid="waste">
               {/* waste */}

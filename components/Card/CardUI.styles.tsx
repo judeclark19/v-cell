@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import { Suit, Value } from "@/logic/types";
 
+export const cardSizes = {
+  large: {
+    height: "210px",
+    width: "150px"
+  }
+};
+
 export const CardStyle = styled.div<{
   $suit: Suit;
   $value: Value;
@@ -16,8 +23,8 @@ export const CardStyle = styled.div<{
   color: black;
   border: 1px solid gray;
   border-radius: 5px;
-  height: 210px;
-  width: 150px;
+  height: ${cardSizes.large.height};
+  width: ${cardSizes.large.width};
   color: ${(props) =>
     props.$suit === "hearts" || props.$suit === "diamonds" ? "red" : "black"};
 

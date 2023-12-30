@@ -35,7 +35,7 @@ export class GameState {
     column6: [],
     column7: []
   };
-  cardIsFlipping: boolean = false;
+  cardIsFlipping: CardClass | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -116,7 +116,7 @@ export class GameState {
   startWasteFlip(card: CardClass) {
     // pop card from the stock
     this.board.stock.pop();
-    this.cardIsFlipping = true;
+    this.cardIsFlipping = card;
     card.setIsFlipping(true);
 
     setTimeout(() => {
@@ -137,7 +137,7 @@ export class GameState {
 
     card.setIsFaceUp(true);
     card.setIsFlipping(false);
-    this.cardIsFlipping = false;
+    this.cardIsFlipping = null;
   }
 }
 

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { CardStyle } from "../Card/CardUI.styles";
+import styled, { keyframes } from "styled-components";
+import { CardStyle, cardSizes } from "../Card/CardUI.styles";
 
 export const BoardContainer = styled.div`
   background-color: #5c5c5c;
@@ -28,8 +28,8 @@ export const Tableau = styled.div`
 export const Spot = styled.div`
   border: 2px solid gold;
   border-radius: 5px;
-  height: 210px;
-  width: 150px;
+  height: ${cardSizes.large.height};
+  width: ${cardSizes.large.width};
   position: relative;
 
   ${CardStyle} {
@@ -37,9 +37,22 @@ export const Spot = styled.div`
   }
 `;
 
-export const IsFlipping = styled.div`
-  color: red;
+const moveRight = keyframes`
+ 0% {
+   transform: translateX(0);
+ }
+ 100% {
+   transform: translateX(200px);
+ }
+`;
+
+export const IsFlipping = styled(Spot)`
   position: absolute;
   top: 0px;
+  left: 0px;
   font-size: 30px;
+  background-color: aqua;
+  color: black;
+  z-index: 100;
+  animation: ${moveRight} 1s ease-in-out;
 `;
