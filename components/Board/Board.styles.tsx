@@ -36,3 +36,10 @@ export const Spot = styled.div`
     position: absolute;
   }
 `;
+
+export const IsFlipping = styled.div`
+  color: red;
+  position: absolute;
+  top: 0px;
+  font-size: 30px;
+`;

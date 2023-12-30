@@ -20,7 +20,8 @@ describe("GameState Class", () => {
           value,
           id: `${value}_of_${suit}`,
           isActive: false,
-          isFaceUp: false
+          isFaceUp: false,
+          isFlipping: false
         });
       });
     });
@@ -62,39 +63,35 @@ describe("GameState Class", () => {
   });
 });
 
-describe("GameState Class - stockToWaste Method", () => {
+describe("GameState class methods", () => {
   let gameState;
-  let mockCard;
+  let mockCard1;
+  let mockCard2;
 
   beforeEach(() => {
     gameState = new GameState();
-    mockCard = new CardClass("ace", "hearts");
-    gameState.board.stock.push(mockCard);
+    mockCard1 = new CardClass("ace", "hearts");
+    mockCard2 = new CardClass("king", "spades");
+    gameState.board.stock = [mockCard1, mockCard2]; // Assuming there are two cards in stock
   });
 
-  test("should move a card from stock to waste", () => {
-    gameState.stockToWaste(mockCard);
-    expect(gameState.board.stock).not.toContain(mockCard);
-    expect(gameState.board.waste).toContain(mockCard);
+  test("startWasteFlip + finishWasteFlip", () => {
+    jest.spyOn(global, "setTimeout");
 
-    expect(gameState.board.stock.length).toBe(0);
-    expect(gameState.board.waste.length).toBe(1);
-  });
+    gameState.startWasteFlip(mockCard2);
+    expect(gameState.board.stock).not.toContain(mockCard2);
+    expect(mockCard2.isFlipping).toBeTruthy();
 
-  test("should set the last card in stock to active if stock is not empty", () => {
-    // Add another card to ensure stock is not empty after moving one card
-    const anotherCard = new CardClass("2", "spades");
-    gameState.board.stock.push(anotherCard);
+    // Check if setTimeout was called
+    expect(jest.isMockFunction(setTimeout)).toBeTruthy();
+    expect(setTimeout).toHaveBeenCalledTimes(1);
+    expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 1000);
 
-    gameState.stockToWaste(anotherCard);
-    const lastCardInStock =
-      gameState.board.stock[gameState.board.stock.length - 1];
-    expect(lastCardInStock.isActive).toBeTruthy();
-  });
-
-  test("should set the moved card to face up and not active", () => {
-    gameState.stockToWaste(mockCard);
-    expect(mockCard.isFaceUp).toBeTruthy();
-    expect(mockCard.isActive).toBeFalsy();
+    gameState.finishWasteFlip(mockCard2);
+    expect(gameState.board.waste).toContain(mockCard2);
+    expect(gameState.board.stock.length).toBe(1); // One card should be left in stock
+    expect(gameState.board.stock[0].isActive).toBeTruthy();
+    expect(mockCard2.isFaceUp).toBeTruthy();
+    expect(mockCard2.isFlipping).toBeFalsy();
   });
 });

@@ -1,5 +1,3 @@
-import gameState from "@/logic/GameState";
-import React from "react";
 import { CardStyle } from "./CardUI.styles";
 import CardClass from "./CardClass";
 
@@ -68,19 +66,24 @@ export default function CardUI({
           console.log("no funciton for card", `${card.value}_of_${card.suit}`);
       }}
     >
-      <div className="card-front">
-        <h1>{card.value}</h1>
-        <div className="emojis">
-          {createIcons().map((icon, i) => (
-            <div key={`${icon}${i}`}>
-              <span>{icon}</span>
+      {card.isFlipping && <div>me flip</div>}
+      {!card.isFlipping && (
+        <>
+          <div className="card-front">
+            <h1>{card.value}</h1>
+            <div className="emojis">
+              {createIcons().map((icon, i) => (
+                <div key={`${icon}${i}`}>
+                  <span>{icon}</span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="card-back">
-        <h2>the back</h2>
-      </div>
+          </div>
+          <div className="card-back">
+            <h2>the back</h2>
+          </div>
+        </>
+      )}
     </CardStyle>
   );
 }

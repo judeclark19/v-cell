@@ -4,7 +4,8 @@ import {
   Tableau,
   Spot,
   Foundations,
-  BoardContainer
+  BoardContainer,
+  IsFlipping
 } from "./Board.styles";
 import gameState from "@/logic/GameState";
 import CardUI from "../Card/CardUI";
@@ -29,6 +30,7 @@ const Board = observer(() => {
       <BoardContainer
         style={{ display: "flex", flexDirection: "column", gap: "100px" }}
       >
+        {gameState.cardIsFlipping && <IsFlipping>Card is flipping</IsFlipping>}
         <TopRow>
           <div style={{ display: "flex", gap: "50px" }}>
             <Spot
@@ -46,7 +48,7 @@ const Board = observer(() => {
                     zIndex={i + 1}
                     handleCardClick={(e) => {
                       e.stopPropagation();
-                      gameState.stockToWaste(card);
+                      gameState.startWasteFlip(card);
                     }}
                   />
                 );
