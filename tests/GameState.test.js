@@ -21,7 +21,8 @@ describe("GameState Class", () => {
           id: `${value}_of_${suit}`,
           isActive: false,
           isFaceUp: false,
-          isFlipping: false
+          isFlipping: false,
+          locationOnBoard: null
         });
       });
     });
@@ -130,3 +131,5 @@ describe("resetStock", () => {
     });
   });
 });
+
+// to test: evaluateMove, executeMove
