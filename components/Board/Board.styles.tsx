@@ -6,6 +6,7 @@ export const BoardContainer = styled.div`
   background-color: #5c5c5c;
   padding: 30px;
   max-width: 1380px;
+  height: 1000px;
 `;
 
 export const TopRow = styled.div`
@@ -27,10 +28,11 @@ export const Tableau = styled.div`
 `;
 
 export const Spot = styled.div`
-  border: 2px solid gold;
+  border: 2px solid #fede4dbf;
   border-radius: 5px;
-  height: ${cardSizes.large.height + 4}px;
-  width: ${cardSizes.large.width + 4}px;
+  height: ${cardSizes.large.height + 12}px;
+  width: ${cardSizes.large.width + 12}px;
+  padding: 4px;
   position: relative;
 
   ${CardStyle} {

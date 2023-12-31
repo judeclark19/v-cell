@@ -23,7 +23,7 @@ export const CardStyle = styled.div<{
   color: black;
   border: 1px solid gray;
   border-radius: 5px;
-  height: ${cardSizes.large.height}px;
+  height: ${cardSizes.large.height}px!important;
   width: ${cardSizes.large.width}px;
   color: ${(props) =>
     props.$suit === "hearts" || props.$suit === "diamonds" ? "red" : "black"};
@@ -31,7 +31,7 @@ export const CardStyle = styled.div<{
   display: flex;
   flex-direction: column;
   z-index: ${(props) => props.$zIndex};
-  top: ${(props) => (props.$offset ? `${props.$offset}px` : "0")};
+  top: ${(props) => (props.$offset ? `${props.$offset + 4}px` : "4px")};
   transition: left 0.2s ease-in-out;
 
   filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));

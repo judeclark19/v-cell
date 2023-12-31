@@ -7,10 +7,12 @@
 - [x] Render correct front/back initial state
 - [x] Cycle through stock and waste piles
 - [x] Dragging
+- [x] Restart game
 - [ ] Undo
-- [ ] Restart game
-- [ ] Win game
+- [ ] Win game/autocomplete
+- [ ] Keeping score
 - [ ] Loading state
+- [ ] Responsive
 
 ### Deprioritized
 

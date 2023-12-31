@@ -32,6 +32,19 @@ const Board = observer(() => {
 
   return (
     <>
+      <button
+        style={{
+          fontSize: "18px",
+          padding: "10px",
+          margin: "40px",
+          cursor: "pointer"
+        }}
+        onClick={() => {
+          gameState.dealCards();
+        }}
+      >
+        Deal again
+      </button>
       <BoardContainer
         style={{ display: "flex", flexDirection: "column", gap: "100px" }}
       >
@@ -43,7 +56,6 @@ const Board = observer(() => {
                 if (gameState.cardIsFlipping) return;
                 if (gameState.board.stock.length > 0) return;
                 if (gameState.board.waste.length > 0) {
-                  console.log("reset the stock");
                   gameState.resetStock();
                 }
               }}

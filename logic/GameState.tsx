@@ -57,10 +57,6 @@ export class GameState {
     }
   }
 
-  printDeck() {
-    console.log(this.deck);
-  }
-
   shuffleDeck() {
     let m = this.deck.length,
       t,
@@ -155,8 +151,6 @@ export class GameState {
   }
 
   evaluateMove(card: CardClass, to: keyof BoardType) {
-    // console.log("EVALUATE MOVE:", card, from, to);
-
     // adding to foundation
     if (
       to === "foundation1" ||
@@ -199,9 +193,6 @@ export class GameState {
       const allowedValue = this.values[this.values.indexOf(lastCard.value) - 1];
       const allowedSuits: Suit[] = [];
 
-      // console.log("lastCard:", lastCard);
-      // console.log("allowedValue:", allowedValue);
-
       switch (lastCard.suit) {
         case "hearts":
         case "diamonds":
@@ -212,7 +203,7 @@ export class GameState {
           allowedSuits.push("hearts", "diamonds");
           break;
       }
-      // console.log("allowedSuits:", allowedSuits);
+
       if (allowedSuits.includes(card.suit) && allowedValue === card.value) {
         return true;
       }
