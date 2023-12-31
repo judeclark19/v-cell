@@ -1,5 +1,5 @@
 import CardClass from "@/components/Card/CardClass";
-import { BoardType, SuitsArray, ValuesArray } from "./types";
+import { BoardType, Suit, SuitsArray, ValuesArray } from "./types";
 import { makeAutoObservable } from "mobx";
 
 export class GameState {
@@ -177,13 +177,66 @@ export class GameState {
       }
     }
 
+    // adding to column
+    if (
+      to === "column1" ||
+      to === "column2" ||
+      to === "column3" ||
+      to === "column4" ||
+      to === "column5" ||
+      to === "column6" ||
+      to === "column7"
+    ) {
+      // if the column is empty, only allow kings
+      if (this.board[to].length === 0 && card.value === "king") {
+        return true;
+      }
+      if (this.board[to].length === 0 && card.value !== "king") {
+        return false;
+      }
+      // if the column is not empty, only allow alternating colors and descending values
+      const lastCard = this.board[to][this.board[to].length - 1];
+      const allowedValue = this.values[this.values.indexOf(lastCard.value) - 1];
+      const allowedSuits: Suit[] = [];
+
+      // console.log("lastCard:", lastCard);
+      // console.log("allowedValue:", allowedValue);
+
+      switch (lastCard.suit) {
+        case "hearts":
+        case "diamonds":
+          allowedSuits.push("spades", "clubs");
+          break;
+        case "spades":
+        case "clubs":
+          allowedSuits.push("hearts", "diamonds");
+          break;
+      }
+      // console.log("allowedSuits:", allowedSuits);
+      if (allowedSuits.includes(card.suit) && allowedValue === card.value) {
+        return true;
+      }
+    }
+
     return false;
   }
 
-  executeMove(card: CardClass, from: keyof BoardType, to: keyof BoardType) {
-    console.log("EXECUTE MOVE:", card, from, to);
-    this.board[from] = this.board[from].filter((c) => c.id !== card.id);
-    this.board[to].push(card);
+  executeMove(index: number, from: keyof BoardType, to: keyof BoardType) {
+    const cardsToMove = this.board[from].splice(
+      index,
+      this.board[from].length - index
+    );
+
+    cardsToMove.forEach((card) => {
+      card.setLocationOnBoard(to);
+    });
+
+    this.board[to] = this.board[to].concat(cardsToMove);
+
+    if (this.board[from].length > 0) {
+      this.board[from][this.board[from].length - 1].setIsFaceUp(true);
+      this.board[from][this.board[from].length - 1].setIsActive(true);
+    }
   }
 }
 

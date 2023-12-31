@@ -118,22 +118,54 @@ const Board = observer(() => {
         </TopRow>
         <Tableau>
           {columns.map((column) => {
-            return (
-              <Spot key={column} data-testid={`column${column}`}>
-                {gameState.board[`column${column}` as keyof BoardType].map(
-                  (card, i) => {
-                    return (
-                      <CardUI
-                        key={`${card.value}_of_${card.suit}`}
-                        card={card}
-                        zIndex={i + 1}
-                        offset={i * 30}
-                      />
-                    );
-                  }
-                )}
-              </Spot>
-            );
+            if (
+              gameState.board[`column${column}` as keyof BoardType].length === 0
+            ) {
+              return (
+                <DropSpot
+                  key={`column${column}`}
+                  dropId={`column${column}` as keyof BoardType}
+                >
+                  <Spot />
+                </DropSpot>
+              );
+            } else
+              return (
+                <Spot key={column}>
+                  {gameState.board[`column${column}` as keyof BoardType].map(
+                    (card, i) => {
+                      if (
+                        i ===
+                        gameState.board[`column${column}` as keyof BoardType]
+                          .length -
+                          1
+                      ) {
+                        return (
+                          <DropSpot
+                            key={`${card.value}_of_${card.suit}`}
+                            dropId={`column${column}` as keyof BoardType}
+                          >
+                            <CardUI
+                              card={card}
+                              zIndex={i + 1}
+                              offset={i * 30}
+                            />
+                          </DropSpot>
+                        );
+                      }
+
+                      return (
+                        <CardUI
+                          key={`${card.value}_of_${card.suit}`}
+                          card={card}
+                          zIndex={i + 1}
+                          offset={i * 30}
+                        />
+                      );
+                    }
+                  )}
+                </Spot>
+              );
           })}
         </Tableau>
       </BoardContainer>

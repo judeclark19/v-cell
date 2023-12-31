@@ -1,6 +1,7 @@
 import React from "react";
 import gameState from "@/logic/GameState";
 import { BoardType } from "@/logic/types";
+import { toJS } from "mobx";
 
 export default function DropSpot({
   dropId,
@@ -9,23 +10,32 @@ export default function DropSpot({
   dropId: keyof BoardType;
   children: React.ReactNode;
 }) {
-  function handleDragOver(e) {
+  function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
-    e.target.style.boxShadow = "0 0 10px gold";
+    (e.target as HTMLDivElement).style.height = "100%";
+    (e.target as HTMLDivElement).style.boxShadow = "0 0 10px aqua";
   }
 
-  function handleDragLeave(e) {
+  function handleDragLeave(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
-    e.target.style.boxShadow = "";
+
+    (e.target as HTMLDivElement).style.boxShadow = "";
   }
 
-  function handleDrop(e) {
+  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
-    e.target.style.boxShadow = "";
+
+    (e.target as HTMLDivElement).style.boxShadow = "";
     const card = JSON.parse(e.dataTransfer.getData("incomingCard"));
 
-    if (gameState.evaluateMove(card, dropId))
-      gameState.executeMove(card, card.locationOnBoard, dropId);
+    if (gameState.evaluateMove(card, dropId)) {
+      const from = toJS(
+        gameState.board[card.locationOnBoard as keyof BoardType]
+      );
+      const indexOfDraggedCard = from.findIndex((c) => c.id === card.id);
+
+      gameState.executeMove(indexOfDraggedCard, card.locationOnBoard, dropId);
+    }
   }
 
   return (

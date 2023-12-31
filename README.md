@@ -6,9 +6,14 @@
 - [x] Card front and back
 - [x] Render correct front/back initial state
 - [x] Cycle through stock and waste piles
+- [x] Dragging
+- [ ] Undo
+- [ ] Restart game
+- [ ] Win game
 - [ ] Loading state
-- [ ] Dragging
 
 ### Deprioritized
 
+- [ ] Different color hover for valid vs invalid move
 - [ ] Flip animation
+- [ ] Better dragging animation

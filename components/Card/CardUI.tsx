@@ -1,7 +1,6 @@
 import { CardStyle } from "./CardUI.styles";
 import CardClass from "./CardClass";
-// import { useState } from "react";
-
+import gameState from "@/logic/GameState";
 export default function CardUI({
   card,
   zIndex,
@@ -13,8 +12,6 @@ export default function CardUI({
   offset?: number;
   handleCardClick?: (event: React.MouseEvent) => void;
 }) {
-  // const [isDragging, setIsDragging] = useState(false);
-
   let suitIcon = "";
 
   switch (card.suit) {
@@ -52,14 +49,10 @@ export default function CardUI({
     return icons;
   }
 
-  const handleDragStart = (e) => {
-    // setIsDragging(true);
+  const handleDragStart = (e: React.DragEvent<HTMLElement>) => {
+    console.log("Handle drag start", gameState.board);
     e.dataTransfer.setData("incomingCard", JSON.stringify(card));
   };
-
-  // const handleDragEnd = (e) => {
-  //   setIsDragging(false);
-  // };
 
   return (
     <CardStyle
@@ -74,11 +67,14 @@ export default function CardUI({
       $isFaceUp={card.isFaceUp}
       draggable={card.isActive && card.isFaceUp}
       onDragStart={handleDragStart}
-      // onDragEnd={handleDragEnd}
       onClick={(e) => {
+        // todo: make this better so it's just for stock cards
         if (handleCardClick) handleCardClick(e);
         else
-          console.log("no funciton for card", `${card.value}_of_${card.suit}`);
+          console.log(
+            "no click funciton for card",
+            `${card.value}_of_${card.suit}`
+          );
       }}
     >
       <div className="card-front">
