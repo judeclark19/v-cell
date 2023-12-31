@@ -8,6 +8,7 @@ class CardClass {
   isActive: boolean;
   isFaceUp: boolean;
   isFlipping: boolean;
+  locationOnBoard: string | null;
 
   constructor(value: Value, suit: Suit) {
     makeAutoObservable(this); // This makes all properties observable
@@ -17,6 +18,7 @@ class CardClass {
     this.isActive = false;
     this.isFaceUp = false;
     this.isFlipping = false;
+    this.locationOnBoard = null;
   }
 
   setIsActive(isActive: boolean) {
@@ -29,6 +31,10 @@ class CardClass {
 
   setIsFlipping(isFlipping: boolean) {
     this.isFlipping = isFlipping;
+  }
+
+  setLocationOnBoard(location: string | null) {
+    this.locationOnBoard = location;
   }
 }
 

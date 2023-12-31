@@ -95,3 +95,38 @@ describe("GameState class methods", () => {
     expect(mockCard2.isFlipping).toBeFalsy();
   });
 });
+
+describe("resetStock", () => {
+  let gameState;
+  let mockCards;
+
+  beforeEach(() => {
+    gameState = new GameState();
+    // Create mock cards and add them to the waste pile
+    mockCards = [new CardClass("ace", "hearts"), new CardClass("2", "spades")];
+    gameState.board.waste.push(...mockCards);
+  });
+
+  test("resetStock moves cards from waste to stock and updates their properties", () => {
+    // Perform the reset
+    gameState.resetStock();
+
+    // Waste should be empty
+    expect(gameState.board.waste).toHaveLength(0);
+
+    // Stock should contain the cards from waste in reverse order
+    expect(gameState.board.stock).toEqual([...mockCards].reverse());
+
+    // Cards in stock should have isFaceUp = false and isActive = false, except the last one
+    gameState.board.stock.forEach((card, index) => {
+      expect(card.isFaceUp).toBeFalsy();
+      if (index === gameState.board.stock.length - 1) {
+        // Last card should be active
+        expect(card.isActive).toBeTruthy();
+      } else {
+        // Other cards should not be active
+        expect(card.isActive).toBeFalsy();
+      }
+    });
+  });
+});

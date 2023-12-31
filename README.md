@@ -5,7 +5,10 @@
 - [x] Get them all to render vertically stacked in the stock pile
 - [x] Card front and back
 - [x] Render correct front/back initial state
-- [ ] Cycle through stock and waste piles
-- [ ] Flip animation
+- [x] Cycle through stock and waste piles
 - [ ] Loading state
 - [ ] Dragging
+
+### Deprioritized
+
+- [ ] Flip animation

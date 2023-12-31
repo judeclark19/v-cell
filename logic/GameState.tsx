@@ -104,12 +104,16 @@ export class GameState {
           card?.setIsFaceUp(true);
         }
         if (card) {
+          card.setLocationOnBoard(columnIndex);
           this.board[columnIndex].push(card);
         }
       }
     }
 
     this.board.stock = this.deck;
+    this.board.stock.forEach((card) => {
+      card.setLocationOnBoard("stock");
+    });
     this.board.stock[this.board.stock.length - 1].setIsActive(true);
   }
 
@@ -126,6 +130,7 @@ export class GameState {
 
   finishWasteFlip(card: CardClass) {
     card.setIsFaceUp(true);
+    card.setLocationOnBoard("waste");
     // push card to the waste
     this.board.waste.push(card);
 
@@ -147,6 +152,38 @@ export class GameState {
     this.board.stock = cardsToReset.reverse();
     this.board.stock[this.board.stock.length - 1].setIsActive(true);
     this.board.waste = [];
+  }
+
+  evaluateMove(card: CardClass, to: keyof BoardType) {
+    // console.log("EVALUATE MOVE:", card, from, to);
+
+    // adding to foundation
+    if (
+      to === "foundation1" ||
+      to === "foundation2" ||
+      to === "foundation3" ||
+      to === "foundation4"
+    ) {
+      const allowedValue = this.values[this.board[to].length];
+      if (card.value === allowedValue && allowedValue === "ace") {
+        return true;
+      }
+      if (card.value !== allowedValue && allowedValue === "ace") {
+        return false;
+      }
+      const allowedSuit = this.board[to][0].suit;
+      if (card.suit === allowedSuit && card.value === allowedValue) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  executeMove(card: CardClass, from: keyof BoardType, to: keyof BoardType) {
+    console.log("EXECUTE MOVE:", card, from, to);
+    this.board[from] = this.board[from].filter((c) => c.id !== card.id);
+    this.board[to].push(card);
   }
 }
 

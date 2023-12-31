@@ -32,7 +32,7 @@ export const CardStyle = styled.div<{
   flex-direction: column;
   z-index: ${(props) => props.$zIndex};
   top: ${(props) => (props.$offset ? `${props.$offset}px` : "0")};
-  transition: all 0.2s ease-in-out;
+  transition: left 0.2s ease-in-out;
 
   filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
 

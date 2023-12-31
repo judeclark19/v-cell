@@ -15,6 +15,7 @@ import { BoardType } from "@/logic/types";
 import Image from "next/image";
 import replayArrow from "./icons8-replay-90.png";
 import emptyX from "./icons8-multiply-100.png";
+import DropSpot from "./DropSpot/DropSpot";
 
 const Board = observer(() => {
   const columns = Array.from({ length: 7 }, (_, i) => i + 1);
@@ -92,9 +93,27 @@ const Board = observer(() => {
             </Spot>
           </div>
           <Foundations>
-            {gameState.suits.map((i) => (
-              <Spot key={i}>Foundation {i}</Spot>
-            ))}
+            {Array.from({ length: 4 }).map((foundation, i) => {
+              const thisFoundation =
+                gameState.board[`foundation${i + 1}` as keyof BoardType];
+              return (
+                <DropSpot
+                  key={`foundation${i}`}
+                  dropId={`foundation${i + 1}` as keyof BoardType}
+                >
+                  <Spot>
+                    foundation{i + 1}
+                    {thisFoundation.map((card, i) => (
+                      <CardUI
+                        key={`${card.value}_of_${card.suit}`}
+                        card={card}
+                        zIndex={i + 1}
+                      />
+                    ))}
+                  </Spot>
+                </DropSpot>
+              );
+            })}
           </Foundations>
         </TopRow>
         <Tableau>
