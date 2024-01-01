@@ -7,8 +7,7 @@ export const GameTitle = styled.h1`
   width: 100%;
   text-align: center;
   margin-top: 50px;
-  font-size: 44px;
-  font-weight: 500;
+  font-size: 100px;
 `;
 
 export const GameControlButton = styled.button`
@@ -16,13 +15,19 @@ export const GameControlButton = styled.button`
   padding: 10px;
   cursor: pointer;
   border-radius: 4px;
+
+  // disabled
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `;
 
 export const BoardContainer = styled.div`
   background-color: #5c5c5c;
   padding: 30px;
   max-width: 1380px;
-  height: 1150px;
+  height: 1500px;
   gap: 50px !important;
   margin: auto;
 `;

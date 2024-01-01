@@ -15,6 +15,7 @@
 - [x] Undo
 - [x] Double click to send a card to the foundation
 - [x] Win game/autocomplete
+- [ ] How To Play instructions
 - [ ] Keeping score
 - [ ] Loading state
 - [ ] Responsive

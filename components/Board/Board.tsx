@@ -14,6 +14,9 @@ import CardUI from "../Card/CardUI";
 import { observer } from "mobx-react-lite";
 import { BoardType } from "@/logic/types";
 import DropSpot from "./DropSpot/DropSpot";
+import { Luckiest_Guy } from "next/font/google";
+
+const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 
 const Board = observer(() => {
   const columns = Array.from({ length: 7 }, (_, i) => i + 1);
@@ -30,7 +33,7 @@ const Board = observer(() => {
 
   return (
     <>
-      <GameTitle>Game Title Here</GameTitle>
+      <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
       <div
         className="buttons"
         style={{
@@ -59,22 +62,24 @@ const Board = observer(() => {
           onClick={() => {
             gameState.undo();
           }}
+          disabled={gameState.history.length === 0}
         >
           Undo
         </GameControlButton>
-        {gameState.canAutoComplete && (
-          <GameControlButton
-            style={{
-              backgroundColor: "#00cc00",
-              borderColor: "#00cc00"
-            }}
-            onClick={() => {
-              gameState.autoComplete();
-            }}
-          >
-            Autocomplete
-          </GameControlButton>
-        )}
+        {/* {gameState.canAutoComplete && ( */}
+        <GameControlButton
+          style={{
+            backgroundColor: "#00cc00",
+            borderColor: "#00cc00"
+          }}
+          onClick={() => {
+            gameState.autoComplete();
+          }}
+          disabled={!gameState.canAutoComplete}
+        >
+          Autocomplete
+        </GameControlButton>
+        {/* )} */}
       </div>
 
       <BoardContainer
