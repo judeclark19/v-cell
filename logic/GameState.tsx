@@ -52,8 +52,8 @@ export class GameState {
     column6: [],
     column7: []
   };
-  cardIsFlipping: CardClass | null = null;
   history: HistoryType[] = [];
+  tallestColumn: number = 0;
   canAutoComplete = false;
 
   constructor() {
@@ -186,7 +186,6 @@ export class GameState {
   }
 
   evaluateMove(card: CardClass, to: string) {
-    console.log("evaluating move", card, to);
     // adding to foundation
     if (
       to === "foundation1" ||
@@ -326,26 +325,6 @@ export class GameState {
     }
   }
 
-  uncoverLastCard(column: keyof BoardType) {
-    if (
-      column === "column1" ||
-      column === "column2" ||
-      column === "column3" ||
-      column === "column4" ||
-      column === "column5" ||
-      column === "column6" ||
-      column === "column7"
-    ) {
-      if (this.board[column].length > 0) {
-        this.board[column][this.board[column].length - 1].setIsFaceUp(true);
-        this.board[column][this.board[column].length - 1].setIsActive(true);
-      }
-    }
-    if (!this.canAutoComplete) {
-      this.checkForWin();
-    }
-  }
-
   cardToFoundation(card: CardClass) {
     const from = card.locationOnBoard;
 
@@ -379,7 +358,6 @@ export class GameState {
         this.board.foundation4.push(card);
       }
 
-      // this.uncoverLastCard(from as keyof BoardType);
       this.setCardsActiveState();
     } else {
       let foundationOfMatchingSuit;
@@ -438,14 +416,12 @@ export class GameState {
         // push the card to the foundation
         this.board[destinationFoundation].push(card);
 
-        // this.uncoverLastCard(from as keyof BoardType);
         this.setCardsActiveState();
       }
     }
   }
 
   takeSnapshot() {
-    console.log("taking snapshot");
     const handCopy = _.cloneDeep(this.hand);
     const boardCopy = _.cloneDeep(this.board);
     this.history.push({ hand: handCopy, board: boardCopy });
@@ -484,6 +460,8 @@ export class GameState {
         }
       });
     }
+
+    this.checkForWin();
   }
 
   checkForWin() {
@@ -503,6 +481,10 @@ export class GameState {
   }
 
   autoComplete() {
+    if (!this.canAutoComplete) {
+      return;
+    }
+
     while (
       this.board.foundation1.length < 13 ||
       this.board.foundation2.length < 13 ||

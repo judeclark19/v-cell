@@ -4,11 +4,18 @@ import { Suit, Value } from "@/logic/types";
 export const cardSizes = {
   large: {
     height: 210,
-    width: 150
+    width: 150,
+    spotPadding: 12
+  },
+  medium: {
+    height: 140,
+    width: 100,
+    spotPadding: 8
   }
 };
 
 export const CardStyle = styled.div<{
+  $size: "large" | "medium";
   $suit: Suit;
   $value: Value;
   $zIndex: number;
@@ -23,15 +30,22 @@ export const CardStyle = styled.div<{
   color: black;
   border: 1px solid gray;
   border-radius: 5px;
-  height: ${cardSizes.large.height}px!important;
-  width: ${cardSizes.large.width}px;
+  height: ${(props) => cardSizes[props.$size].height}px;
+  width: ${(props) => cardSizes[props.$size].width}px;
   color: ${(props) =>
     props.$suit === "hearts" || props.$suit === "diamonds" ? "red" : "black"};
 
   display: flex;
   flex-direction: column;
   z-index: ${(props) => props.$zIndex};
-  top: ${(props) => (props.$offset ? `${props.$offset + 4}px` : "4px")};
+  top: ${(props) =>
+    props.$offset
+      ? `${props.$offset + 4}px`
+      : props.$size === "large"
+      ? "4px"
+      : "2px"};
+  left: ${(props) => (props.$size === "large" ? "4px" : "2px")};
+
   transition: left 0.2s ease-in-out;
 
   filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
@@ -49,14 +63,25 @@ export const CardStyle = styled.div<{
     display: ${(props) => (props.$isFaceUp ? "block" : "none")};
 
     padding: 4px;
-    h1 {
-    }
 
     .card-title {
       pointer-events: none;
       user-select: none;
       display: flex;
       justify-content: space-between;
+
+      h1 {
+        font-size: ${(props) => {
+          switch (props.$size) {
+            case "large":
+              return "32px";
+            case "medium":
+              return "24px";
+            default:
+              return "32px";
+          }
+        }};
+      }
 
       span {
         font-size: 20px;
@@ -68,15 +93,28 @@ export const CardStyle = styled.div<{
       user-select: none;
       flex-grow: 1;
       font-size: ${(props) => {
-        switch (props.$value) {
-          case "ace":
-            return "70px";
-          case "jack":
-          case "queen":
-          case "king":
-            return "42px";
-          default:
-            return "40px";
+        if (props.$size === "large") {
+          switch (props.$value) {
+            case "ace":
+              return "70px";
+            case "jack":
+            case "queen":
+            case "king":
+              return "42px";
+            default:
+              return "40px";
+          }
+        } else if (props.$size === "medium") {
+          switch (props.$value) {
+            case "ace":
+              return "42px";
+            case "jack":
+            case "queen":
+            case "king":
+              return "28px";
+            default:
+              return "26px";
+          }
         }
       }};
       display: ${(props) => {
@@ -104,7 +142,7 @@ export const CardStyle = styled.div<{
           default:
             return `
                  grid-template-columns: repeat(3, 1fr);
-                 grid-auto-rows: 40px;
+                 grid-auto-rows: ${props.$size === "large" ? "40px" : "26px"};
 
                     div {
                         display: grid;

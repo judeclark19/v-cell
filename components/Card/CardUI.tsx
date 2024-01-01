@@ -1,15 +1,20 @@
 import { CardStyle } from "./CardUI.styles";
 import CardClass from "./CardClass";
 import gameState from "@/logic/GameState";
+
 export default function CardUI({
+  size,
   card,
   zIndex,
   offset,
+  spacer,
   handleCardClick
 }: {
+  size: "large" | "medium";
   card: CardClass;
   zIndex: number;
   offset?: number;
+  spacer?: boolean;
   handleCardClick?: (event: React.MouseEvent) => void;
 }) {
   let suitIcon = "";
@@ -58,6 +63,7 @@ export default function CardUI({
       key={`${card.value}_of_${card.suit}`}
       id={`${card.value}_of_${card.suit}`}
       data-testid={`${card.value}_of_${card.suit}`}
+      $size={size}
       $suit={card.suit}
       $value={card.value}
       $zIndex={zIndex}

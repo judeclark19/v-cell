@@ -66,7 +66,7 @@ const Board = observer(() => {
         >
           Undo
         </GameControlButton>
-        {/* {gameState.canAutoComplete && ( */}
+
         <GameControlButton
           style={{
             backgroundColor: "#00cc00",
@@ -79,25 +79,23 @@ const Board = observer(() => {
         >
           Autocomplete
         </GameControlButton>
-        {/* )} */}
       </div>
-
-      <BoardContainer
-        style={{ display: "flex", flexDirection: "column", gap: "100px" }}
-      >
+      <BoardContainer>
         <Foundations>
-          {Array.from({ length: 4 }).map((foundation, i) => {
+          {Array.from({ length: 4 }).map((_, i) => {
             const thisFoundation =
               gameState.board[`foundation${i + 1}` as keyof BoardType];
             return (
               <DropSpot
+                size="medium"
                 key={`foundation${i}`}
                 dropId={`foundation${i + 1}` as keyof BoardType}
               >
-                <Spot>
+                <Spot $size="medium">
                   <span>A</span>
                   {thisFoundation.map((card, i) => (
                     <CardUI
+                      size="medium"
                       key={`${card.value}_of_${card.suit}`}
                       card={card}
                       zIndex={i + 1}
@@ -109,65 +107,75 @@ const Board = observer(() => {
           })}
         </Foundations>
 
+        <div className="scroll">
+          <Tableau>
+            {columns.map((column) => {
+              if (
+                gameState.board[`column${column}` as keyof BoardType].length ===
+                0
+              ) {
+                return (
+                  <DropSpot
+                    size="large"
+                    key={`column${column}`}
+                    dropId={`column${column}` as keyof BoardType}
+                  >
+                    <Spot $size="large" />
+                  </DropSpot>
+                );
+              } else
+                return (
+                  <Spot key={column} $size="large">
+                    {gameState.board[`column${column}` as keyof BoardType].map(
+                      (card, i) => {
+                        if (
+                          i ===
+                          gameState.board[`column${column}` as keyof BoardType]
+                            .length -
+                            1
+                        ) {
+                          return (
+                            <DropSpot
+                              size="large"
+                              key={`${card.value}_of_${card.suit}`}
+                              dropId={`column${column}` as keyof BoardType}
+                            >
+                              <CardUI
+                                size="large"
+                                card={card}
+                                zIndex={i + 1}
+                                offset={i * cardOffsetAmount}
+                                spacer
+                              />
+                            </DropSpot>
+                          );
+                        }
+
+                        return (
+                          <CardUI
+                            size="large"
+                            key={`${card.value}_of_${card.suit}`}
+                            card={card}
+                            zIndex={i + 1}
+                            offset={i * cardOffsetAmount}
+                          />
+                        );
+                      }
+                    )}
+                  </Spot>
+                );
+            })}
+          </Tableau>
+        </div>
         <Hand>
           {gameState.hand.map((card, i) => (
-            <DropSpot key={`hand${i}`} dropId={`hand-${i}`}>
-              <Spot>{card && <CardUI card={card} zIndex={1} />}</Spot>
+            <DropSpot key={`hand${i}`} size="medium" dropId={`hand-${i}`}>
+              <Spot $size="medium">
+                {card && <CardUI size="medium" card={card} zIndex={1} />}
+              </Spot>
             </DropSpot>
           ))}
         </Hand>
-        <Tableau>
-          {columns.map((column) => {
-            if (
-              gameState.board[`column${column}` as keyof BoardType].length === 0
-            ) {
-              return (
-                <DropSpot
-                  key={`column${column}`}
-                  dropId={`column${column}` as keyof BoardType}
-                >
-                  <Spot />
-                </DropSpot>
-              );
-            } else
-              return (
-                <Spot key={column}>
-                  {gameState.board[`column${column}` as keyof BoardType].map(
-                    (card, i) => {
-                      if (
-                        i ===
-                        gameState.board[`column${column}` as keyof BoardType]
-                          .length -
-                          1
-                      ) {
-                        return (
-                          <DropSpot
-                            key={`${card.value}_of_${card.suit}`}
-                            dropId={`column${column}` as keyof BoardType}
-                          >
-                            <CardUI
-                              card={card}
-                              zIndex={i + 1}
-                              offset={i * cardOffsetAmount}
-                            />
-                          </DropSpot>
-                        );
-                      }
-
-                      return (
-                        <CardUI
-                          key={`${card.value}_of_${card.suit}`}
-                          card={card}
-                          zIndex={i + 1}
-                          offset={i * cardOffsetAmount}
-                        />
-                      );
-                    }
-                  )}
-                </Spot>
-              );
-          })}
-        </Tableau>
       </BoardContainer>
     </>
   );

@@ -5,9 +5,11 @@ import { toJS } from "mobx";
 import { cardSizes } from "@/components/Card/CardUI.styles";
 
 export default function DropSpot({
+  size,
   dropId,
   children
 }: {
+  size: "large" | "medium";
   dropId: string;
   children: React.ReactNode;
 }) {
@@ -53,17 +55,19 @@ export default function DropSpot({
   }
 
   return (
-    <div
-      id={dropId}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      style={{
-        height: `${cardSizes.large.height + 12}px`,
-        width: `${cardSizes.large.width + 12}px`
-      }}
-    >
-      {children}
+    <div>
+      <div
+        id={dropId}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        style={{
+          height: `${cardSizes[size].height + cardSizes[size].spotPadding}px`,
+          width: `${cardSizes[size].width + cardSizes[size].spotPadding}px`
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

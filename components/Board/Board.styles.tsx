@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { CardStyle, cardSizes } from "../Card/CardUI.styles";
 
-export const cardOffsetAmount = 42;
+export const cardOffsetAmount = 40;
 
 export const GameTitle = styled.h1`
   width: 100%;
@@ -25,19 +25,33 @@ export const GameControlButton = styled.button`
 
 export const BoardContainer = styled.div`
   background-color: #5c5c5c;
-  padding: 30px;
+  padding: 20px;
   max-width: 1380px;
-  height: 1500px;
-  gap: 50px !important;
+  height: calc(100vh - 20px);
+  gap: 30px !important;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+
+  .scroll {
+    background-color: #818181;
+    border-radius: 4px;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+  }
 `;
 
-export const Spot = styled.div`
+export const Spot = styled.div<{
+  $size: "large" | "medium";
+}>`
   border: 2px solid #fede4dbf;
   border-radius: 5px;
-  height: ${cardSizes.large.height + 12}px;
-  width: ${cardSizes.large.width + 12}px;
-  padding: 4px;
+  height: ${(props) =>
+    cardSizes[props.$size].height + cardSizes[props.$size].spotPadding}px;
+  width: ${(props) =>
+    cardSizes[props.$size].width + cardSizes[props.$size].spotPadding}px;
   position: relative;
 
   ${CardStyle} {
@@ -60,6 +74,7 @@ export const Tableau = styled.div`
   flex-wrap: nowrap;
   justify-content: space-between;
   width: 100%;
+  height: 850px;
 `;
 
 export const Foundations = styled.div`
