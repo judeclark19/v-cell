@@ -12,8 +12,8 @@
 - [x] Cycle through stock and waste piles
 - [x] Dragging
 - [x] Restart game
-- [ ] Undo
-- [ ] Double click to send a card to the foundation
+- [x] Undo
+- [x] Double click to send a card to the foundation
 - [ ] Win game/autocomplete
 - [ ] Keeping score
 - [ ] Loading state

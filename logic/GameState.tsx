@@ -21,6 +21,7 @@ export class GameState {
     "queen",
     "king"
   ];
+  // TODO: refactor board
   board: BoardType = {
     stock: [],
     waste: [],
@@ -233,6 +234,104 @@ export class GameState {
     if (this.board[from].length > 0) {
       this.board[from][this.board[from].length - 1].setIsFaceUp(true);
       this.board[from][this.board[from].length - 1].setIsActive(true);
+    }
+  }
+
+  cardToFoundation(card: CardClass) {
+    const from = card.locationOnBoard as keyof BoardType;
+
+    if (card.value === "ace") {
+      // remove the card from its current location
+      this.board[card.locationOnBoard as keyof BoardType].pop();
+
+      // find the first empty foundation
+      if (this.board.foundation1.length === 0) {
+        card.setLocationOnBoard("foundation1");
+        this.board.foundation1.push(card);
+      } else if (this.board.foundation2.length === 0) {
+        card.setLocationOnBoard("foundation2");
+        this.board.foundation2.push(card);
+      } else if (this.board.foundation3.length === 0) {
+        card.setLocationOnBoard("foundation3");
+        this.board.foundation3.push(card);
+      } else if (this.board.foundation4.length === 0) {
+        card.setLocationOnBoard("foundation4");
+        this.board.foundation4.push(card);
+      }
+
+      // todo: refactor this column thing, I have it written out twice
+      // if the card came from a column, make sure the last card in the column is face up and active
+      if (
+        from === "column1" ||
+        from === "column2" ||
+        from === "column3" ||
+        from === "column4" ||
+        from === "column5" ||
+        from === "column6" ||
+        from === "column7"
+      ) {
+        this.board[from][this.board[from].length - 1].setIsFaceUp(true);
+        this.board[from][this.board[from].length - 1].setIsActive(true);
+      }
+    } else {
+      let foundationOfMatchingSuit;
+
+      // find which foundation has the same suit as the card
+      if (
+        this.board.foundation1.length > 0 &&
+        this.board.foundation1[0].suit === card.suit
+      ) {
+        foundationOfMatchingSuit = "foundation1";
+      } else if (
+        this.board.foundation2.length > 0 &&
+        this.board.foundation2[0].suit === card.suit
+      ) {
+        foundationOfMatchingSuit = "foundation2";
+      } else if (
+        this.board.foundation3.length > 0 &&
+        this.board.foundation3[0].suit === card.suit
+      ) {
+        foundationOfMatchingSuit = "foundation3";
+      } else if (
+        this.board.foundation4.length > 0 &&
+        this.board.foundation4[0].suit === card.suit
+      ) {
+        foundationOfMatchingSuit = "foundation4";
+      } else {
+        return;
+      }
+
+      const destinationFoundation = foundationOfMatchingSuit as keyof BoardType;
+
+      // check if the card is the next value in the foundation
+      const allowedValue =
+        this.values[this.board[destinationFoundation].length];
+      if (card.value === allowedValue) {
+        // remove the card from its current location
+        this.board[card.locationOnBoard as keyof BoardType].pop();
+
+        // set the card's location to the foundation
+        card.setLocationOnBoard(destinationFoundation);
+
+        // push the card to the foundation
+        this.board[destinationFoundation].push(card);
+
+        // if the card came from a column, make sure the last card in the column is face up and active
+        if (
+          from === "column1" ||
+          from === "column2" ||
+          from === "column3" ||
+          from === "column4" ||
+          from === "column5" ||
+          from === "column6" ||
+          from === "column7"
+        ) {
+          if (this.board[from].length > 0) {
+            this.board[from][this.board[from].length - 1].setIsFaceUp(true);
+            this.board[from][this.board[from].length - 1].setIsActive(true);
+          }
+        }
+      }
     }
   }
 

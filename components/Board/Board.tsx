@@ -78,11 +78,23 @@ const Board = observer(() => {
               {/* stock */}
               {gameState.board.waste.length > 0 && (
                 // <a target="_blank" href="https://icons8.com/icon/91644/replay">Replay</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
-                <Image src={replayArrow} alt="replay" width={90} height={90} />
+                <Image
+                  src={replayArrow}
+                  alt="replay"
+                  width={90}
+                  height={90}
+                  priority
+                />
               )}
               {gameState.board.waste.length === 0 && (
                 // <a target="_blank" href="https://icons8.com/icon/6483/multiply">Multiply</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
-                <Image src={emptyX} alt="empty" width={90} height={90} />
+                <Image
+                  src={emptyX}
+                  alt="empty"
+                  width={90}
+                  height={90}
+                  priority
+                />
               )}
               {gameState.board.stock.map((card, i) => {
                 return (
@@ -171,10 +183,11 @@ const Board = observer(() => {
                             key={`${card.value}_of_${card.suit}`}
                             dropId={`column${column}` as keyof BoardType}
                           >
+                            {/* todo: make offset a variable */}
                             <CardUI
                               card={card}
                               zIndex={i + 1}
-                              offset={i * 30}
+                              offset={i * 34}
                             />
                           </DropSpot>
                         );
@@ -185,7 +198,7 @@ const Board = observer(() => {
                           key={`${card.value}_of_${card.suit}`}
                           card={card}
                           zIndex={i + 1}
-                          offset={i * 30}
+                          offset={i * 34}
                         />
                       );
                     }

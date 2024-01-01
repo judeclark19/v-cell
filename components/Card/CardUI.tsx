@@ -67,8 +67,12 @@ export default function CardUI({
       draggable={card.isActive && card.isFaceUp}
       onDragStart={handleDragStart}
       onClick={(e) => {
-        // todo: make this better so it's just for stock cards
         if (handleCardClick) handleCardClick(e);
+      }}
+      onDoubleClick={(e) => {
+        e.stopPropagation();
+        if (!card.isActive) return;
+        gameState.cardToFoundation(card);
       }}
     >
       <div className="card-front">
