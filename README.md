@@ -14,7 +14,7 @@
 - [x] Restart game
 - [x] Undo
 - [x] Double click to send a card to the foundation
-- [ ] Win game/autocomplete
+- [x] Win game/autocomplete
 - [ ] Keeping score
 - [ ] Loading state
 - [ ] Responsive

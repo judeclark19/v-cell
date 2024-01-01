@@ -31,6 +31,7 @@ const Board = observer(() => {
   }
 
   return (
+    // todo: button style
     <>
       <button
         style={{
@@ -58,6 +59,21 @@ const Board = observer(() => {
       >
         Undo
       </button>
+      {gameState.canAutoComplete && (
+        <button
+          style={{
+            fontSize: "18px",
+            padding: "10px",
+            margin: "40px",
+            cursor: "pointer"
+          }}
+          onClick={() => {
+            gameState.autoComplete();
+          }}
+        >
+          Autocomplete
+        </button>
+      )}
 
       <BoardContainer
         style={{ display: "flex", flexDirection: "column", gap: "100px" }}

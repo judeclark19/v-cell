@@ -39,6 +39,7 @@ export class GameState {
   };
   cardIsFlipping: CardClass | null = null;
   history: BoardType[] = [];
+  canAutoComplete = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -235,12 +236,17 @@ export class GameState {
       this.board[from][this.board[from].length - 1].setIsFaceUp(true);
       this.board[from][this.board[from].length - 1].setIsActive(true);
     }
+
+    if (!this.canAutoComplete) {
+      this.checkForWin();
+    }
   }
 
   cardToFoundation(card: CardClass) {
     const from = card.locationOnBoard as keyof BoardType;
 
     if (card.value === "ace") {
+      this.takeSnapshot();
       // remove the card from its current location
       this.board[card.locationOnBoard as keyof BoardType].pop();
 
@@ -270,8 +276,12 @@ export class GameState {
         from === "column6" ||
         from === "column7"
       ) {
+        // todo: handle length 0
         this.board[from][this.board[from].length - 1].setIsFaceUp(true);
         this.board[from][this.board[from].length - 1].setIsActive(true);
+      }
+      if (!this.canAutoComplete) {
+        this.checkForWin();
       }
     } else {
       let foundationOfMatchingSuit;
@@ -307,6 +317,7 @@ export class GameState {
       const allowedValue =
         this.values[this.board[destinationFoundation].length];
       if (card.value === allowedValue) {
+        this.takeSnapshot();
         // remove the card from its current location
         this.board[card.locationOnBoard as keyof BoardType].pop();
 
@@ -330,6 +341,10 @@ export class GameState {
             this.board[from][this.board[from].length - 1].setIsFaceUp(true);
             this.board[from][this.board[from].length - 1].setIsActive(true);
           }
+        }
+
+        if (!this.canAutoComplete) {
+          this.checkForWin();
         }
       }
     }
@@ -359,6 +374,73 @@ export class GameState {
           this.board[key as keyof BoardType].push(newCard);
         });
       });
+    }
+  }
+
+  checkForWin() {
+    console.log("check for win");
+    if (this.board.stock.length != 0 || this.board.waste.length != 0) {
+      return;
+    }
+
+    // if all cards are face up in the columns, you win
+    let allCardsFaceUp = true;
+    for (let i = 1; i <= 7; i++) {
+      this.board[`column${i}` as keyof BoardType].forEach((card) => {
+        if (!card.isFaceUp) {
+          allCardsFaceUp = false;
+        }
+      });
+    }
+
+    if (allCardsFaceUp) {
+      this.canAutoComplete = true;
+    }
+  }
+
+  autoComplete() {
+    while (
+      this.board.foundation1.length < 13 ||
+      this.board.foundation2.length < 13 ||
+      this.board.foundation3.length < 13 ||
+      this.board.foundation4.length < 13
+    ) {
+      // todo: handle length 0
+      if (this.board.column1.length > 0) {
+        this.cardToFoundation(
+          this.board.column1[this.board.column1.length - 1]
+        );
+      }
+      if (this.board.column2.length > 0) {
+        this.cardToFoundation(
+          this.board.column2[this.board.column2.length - 1]
+        );
+      }
+      if (this.board.column3.length > 0) {
+        this.cardToFoundation(
+          this.board.column3[this.board.column3.length - 1]
+        );
+      }
+      if (this.board.column4.length > 0) {
+        this.cardToFoundation(
+          this.board.column4[this.board.column4.length - 1]
+        );
+      }
+      if (this.board.column5.length > 0) {
+        this.cardToFoundation(
+          this.board.column5[this.board.column5.length - 1]
+        );
+      }
+      if (this.board.column6.length > 0) {
+        this.cardToFoundation(
+          this.board.column6[this.board.column6.length - 1]
+        );
+      }
+      if (this.board.column7.length > 0) {
+        this.cardToFoundation(
+          this.board.column7[this.board.column7.length - 1]
+        );
+      }
     }
   }
 }
