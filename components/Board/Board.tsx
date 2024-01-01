@@ -6,7 +6,8 @@ import {
   BoardContainer,
   GameControlButton,
   cardOffsetAmount,
-  Hand
+  Hand,
+  GameTitle
 } from "./Board.styles";
 import gameState from "@/logic/GameState";
 import CardUI from "../Card/CardUI";
@@ -29,29 +30,52 @@ const Board = observer(() => {
 
   return (
     <>
-      <GameControlButton
-        onClick={() => {
-          gameState.dealCards();
+      <GameTitle>Game Title Here</GameTitle>
+      <div
+        className="buttons"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "40px",
+          padding: "40px"
         }}
       >
-        Deal again
-      </GameControlButton>
-      <GameControlButton
-        onClick={() => {
-          gameState.undo();
-        }}
-      >
-        Undo
-      </GameControlButton>
-      {gameState.canAutoComplete && (
         <GameControlButton
+          style={{
+            backgroundColor: "#0099cc",
+            borderColor: "#0099cc"
+          }}
           onClick={() => {
-            gameState.autoComplete();
+            gameState.dealCards();
           }}
         >
-          Autocomplete
+          Deal again
         </GameControlButton>
-      )}
+        <GameControlButton
+          style={{
+            backgroundColor: "#ff9933",
+            borderColor: "#ff9933"
+          }}
+          onClick={() => {
+            gameState.undo();
+          }}
+        >
+          Undo
+        </GameControlButton>
+        {gameState.canAutoComplete && (
+          <GameControlButton
+            style={{
+              backgroundColor: "#00cc00",
+              borderColor: "#00cc00"
+            }}
+            onClick={() => {
+              gameState.autoComplete();
+            }}
+          >
+            Autocomplete
+          </GameControlButton>
+        )}
+      </div>
 
       <BoardContainer
         style={{ display: "flex", flexDirection: "column", gap: "100px" }}

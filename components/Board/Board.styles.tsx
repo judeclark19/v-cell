@@ -1,21 +1,30 @@
 import styled from "styled-components";
 import { CardStyle, cardSizes } from "../Card/CardUI.styles";
 
-export const cardOffsetAmount = 34;
+export const cardOffsetAmount = 42;
+
+export const GameTitle = styled.h1`
+  width: 100%;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 44px;
+  font-weight: 500;
+`;
 
 export const GameControlButton = styled.button`
   font-size: 18px;
   padding: 10px;
-  margin: 40px;
   cursor: pointer;
+  border-radius: 4px;
 `;
 
 export const BoardContainer = styled.div`
   background-color: #5c5c5c;
   padding: 30px;
   max-width: 1380px;
-  height: 1500px;
+  height: 1150px;
   gap: 50px !important;
+  margin: auto;
 `;
 
 export const Spot = styled.div`

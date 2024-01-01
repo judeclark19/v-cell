@@ -165,6 +165,7 @@ export class GameState {
         // last card in column is active
         if (j === this.board[column].length - 1) {
           this.board[column][j].setIsActive(true);
+          this.board[column][j].setIsFaceUp(true);
         } else {
           // check if current card is stackable with j+1
           const currentCard = this.board[column][j];
