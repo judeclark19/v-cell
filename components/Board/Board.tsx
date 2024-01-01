@@ -45,6 +45,20 @@ const Board = observer(() => {
       >
         Deal again
       </button>
+      <button
+        style={{
+          fontSize: "18px",
+          padding: "10px",
+          margin: "40px",
+          cursor: "pointer"
+        }}
+        onClick={() => {
+          gameState.undo();
+        }}
+      >
+        Undo
+      </button>
+
       <BoardContainer
         style={{ display: "flex", flexDirection: "column", gap: "100px" }}
       >

@@ -1,6 +1,7 @@
+import _ from "lodash";
 import CardClass from "@/components/Card/CardClass";
 import { BoardType, Suit, SuitsArray, ValuesArray } from "./types";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 
 export class GameState {
   deck: CardClass[] = [];
@@ -36,6 +37,7 @@ export class GameState {
     column7: []
   };
   cardIsFlipping: CardClass | null = null;
+  history: BoardType[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -89,6 +91,7 @@ export class GameState {
 
   dealCards() {
     this.clearBoard();
+    this.history = [];
     this.createDeck(true);
 
     for (let i = 0; i < 7; i++) {
@@ -114,6 +117,7 @@ export class GameState {
   }
 
   startWasteFlip(card: CardClass) {
+    this.takeSnapshot();
     // pop card from the stock
     this.board.stock.pop();
     this.cardIsFlipping = card;
@@ -140,6 +144,7 @@ export class GameState {
   }
 
   resetStock() {
+    this.takeSnapshot();
     const cardsToReset = this.board.waste.splice(0, this.board.waste.length);
     cardsToReset.forEach((card) => {
       card.setIsFaceUp(false);
@@ -213,6 +218,7 @@ export class GameState {
   }
 
   executeMove(index: number, from: keyof BoardType, to: keyof BoardType) {
+    this.takeSnapshot();
     const cardsToMove = this.board[from].splice(
       index,
       this.board[from].length - index
@@ -227,6 +233,33 @@ export class GameState {
     if (this.board[from].length > 0) {
       this.board[from][this.board[from].length - 1].setIsFaceUp(true);
       this.board[from][this.board[from].length - 1].setIsActive(true);
+    }
+  }
+
+  takeSnapshot() {
+    const boardCopy = _.cloneDeep(this.board);
+    this.history.push(boardCopy);
+  }
+
+  undo() {
+    if (this.history.length > 0) {
+      const stateToRestore = this.history.pop() as BoardType;
+      Object.keys(stateToRestore).forEach((key) => {
+        // empty the key
+        this.board[key as keyof BoardType] = [];
+        // loop through key from stateToRestore
+        stateToRestore[key as keyof BoardType].forEach((card) => {
+          // create a new card
+          const newCard = new CardClass(card.value, card.suit);
+          // set the properties on the new card
+          newCard.setIsActive(card.isActive);
+          newCard.setIsFaceUp(card.isFaceUp);
+          newCard.setIsFlipping(card.isFlipping);
+          newCard.setLocationOnBoard(card.locationOnBoard);
+          // push the new card to the board
+          this.board[key as keyof BoardType].push(newCard);
+        });
+      });
     }
   }
 }

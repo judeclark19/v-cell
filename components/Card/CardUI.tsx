@@ -69,11 +69,6 @@ export default function CardUI({
       onClick={(e) => {
         // todo: make this better so it's just for stock cards
         if (handleCardClick) handleCardClick(e);
-        else
-          console.log(
-            "no click funciton for card",
-            `${card.value}_of_${card.suit}`
-          );
       }}
     >
       <div className="card-front">

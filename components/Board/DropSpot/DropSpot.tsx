@@ -13,7 +13,7 @@ export default function DropSpot({
   function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
     (e.target as HTMLDivElement).style.height = "100%";
-    (e.target as HTMLDivElement).style.boxShadow = "0 0 10px aqua";
+    (e.target as HTMLDivElement).style.boxShadow = "0 0 14px aqua";
   }
 
   function handleDragLeave(e: React.DragEvent<HTMLDivElement>) {
