@@ -2,12 +2,13 @@ import React from "react";
 import gameState from "@/logic/GameState";
 import { BoardType } from "@/logic/types";
 import { toJS } from "mobx";
+import { cardSizes } from "@/components/Card/CardUI.styles";
 
 export default function DropSpot({
   dropId,
   children
 }: {
-  dropId: keyof BoardType;
+  dropId: string;
   children: React.ReactNode;
 }) {
   function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
@@ -29,10 +30,23 @@ export default function DropSpot({
     const card = JSON.parse(e.dataTransfer.getData("incomingCard"));
 
     if (gameState.evaluateMove(card, dropId)) {
-      const from = toJS(
-        gameState.board[card.locationOnBoard as keyof BoardType]
-      );
-      const indexOfDraggedCard = from.findIndex((c) => c.id === card.id);
+      let indexOfDraggedCard: number;
+
+      if (
+        card.locationOnBoard === "hand-0" ||
+        card.locationOnBoard === "hand-1" ||
+        card.locationOnBoard === "hand-2" ||
+        card.locationOnBoard === "hand-3" ||
+        card.locationOnBoard === "hand-4"
+      ) {
+        indexOfDraggedCard = 0;
+      } else {
+        const from = toJS(
+          gameState.board[card.locationOnBoard as keyof BoardType]
+        );
+
+        indexOfDraggedCard = from.findIndex((c) => c.id === card.id);
+      }
 
       gameState.executeMove(indexOfDraggedCard, card.locationOnBoard, dropId);
     }
@@ -44,6 +58,10 @@ export default function DropSpot({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
+      style={{
+        height: `${cardSizes.large.height + 12}px`,
+        width: `${cardSizes.large.width + 12}px`
+      }}
     >
       {children}
     </div>

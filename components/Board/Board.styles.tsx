@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { CardStyle, cardSizes } from "../Card/CardUI.styles";
 
 export const cardOffsetAmount = 34;
@@ -14,20 +14,8 @@ export const BoardContainer = styled.div`
   background-color: #5c5c5c;
   padding: 30px;
   max-width: 1380px;
-  height: 1000px;
-`;
-
-export const TopRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 100px;
-`;
-
-export const Tableau = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  width: 100%;
+  height: 1500px;
+  gap: 50px !important;
 `;
 
 export const Spot = styled.div`
@@ -42,9 +30,29 @@ export const Spot = styled.div`
     position: absolute;
   }
 `;
+
+export const Hand = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+
+  ${Spot} {
+    border: 2px solid #000080;
+  }
+`;
+
+export const Tableau = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 export const Foundations = styled.div`
   display: flex;
   gap: 50px;
+  width: 100%;
+  justify-content: end;
 
   ${Spot} {
     display: grid;
@@ -55,33 +63,4 @@ export const Foundations = styled.div`
       color: rgba(255, 255, 255, 0.5);
     }
   }
-`;
-export const Stock = styled(Spot)<{
-  $isClickable: boolean;
-}>`
-  display: grid;
-  place-items: center;
-  cursor: ${({ $isClickable }) => ($isClickable ? "pointer" : "default")};
-
-  img {
-    user-select: none;
-    pointer-events: none;
-  }
-`;
-
-const moveRight = keyframes`
- 0% {
-   transform: translateX(0);
- }
- 100% {
-   transform: translateX(200px);
- }
-`;
-
-export const IsFlipping = styled(Spot)`
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 100;
-  animation: ${moveRight} 200ms ease-in-out;
 `;

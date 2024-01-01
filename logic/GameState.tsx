@@ -1,8 +1,23 @@
 import _ from "lodash";
 import CardClass from "@/components/Card/CardClass";
-import { BoardType, Suit, SuitsArray, ValuesArray } from "./types";
+import {
+  BoardType,
+  HandType,
+  HistoryType,
+  Suit,
+  SuitsArray,
+  ValuesArray
+} from "./types";
 import { makeAutoObservable, toJS } from "mobx";
 
+const contrastingSuits = {
+  hearts: ["spades", "clubs"],
+  spades: ["hearts", "diamonds"],
+  clubs: ["hearts", "diamonds"],
+  diamonds: ["spades", "clubs"]
+};
+
+const initialFaceDownCards = [0, 1, 2, 3, 2, 1, 0];
 export class GameState {
   deck: CardClass[] = [];
   suits: SuitsArray = ["hearts", "spades", "clubs", "diamonds"];
@@ -22,9 +37,9 @@ export class GameState {
     "king"
   ];
 
+  hand: HandType = [null, null, null, null, null];
+
   board: BoardType = {
-    stock: [],
-    waste: [],
     foundation1: [],
     foundation2: [],
     foundation3: [],
@@ -38,7 +53,7 @@ export class GameState {
     column7: []
   };
   cardIsFlipping: CardClass | null = null;
-  history: BoardType[] = [];
+  history: HistoryType[] = [];
   canAutoComplete = false;
 
   constructor() {
@@ -74,9 +89,8 @@ export class GameState {
   }
 
   clearBoard() {
+    this.hand = [null, null, null, null, null];
     this.board = {
-      stock: [],
-      waste: [],
       foundation1: [],
       foundation2: [],
       foundation3: [],
@@ -97,13 +111,14 @@ export class GameState {
     this.createDeck(true);
 
     for (let i = 0; i < 7; i++) {
-      for (let j = 0; j < i + 1; j++) {
+      for (let j = 0; j < 7; j++) {
         const card = this.deck.pop();
         const columnIndex = `column${i + 1}` as keyof BoardType;
-        if (j === i) {
-          card?.setIsActive(true);
-          card?.setIsFaceUp(true);
+        // set correct card flipped V
+        if (card && j === initialFaceDownCards[i]) {
+          card.setIsFaceUp(false);
         }
+
         if (card) {
           card.setLocationOnBoard(columnIndex);
           this.board[columnIndex].push(card);
@@ -111,53 +126,66 @@ export class GameState {
       }
     }
 
-    this.board.stock = this.deck;
-    this.board.stock.forEach((card) => {
-      card.setLocationOnBoard("stock");
+    this.deck.forEach((card, i) => {
+      card.setLocationOnBoard(`hand-${i}`);
+      this.hand[i] = card;
     });
-    this.board.stock[this.board.stock.length - 1].setIsActive(true);
+
+    this.setCardsActiveState();
   }
 
-  startWasteFlip(card: CardClass) {
-    this.takeSnapshot();
-    // pop card from the stock
-    this.board.stock.pop();
-    this.cardIsFlipping = card;
-    card.setIsFlipping(true);
-
-    setTimeout(() => {
-      this.finishWasteFlip(card);
-    }, 200);
-  }
-
-  finishWasteFlip(card: CardClass) {
-    card.setIsFaceUp(true);
-    card.setLocationOnBoard("waste");
-    // push card to the waste
-    this.board.waste.push(card);
-
-    // set the last card in the stock to active
-    if (this.board.stock.length > 0) {
-      this.board.stock[this.board.stock.length - 1].setIsActive(true);
-    }
-
-    card.setIsFlipping(false);
-    this.cardIsFlipping = null;
-  }
-
-  resetStock() {
-    this.takeSnapshot();
-    const cardsToReset = this.board.waste.splice(0, this.board.waste.length);
-    cardsToReset.forEach((card) => {
-      card.setIsFaceUp(false);
-      card.setIsActive(false);
+  setCardsActiveState() {
+    // foundations - set last card active
+    Array.from(Array(4).keys()).forEach((i) => {
+      const foundation = `foundation${i + 1}` as keyof BoardType;
+      if (this.board[foundation].length > 0) {
+        this.board[foundation][this.board[foundation].length - 1].setIsActive(
+          true
+        );
+      }
     });
-    this.board.stock = cardsToReset.reverse();
-    this.board.stock[this.board.stock.length - 1].setIsActive(true);
-    this.board.waste = [];
+
+    // hand - set all cards active
+    this.hand.forEach((card) => {
+      if (card) {
+        card.setIsActive(true);
+      }
+    });
+
+    // columns
+    Array.from(Array(7).keys()).forEach((i) => {
+      const column = `column${i + 1}` as keyof BoardType;
+      // set all cards inactive
+      this.board[column].forEach((card) => {
+        card.setIsActive(false);
+      });
+
+      // loop backwards through column
+      for (let j = this.board[column].length - 1; j >= 0; j--) {
+        // last card in column is active
+        if (j === this.board[column].length - 1) {
+          this.board[column][j].setIsActive(true);
+        } else {
+          // check if current card is stackable with j+1
+          const currentCard = this.board[column][j];
+          const nextCard = this.board[column][j + 1];
+          if (
+            currentCard.isFaceUp &&
+            contrastingSuits[currentCard.suit].includes(nextCard.suit) &&
+            this.values.indexOf(currentCard.value) - 1 ===
+              this.values.indexOf(nextCard.value)
+          ) {
+            currentCard.setIsActive(true);
+          } else {
+            break;
+          }
+        }
+      }
+    });
   }
 
-  evaluateMove(card: CardClass, to: keyof BoardType) {
+  evaluateMove(card: CardClass, to: string) {
+    console.log("evaluating move", card, to);
     // adding to foundation
     if (
       to === "foundation1" ||
@@ -176,6 +204,22 @@ export class GameState {
       if (card.suit === allowedSuit && card.value === allowedValue) {
         return true;
       }
+    }
+
+    // adding to hand
+    if (
+      to === "hand-0" ||
+      to === "hand-1" ||
+      to === "hand-2" ||
+      to === "hand-3" ||
+      to === "hand-4"
+    ) {
+      // if the card is not the last in its column, return false
+      const from = card.locationOnBoard as keyof BoardType;
+      const index = this.board[from].findIndex((c) => c.id === card.id);
+      if (index === this.board[from].length - 1) {
+        return true;
+      } else return false;
     }
 
     // adding to column
@@ -219,23 +263,62 @@ export class GameState {
     return false;
   }
 
-  executeMove(index: number, from: keyof BoardType, to: keyof BoardType) {
+  executeMove(index: number, from: string, to: string) {
     this.takeSnapshot();
-    const cardsToMove = this.board[from].splice(
-      index,
-      this.board[from].length - index
-    );
+
+    let cardsToMove = [];
+
+    if (
+      from === "hand-0" ||
+      from === "hand-1" ||
+      from === "hand-2" ||
+      from === "hand-3" ||
+      from === "hand-4"
+    ) {
+      cardsToMove.push(this.hand[parseInt(from[from.length - 1])]);
+      this.hand[parseInt(from[from.length - 1])] = null;
+    } else {
+      cardsToMove = this.board[from as keyof BoardType].splice(
+        index,
+        this.board[from as keyof BoardType].length - index
+      );
+    }
 
     cardsToMove.forEach((card) => {
-      card.setLocationOnBoard(to);
+      if (card) card.setLocationOnBoard(to);
     });
 
-    this.board[to] = this.board[to].concat(cardsToMove);
-
-    if (this.board[from].length > 0) {
-      this.board[from][this.board[from].length - 1].setIsFaceUp(true);
-      this.board[from][this.board[from].length - 1].setIsActive(true);
+    if (
+      to === "hand-0" ||
+      to === "hand-1" ||
+      to === "hand-2" ||
+      to === "hand-3" ||
+      to === "hand-4"
+    ) {
+      this.hand[parseInt(to[to.length - 1])] = cardsToMove[0];
+    } else {
+      this.board[to as keyof BoardType] = this.board[
+        to as keyof BoardType
+      ].concat(cardsToMove as CardClass[]);
     }
+
+    if (
+      from !== "hand-0" &&
+      from !== "hand-1" &&
+      from !== "hand-2" &&
+      from !== "hand-3" &&
+      from !== "hand-4" &&
+      this.board[from as keyof BoardType].length > 0
+    ) {
+      this.board[from as keyof BoardType][
+        this.board[from as keyof BoardType].length - 1
+      ].setIsFaceUp(true);
+      this.board[from as keyof BoardType][
+        this.board[from as keyof BoardType].length - 1
+      ].setIsActive(true);
+    }
+
+    this.setCardsActiveState();
 
     if (!this.canAutoComplete) {
       this.checkForWin();
@@ -263,12 +346,22 @@ export class GameState {
   }
 
   cardToFoundation(card: CardClass) {
-    const from = card.locationOnBoard as keyof BoardType;
+    const from = card.locationOnBoard;
 
     if (card.value === "ace") {
       this.takeSnapshot();
       // remove the card from its current location
-      this.board[card.locationOnBoard as keyof BoardType].pop();
+      if (
+        from === "hand-0" ||
+        from === "hand-1" ||
+        from === "hand-2" ||
+        from === "hand-3" ||
+        from === "hand-4"
+      ) {
+        this.hand[parseInt(from[from.length - 1])] = null;
+      } else {
+        this.board[card.locationOnBoard as keyof BoardType].pop();
+      }
 
       // find the first empty foundation
       if (this.board.foundation1.length === 0) {
@@ -285,7 +378,8 @@ export class GameState {
         this.board.foundation4.push(card);
       }
 
-      this.uncoverLastCard(from);
+      // this.uncoverLastCard(from as keyof BoardType);
+      this.setCardsActiveState();
     } else {
       let foundationOfMatchingSuit;
 
@@ -321,8 +415,21 @@ export class GameState {
         this.values[this.board[destinationFoundation].length];
       if (card.value === allowedValue) {
         this.takeSnapshot();
+
         // remove the card from its current location
-        this.board[card.locationOnBoard as keyof BoardType].pop();
+        if (
+          card.locationOnBoard === "hand-0" ||
+          card.locationOnBoard === "hand-1" ||
+          card.locationOnBoard === "hand-2" ||
+          card.locationOnBoard === "hand-3" ||
+          card.locationOnBoard === "hand-4"
+        ) {
+          this.hand[
+            parseInt(card.locationOnBoard[card.locationOnBoard.length - 1])
+          ] = null;
+        } else {
+          this.board[card.locationOnBoard as keyof BoardType].pop();
+        }
 
         // set the card's location to the foundation
         card.setLocationOnBoard(destinationFoundation);
@@ -330,54 +437,66 @@ export class GameState {
         // push the card to the foundation
         this.board[destinationFoundation].push(card);
 
-        this.uncoverLastCard(from);
+        // this.uncoverLastCard(from as keyof BoardType);
+        this.setCardsActiveState();
       }
     }
   }
 
   takeSnapshot() {
+    console.log("taking snapshot");
+    const handCopy = _.cloneDeep(this.hand);
     const boardCopy = _.cloneDeep(this.board);
-    this.history.push(boardCopy);
+    this.history.push({ hand: handCopy, board: boardCopy });
   }
 
   undo() {
     if (this.history.length > 0) {
-      const stateToRestore = this.history.pop() as BoardType;
-      Object.keys(stateToRestore).forEach((key) => {
+      const stateToRestore = this.history.pop();
+      const boardToRestore = (stateToRestore as HistoryType).board;
+      const handToRestore = (stateToRestore as HistoryType).hand;
+      Object.keys(boardToRestore).forEach((key) => {
         // empty the key
         this.board[key as keyof BoardType] = [];
         // loop through key from stateToRestore
-        stateToRestore[key as keyof BoardType].forEach((card) => {
+        boardToRestore[key as keyof BoardType].forEach((card) => {
           // create a new card
           const newCard = new CardClass(card.value, card.suit);
           // set the properties on the new card
           newCard.setIsActive(card.isActive);
           newCard.setIsFaceUp(card.isFaceUp);
-          newCard.setIsFlipping(card.isFlipping);
           newCard.setLocationOnBoard(card.locationOnBoard);
           // push the new card to the board
           this.board[key as keyof BoardType].push(newCard);
         });
       });
+
+      handToRestore.forEach((card, i) => {
+        if (card) {
+          const newCard = new CardClass(card.value, card.suit);
+          newCard.setIsActive(card.isActive);
+          newCard.setIsFaceUp(card.isFaceUp);
+          newCard.setLocationOnBoard(card.locationOnBoard);
+          this.hand[i] = newCard;
+        } else {
+          this.hand[i] = null;
+        }
+      });
     }
   }
 
   checkForWin() {
-    if (this.board.stock.length != 0 || this.board.waste.length != 0) {
-      return;
-    }
-
-    // if all cards are face up in the columns, you win
-    let allCardsFaceUp = true;
+    // if all cards are active in the columns, you win
+    let allCardsActive = true;
     for (let i = 1; i <= 7; i++) {
       this.board[`column${i}` as keyof BoardType].forEach((card) => {
-        if (!card.isFaceUp) {
-          allCardsFaceUp = false;
+        if (!card.isActive) {
+          allCardsActive = false;
         }
       });
     }
 
-    if (allCardsFaceUp) {
+    if (allCardsActive) {
       this.canAutoComplete = true;
     }
   }

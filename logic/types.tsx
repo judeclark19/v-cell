@@ -35,9 +35,15 @@ export type ValuesArray = [
 
 export type Column = `column${number}`;
 
+export type HandType = [
+  CardClass | null,
+  CardClass | null,
+  CardClass | null,
+  CardClass | null,
+  CardClass | null
+];
+
 export interface BoardType {
-  stock: CardClass[];
-  waste: CardClass[];
   foundation1: CardClass[];
   foundation2: CardClass[];
   foundation3: CardClass[];
@@ -49,4 +55,9 @@ export interface BoardType {
   column5: CardClass[];
   column6: CardClass[];
   column7: CardClass[];
+}
+
+export interface HistoryType {
+  hand: HandType;
+  board: BoardType;
 }

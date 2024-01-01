@@ -16,7 +16,7 @@ class CardClass {
     this.suit = suit;
     this.id = `${value}_of_${suit}`;
     this.isActive = false;
-    this.isFaceUp = false;
+    this.isFaceUp = true;
     this.isFlipping = false;
     this.locationOnBoard = null;
   }
