@@ -6,7 +6,9 @@ import {
   Foundations,
   BoardContainer,
   IsFlipping,
-  Stock
+  Stock,
+  GameControlButton,
+  cardOffsetAmount
 } from "./Board.styles";
 import gameState from "@/logic/GameState";
 import CardUI from "../Card/CardUI";
@@ -31,48 +33,29 @@ const Board = observer(() => {
   }
 
   return (
-    // todo: button style
     <>
-      <button
-        style={{
-          fontSize: "18px",
-          padding: "10px",
-          margin: "40px",
-          cursor: "pointer"
-        }}
+      <GameControlButton
         onClick={() => {
           gameState.dealCards();
         }}
       >
         Deal again
-      </button>
-      <button
-        style={{
-          fontSize: "18px",
-          padding: "10px",
-          margin: "40px",
-          cursor: "pointer"
-        }}
+      </GameControlButton>
+      <GameControlButton
         onClick={() => {
           gameState.undo();
         }}
       >
         Undo
-      </button>
+      </GameControlButton>
       {gameState.canAutoComplete && (
-        <button
-          style={{
-            fontSize: "18px",
-            padding: "10px",
-            margin: "40px",
-            cursor: "pointer"
-          }}
+        <GameControlButton
           onClick={() => {
             gameState.autoComplete();
           }}
         >
           Autocomplete
-        </button>
+        </GameControlButton>
       )}
 
       <BoardContainer
@@ -199,11 +182,10 @@ const Board = observer(() => {
                             key={`${card.value}_of_${card.suit}`}
                             dropId={`column${column}` as keyof BoardType}
                           >
-                            {/* todo: make offset a variable */}
                             <CardUI
                               card={card}
                               zIndex={i + 1}
-                              offset={i * 34}
+                              offset={i * cardOffsetAmount}
                             />
                           </DropSpot>
                         );
@@ -214,7 +196,7 @@ const Board = observer(() => {
                           key={`${card.value}_of_${card.suit}`}
                           card={card}
                           zIndex={i + 1}
-                          offset={i * 34}
+                          offset={i * cardOffsetAmount}
                         />
                       );
                     }

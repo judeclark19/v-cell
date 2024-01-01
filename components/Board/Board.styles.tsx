@@ -1,6 +1,14 @@
 import styled, { keyframes } from "styled-components";
 import { CardStyle, cardSizes } from "../Card/CardUI.styles";
-import Image from "next/image";
+
+export const cardOffsetAmount = 34;
+
+export const GameControlButton = styled.button`
+  font-size: 18px;
+  padding: 10px;
+  margin: 40px;
+  cursor: pointer;
+`;
 
 export const BoardContainer = styled.div`
   background-color: #5c5c5c;

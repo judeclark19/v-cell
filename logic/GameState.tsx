@@ -21,7 +21,7 @@ export class GameState {
     "queen",
     "king"
   ];
-  // TODO: refactor board
+
   board: BoardType = {
     stock: [],
     waste: [],
@@ -242,6 +242,26 @@ export class GameState {
     }
   }
 
+  uncoverLastCard(column: keyof BoardType) {
+    if (
+      column === "column1" ||
+      column === "column2" ||
+      column === "column3" ||
+      column === "column4" ||
+      column === "column5" ||
+      column === "column6" ||
+      column === "column7"
+    ) {
+      if (this.board[column].length > 0) {
+        this.board[column][this.board[column].length - 1].setIsFaceUp(true);
+        this.board[column][this.board[column].length - 1].setIsActive(true);
+      }
+    }
+    if (!this.canAutoComplete) {
+      this.checkForWin();
+    }
+  }
+
   cardToFoundation(card: CardClass) {
     const from = card.locationOnBoard as keyof BoardType;
 
@@ -265,24 +285,7 @@ export class GameState {
         this.board.foundation4.push(card);
       }
 
-      // todo: refactor this column thing, I have it written out twice
-      // if the card came from a column, make sure the last card in the column is face up and active
-      if (
-        from === "column1" ||
-        from === "column2" ||
-        from === "column3" ||
-        from === "column4" ||
-        from === "column5" ||
-        from === "column6" ||
-        from === "column7"
-      ) {
-        // todo: handle length 0
-        this.board[from][this.board[from].length - 1].setIsFaceUp(true);
-        this.board[from][this.board[from].length - 1].setIsActive(true);
-      }
-      if (!this.canAutoComplete) {
-        this.checkForWin();
-      }
+      this.uncoverLastCard(from);
     } else {
       let foundationOfMatchingSuit;
 
@@ -327,25 +330,7 @@ export class GameState {
         // push the card to the foundation
         this.board[destinationFoundation].push(card);
 
-        // if the card came from a column, make sure the last card in the column is face up and active
-        if (
-          from === "column1" ||
-          from === "column2" ||
-          from === "column3" ||
-          from === "column4" ||
-          from === "column5" ||
-          from === "column6" ||
-          from === "column7"
-        ) {
-          if (this.board[from].length > 0) {
-            this.board[from][this.board[from].length - 1].setIsFaceUp(true);
-            this.board[from][this.board[from].length - 1].setIsActive(true);
-          }
-        }
-
-        if (!this.canAutoComplete) {
-          this.checkForWin();
-        }
+        this.uncoverLastCard(from);
       }
     }
   }
@@ -378,7 +363,6 @@ export class GameState {
   }
 
   checkForWin() {
-    console.log("check for win");
     if (this.board.stock.length != 0 || this.board.waste.length != 0) {
       return;
     }
@@ -405,7 +389,6 @@ export class GameState {
       this.board.foundation3.length < 13 ||
       this.board.foundation4.length < 13
     ) {
-      // todo: handle length 0
       if (this.board.column1.length > 0) {
         this.cardToFoundation(
           this.board.column1[this.board.column1.length - 1]
