@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Solitaire",
-  description: "lorem ipsum"
+  title: "V-Cell",
+  description: "Game concept by Jim Fox - Web app by Jude Clark"
 };
 
 export default function RootLayout({

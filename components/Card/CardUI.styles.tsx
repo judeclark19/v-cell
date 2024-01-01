@@ -50,8 +50,17 @@ export const CardStyle = styled.div<{
 
     padding: 4px;
     h1 {
+    }
+
+    .card-title {
       pointer-events: none;
       user-select: none;
+      display: flex;
+      justify-content: space-between;
+
+      span {
+        font-size: 20px;
+      }
     }
 
     .emojis {

@@ -77,7 +77,9 @@ export default function CardUI({
       }}
     >
       <div className="card-front">
-        <h1>{card.value}</h1>
+        <div className="card-title">
+          <h1>{card.value}</h1> <span>{suitIcon}</span>
+        </div>
         <div className="emojis">
           {createIcons().map((icon, i) => (
             <div key={`${icon}${i}`}>

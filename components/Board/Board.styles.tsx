@@ -15,11 +15,6 @@ export const TopRow = styled.div`
   gap: 100px;
 `;
 
-export const Foundations = styled.div`
-  display: flex;
-  gap: 50px;
-`;
-
 export const Tableau = styled.div`
   display: flex;
   flex-wrap: nowrap;
@@ -39,7 +34,20 @@ export const Spot = styled.div`
     position: absolute;
   }
 `;
+export const Foundations = styled.div`
+  display: flex;
+  gap: 50px;
 
+  ${Spot} {
+    display: grid;
+    place-items: center;
+    > span {
+      height: fit-content !important;
+      font-size: 90px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+`;
 export const Stock = styled(Spot)<{
   $isClickable: boolean;
 }>`

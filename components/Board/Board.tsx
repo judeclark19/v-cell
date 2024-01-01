@@ -114,7 +114,7 @@ const Board = observer(() => {
                   dropId={`foundation${i + 1}` as keyof BoardType}
                 >
                   <Spot>
-                    foundation{i + 1}
+                    <span>A</span>
                     {thisFoundation.map((card, i) => (
                       <CardUI
                         key={`${card.value}_of_${card.suit}`}

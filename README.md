@@ -1,3 +1,7 @@
+# V-Cell
+
+**Link to deployed app: [https://react-solitaire-5be2a31a8c87.herokuapp.com/](https://react-solitaire-5be2a31a8c87.herokuapp.com/)**
+
 ## Todo list
 
 - [x] Basic card design to tell them apart at a glance
@@ -9,6 +13,7 @@
 - [x] Dragging
 - [x] Restart game
 - [ ] Undo
+- [ ] Double click to send a card to the foundation
 - [ ] Win game/autocomplete
 - [ ] Keeping score
 - [ ] Loading state
@@ -19,3 +24,10 @@
 - [ ] Different color hover for valid vs invalid move
 - [ ] Flip animation
 - [ ] Better dragging animation
+
+## Advanced
+
+- [ ] Suggest next move
+- [ ] Extra difficulty: foundations can be played from or not for difficulty
+- [ ] Extra difficulty: foundations not used
+- [ ] Lower difficulty: no cards face down
