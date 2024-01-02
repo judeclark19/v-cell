@@ -13,9 +13,8 @@ export class Column {
   }
 
   addCard(card: CardClass) {
-    console.log("incoming card", card, card instanceof CardClass);
     // update incoming card location
-    (card as CardClass).setLocationOnBoard(this.key);
+    card.setLocationOnBoard(this.key);
     this.arrayOfCards.push(card);
     this.updateColumnState();
   }

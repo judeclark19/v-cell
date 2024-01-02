@@ -77,10 +77,6 @@ export default function CardUI({
       onDoubleClick={(e) => {
         e.stopPropagation();
         if (!card.isActive) return;
-        console.log(
-          "the result of evaluating move is",
-          gameState.evaluateMove(card, "foundation")
-        );
       }}
     >
       <div className="card-front">

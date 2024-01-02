@@ -102,15 +102,36 @@ export class GameState {
 
   evaluateMove(card: CardClass, dropId: string) {
     console.log(
-      `move ${card.value} of ${card.suit} from ${card.locationOnBoard} to ${dropId}`
+      `move ${card.value} of ${card.suit} from ${card.locationOnBoard} to ${dropId}`,
+      card instanceof CardClass
     );
 
     if (
       handKeys.includes(card.locationOnBoard as HandItemKey) &&
       columnKeys.includes(dropId as columnKey)
     ) {
-      // move a card from your hand to a column
-      console.log("move type: card from hand to column");
+      // Move type 1: move a card from your hand to a column
+      console.log("Move type 1: move a card from your hand to a column");
+
+      const cardToStackOn =
+        this.board.tableau[dropId as columnKey].arrayOfCards[
+          this.board.tableau[dropId as columnKey].arrayOfCards.length - 1
+        ];
+
+      const isContrastingSuit = this.cardsAreContrastingSuits(
+        card,
+        cardToStackOn
+      );
+      const isSequentialValue = this.cardsAreSequentialValues(
+        card,
+        cardToStackOn
+      );
+
+      if (isContrastingSuit && isSequentialValue) {
+        this.executeMoveType1(card, dropId as columnKey);
+      } else {
+        console.log("move type 1: invalid move");
+      }
     } else if (
       columnKeys.includes(card.locationOnBoard as columnKey) &&
       dropId === "foundation"
@@ -122,11 +143,27 @@ export class GameState {
     }
   }
 
+  executeMoveType1(card: CardClass, dropId: columnKey) {
+    // Move type 1: move a card from your hand to a column
+
+    // remove card from hand
+    this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
+    // add card to column
+    this.board.tableau[dropId].addCard(card);
+  }
+
   cardsAreSameSuit(card1: CardClass, card2: CardClass) {}
 
-  cardsAreContrastingSuits(card1: CardClass, card2: CardClass) {}
+  cardsAreContrastingSuits(card1: CardClass, card2: CardClass) {
+    return contrastingSuits[card1.suit].includes(card2.suit);
+  }
 
-  cardsAreSequentialValues(lowerCard: CardClass, higherCard: CardClass) {}
+  cardsAreSequentialValues(lowerCard: CardClass, higherCard: CardClass) {
+    return (
+      valuesArray.indexOf(lowerCard.value) + 1 ===
+      valuesArray.indexOf(higherCard.value)
+    );
+  }
 
   cardIsOnTop(card: CardClass) {}
 

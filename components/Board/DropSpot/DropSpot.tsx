@@ -1,6 +1,7 @@
 import React from "react";
 import gameState from "@/logic/GameState";
 import { cardSizes } from "@/components/Card/CardUI.styles";
+import CardClass from "@/components/Card/CardClass";
 
 export default function DropSpot({
   size,
@@ -27,12 +28,12 @@ export default function DropSpot({
     e.preventDefault();
 
     (e.target as HTMLDivElement).style.boxShadow = "";
-    const card = JSON.parse(e.dataTransfer.getData("incomingCard"));
+    const cardData = JSON.parse(e.dataTransfer.getData("incomingCard"));
 
-    console.log(
-      "the result of evaluating move is",
-      gameState.evaluateMove(card, dropId)
-    );
+    const card = new CardClass(cardData.value, cardData.suit);
+    card.setLocationOnBoard(cardData.locationOnBoard);
+
+    gameState.evaluateMove(card, dropId);
   }
 
   return (

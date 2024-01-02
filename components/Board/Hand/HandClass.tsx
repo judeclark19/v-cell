@@ -18,10 +18,13 @@ class Hand {
   }
 
   addCard(card: CardClass, key: HandItemKey) {
-    console.log("incoming card", card);
     // update incoming card location
     card.setLocationOnBoard(key);
     this[key] = card;
+  }
+
+  removeCard(key: HandItemKey) {
+    this[key] = null;
   }
 }
 
