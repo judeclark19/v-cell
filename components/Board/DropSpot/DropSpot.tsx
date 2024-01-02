@@ -1,7 +1,5 @@
 import React from "react";
 import gameState from "@/logic/GameState";
-import { BoardType } from "@/logic/types";
-import { toJS } from "mobx";
 import { cardSizes } from "@/components/Card/CardUI.styles";
 
 export default function DropSpot({
@@ -31,27 +29,7 @@ export default function DropSpot({
     (e.target as HTMLDivElement).style.boxShadow = "";
     const card = JSON.parse(e.dataTransfer.getData("incomingCard"));
 
-    if (gameState.evaluateMove(card, dropId)) {
-      let indexOfDraggedCard: number;
-
-      if (
-        card.locationOnBoard === "hand-0" ||
-        card.locationOnBoard === "hand-1" ||
-        card.locationOnBoard === "hand-2" ||
-        card.locationOnBoard === "hand-3" ||
-        card.locationOnBoard === "hand-4"
-      ) {
-        indexOfDraggedCard = 0;
-      } else {
-        const from = toJS(
-          gameState.board[card.locationOnBoard as keyof BoardType]
-        );
-
-        indexOfDraggedCard = from.findIndex((c) => c.id === card.id);
-      }
-
-      gameState.executeMove(indexOfDraggedCard, card.locationOnBoard, dropId);
-    }
+    gameState.evaluateMove(card, dropId);
   }
 
   return (

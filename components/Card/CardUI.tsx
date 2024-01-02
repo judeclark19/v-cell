@@ -7,7 +7,6 @@ export default function CardUI({
   card,
   zIndex,
   offset,
-  spacer,
   handleCardClick
 }: {
   size: "large" | "medium";
@@ -78,7 +77,7 @@ export default function CardUI({
       onDoubleClick={(e) => {
         e.stopPropagation();
         if (!card.isActive) return;
-        gameState.cardToFoundation(card);
+        gameState.evaluateMove(card, "foundation");
       }}
     >
       <div className="card-front">

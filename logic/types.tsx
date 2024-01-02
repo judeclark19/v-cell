@@ -1,7 +1,16 @@
-import CardClass from "@/components/Card/CardClass";
+import Foundations from "../components/Board/Foundations/FoundationsClass";
+import Tableau from "@/components/Board/Tableau/TableauClass";
+import Hand from "@/components/Board/Hand/HandClass";
 
 export type Suit = "hearts" | "spades" | "clubs" | "diamonds";
 export type SuitsArray = ["hearts", "spades", "clubs", "diamonds"];
+
+export const contrastingSuits = {
+  hearts: ["spades", "clubs"],
+  spades: ["hearts", "diamonds"],
+  clubs: ["hearts", "diamonds"],
+  diamonds: ["spades", "clubs"]
+};
 
 export type Value =
   | "ace"
@@ -17,7 +26,8 @@ export type Value =
   | "jack"
   | "queen"
   | "king";
-export type ValuesArray = [
+
+export const valuesArray: Value[] = [
   "ace",
   "2",
   "3",
@@ -33,31 +43,42 @@ export type ValuesArray = [
   "king"
 ];
 
-export type Column = `column${number}`;
+export type columnKey =
+  | "column1"
+  | "column2"
+  | "column3"
+  | "column4"
+  | "column5"
+  | "column6"
+  | "column7";
 
-export type HandType = [
-  CardClass | null,
-  CardClass | null,
-  CardClass | null,
-  CardClass | null,
-  CardClass | null
+export const columnKeys: columnKey[] = [
+  "column1",
+  "column2",
+  "column3",
+  "column4",
+  "column5",
+  "column6",
+  "column7"
+];
+
+export type HandItemKey =
+  | "handItem1"
+  | "handItem2"
+  | "handItem3"
+  | "handItem4"
+  | "handItem5";
+
+export const handKeys: HandItemKey[] = [
+  "handItem1",
+  "handItem2",
+  "handItem3",
+  "handItem4",
+  "handItem5"
 ];
 
 export interface BoardType {
-  foundation1: CardClass[];
-  foundation2: CardClass[];
-  foundation3: CardClass[];
-  foundation4: CardClass[];
-  column1: CardClass[];
-  column2: CardClass[];
-  column3: CardClass[];
-  column4: CardClass[];
-  column5: CardClass[];
-  column6: CardClass[];
-  column7: CardClass[];
-}
-
-export interface HistoryType {
-  hand: HandType;
-  board: BoardType;
+  foundations: Foundations;
+  tableau: Tableau;
+  hand: Hand;
 }
