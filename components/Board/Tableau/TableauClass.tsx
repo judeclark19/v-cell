@@ -12,20 +12,7 @@ export class Column {
     this.faceDownCardIndex = faceDownCardIndex;
   }
 
-  addCard(card: CardClass) {
-    // update incoming card location
-    card.setLocationOnBoard(this.key);
-    this.arrayOfCards.push(card);
-    this.updateColumnState();
-  }
-
-  removeCard() {
-    const removedCard = this.arrayOfCards.pop();
-    this.updateColumnState();
-    return removedCard;
-  }
-
-  addCardStack(cardStack: CardClass[]) {
+  addCards(cardStack: CardClass[]) {
     // update incoming cards location
     cardStack.forEach((card) => {
       card.setLocationOnBoard(this.key);
@@ -34,7 +21,14 @@ export class Column {
     this.updateColumnState();
   }
 
-  removeCardStack(cardIndex: number) {
+  removeLastCard() {
+    // splice off and remove last card
+    const removedCard = this.arrayOfCards.pop();
+    this.updateColumnState();
+    return removedCard;
+  }
+
+  removeCards(cardIndex: number) {
     // splice off and remove cards
     const removedCards = this.arrayOfCards.splice(cardIndex);
     console.log("cards to remove", removedCards);
