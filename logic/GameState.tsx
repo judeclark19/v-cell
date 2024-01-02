@@ -70,7 +70,6 @@ export class GameState {
   }
 
   dealCards() {
-    console.log("DEAL CARDS");
     this.clearBoard();
     // TODO: clear history
     this.createDeck(true);
@@ -116,16 +115,12 @@ export class GameState {
       columnKeys.includes(dropId as columnKey)
     ) {
       // Move type 1: move a card from your hand to a column
-      console.log("Move type 1: move a card from your hand to a column");
-      this.evaluateMoveType1(card, dropId as columnKey);
+      this.evaluateMoveType1or3(card, dropId as columnKey);
     } else if (
       columnKeys.includes(card.locationOnBoard as columnKey) &&
       dropId === "foundations"
     ) {
       // Move type 2: double click a card to move from tableau to foundation
-      console.log(
-        "Move type 2: double click a card to move from tableau to foundation"
-      );
       this.evaluateMoveType2(card, dropId as foundationKey);
     } else if (
       columnKeys.includes(card.locationOnBoard as columnKey) &&
@@ -133,26 +128,23 @@ export class GameState {
       card.locationOnBoard !== dropId
     ) {
       // Move type 3: drag card from column to column
-      console.log("Move type 3: drag card from column to column");
-      this.evaluateMoveType3(card, dropId as columnKey);
+      this.evaluateMoveType1or3(card, dropId as columnKey);
     } else if (
       columnKeys.includes(card.locationOnBoard as columnKey) &&
       handKeys.includes(dropId as HandItemKey)
     ) {
       // Move type 4: drag card from column to hand
-      console.log("Move type 4: drag card from column to hand");
       this.evaluateMoveType4(card, dropId as HandItemKey);
     } else if (
       handKeys.includes(card.locationOnBoard as HandItemKey) &&
       dropId === "foundations"
     ) {
       // Move type 5: double click card from hand to foundation
-      console.log("Move type 5: double click card from hand to foundation");
       this.evaluateMoveType5(card, dropId as foundationKey);
     }
   }
 
-  evaluateMoveType1(card: CardClass, dropId: columnKey) {
+  evaluateMoveType1or3(card: CardClass, dropId: columnKey) {
     // Move type 1: move a card from your hand to a column
 
     // special case: king to empty column
@@ -179,9 +171,11 @@ export class GameState {
     );
 
     if (isContrastingSuit && isSequentialValue) {
-      this.executeMoveType1(card, dropId);
-    } else {
-      console.log("move type 1: invalid move");
+      if (handKeys.includes(card.locationOnBoard as HandItemKey)) {
+        this.executeMoveType1(card, dropId);
+      } else if (columnKeys.includes(card.locationOnBoard as columnKey)) {
+        this.executeMoveType3(card, dropId);
+      }
     }
   }
 
@@ -201,7 +195,6 @@ export class GameState {
     // confirm that card is on top of column
     const cardIsOnTop = this.cardIsOnTop(card);
     if (!cardIsOnTop) {
-      console.log("invalid move, card is not on top");
       return;
     }
 
@@ -211,6 +204,7 @@ export class GameState {
       foundationKey = foundationKeys.find((key) => {
         return this.board.foundations[key].arrayOfCards.length === 0;
       });
+      this.executeMoveType2(card, foundationKey as foundationKey);
     } else {
       // find the foundation with the same suit as the card
       foundationKey = foundationKeys.find((key) => {
@@ -219,19 +213,12 @@ export class GameState {
     }
 
     if (!foundationKey) {
-      console.log("invalid move, no foundation with this suit");
-      return;
-    }
-
-    if (card.value === "A") {
-      this.executeMoveType2(card, foundationKey);
       return;
     }
 
     const targetFoundation = this.board.foundations[foundationKey];
-    console.log(targetFoundation);
+
     if (targetFoundation.arrayOfCards.length === 0) {
-      console.log("invalid move, foundation is empty");
       return;
     }
 
@@ -244,8 +231,6 @@ export class GameState {
 
     if (cardsAreSequential) {
       this.executeMoveType2(card, foundationKey);
-    } else {
-      console.log("invalid move, cards are not sequential");
     }
   }
 
@@ -257,42 +242,6 @@ export class GameState {
     sourceColumn.updateColumnState();
     // add card to foundation
     this.board.foundations[dropId].addCard(card);
-  }
-
-  evaluateMoveType3(card: CardClass, dropId: columnKey) {
-    // Move type 3: drag card from column to column
-
-    // special case: king to empty column
-    if (
-      card.value === "king" &&
-      this.board.tableau[dropId].arrayOfCards.length === 0
-    ) {
-      this.executeMoveType3(card, dropId);
-      return;
-    }
-
-    const cardToStackOn =
-      this.board.tableau[dropId].arrayOfCards[
-        this.board.tableau[dropId].arrayOfCards.length - 1
-      ];
-
-    const isContrastingSuit = this.cardsAreContrastingSuits(
-      card,
-      cardToStackOn
-    );
-    const isSequentialValue = this.cardsAreSequentialValues(
-      card,
-      cardToStackOn
-    );
-
-    if (isContrastingSuit && isSequentialValue) {
-      this.executeMoveType3(card, dropId);
-    } else {
-      console.log(
-        "move type 3: invalid move",
-        `contrastingSuit: ${isContrastingSuit}, sequentialValue: ${isSequentialValue}`
-      );
-    }
   }
 
   executeMoveType3(card: CardClass, dropId: columnKey) {
@@ -315,13 +264,12 @@ export class GameState {
     // Move type 4: drag card from column to hand
     const cardIsOnTop = this.cardIsOnTop(card);
     if (!cardIsOnTop) {
-      console.log("invalid move, card is not on top");
       return;
     }
 
     const destinationHandItem = this.board.hand[dropId];
     if (destinationHandItem) {
-      console.log("invalid move, space is already occupied");
+      // invalid move, space is already occupied
       return;
     }
 
@@ -343,13 +291,11 @@ export class GameState {
   evaluateMoveType5(card: CardClass, dropId: foundationKey) {
     // Move type 5: double click card from hand to foundation
     let targetFoundation;
-    console.log("line 324");
     if (card.value === "A") {
       // find first empty foundation
       targetFoundation = foundationKeys.find((key) => {
         return this.board.foundations[key].arrayOfCards.length === 0;
       });
-      console.log("line 330", targetFoundation);
       this.executeMoveType5(card, targetFoundation as foundationKey);
     } else {
       // find the foundation with the same suit as the card
@@ -357,13 +303,11 @@ export class GameState {
         return this.board.foundations[key].suit === card.suit;
       });
 
-      console.log("line 337", targetFoundation);
-
       if (!targetFoundation) {
-        console.log("invalid move, no foundation with this suit");
+        // invalid move, no foundation with this suit
         return;
       }
-      console.log("line 343", targetFoundation);
+
       const cardsAreSequential = this.cardsAreSequentialValues(
         this.board.foundations[targetFoundation].arrayOfCards[
           this.board.foundations[targetFoundation].arrayOfCards.length - 1
@@ -371,19 +315,17 @@ export class GameState {
         card
       );
 
-      console.log("line 351", cardsAreSequential);
       if (!cardsAreSequential) {
-        console.log("invalid move, cards are not sequential");
         return;
       }
-      console.log("line 356", targetFoundation);
+
       this.executeMoveType5(card, targetFoundation);
     }
   }
 
   executeMoveType5(card: CardClass, dropId: foundationKey) {
     // Move type 5: double click card from hand to foundation
-    console.log("execute move type 5", card, dropId);
+
     // remove card from hand
     this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
     // add card to foundation

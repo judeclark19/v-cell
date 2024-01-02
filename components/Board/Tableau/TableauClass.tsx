@@ -32,7 +32,6 @@ export class Column {
   removeCards(cardIndex: number) {
     // splice off and remove cards
     const removedCards = this.arrayOfCards.splice(cardIndex);
-    console.log("cards to remove", removedCards);
     // this.updateColumnState();
     return removedCards;
   }
@@ -42,10 +41,6 @@ export class Column {
     this.arrayOfCards.forEach((card) => {
       card.setIsActive(false);
     });
-    console.log(
-      `updateColumnState. length of column ${this.key} is`,
-      this.arrayOfCards.length
-    );
 
     if (this.arrayOfCards.length <= this.faceDownCardIndex + 1) {
       this.faceDownCardHasBeenUncovered = true;
