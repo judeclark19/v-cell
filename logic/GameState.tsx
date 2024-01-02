@@ -6,6 +6,9 @@ import {
   SuitsArray,
   columnKey,
   columnKeys,
+  contrastingSuits,
+  foundationKey,
+  foundationKeys,
   handKeys,
   valuesArray
 } from "./types";
@@ -93,7 +96,7 @@ export class GameState {
     this.deck.forEach((card, i) => {
       card.setIsActive(true);
       card.setLocationOnBoard(`handItem${i + 1}`);
-      this.board.hand.addCard(card, i + 1);
+      this.board.hand.addCard(card, `handItem${i + 1}` as HandItemKey);
     });
   }
 

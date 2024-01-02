@@ -1,12 +1,6 @@
 import { makeAutoObservable } from "mobx";
-import { Suit } from "../../../logic/types";
+import { Suit, foundationKey } from "../../../logic/types";
 import CardClass from "@/components/Card/CardClass";
-
-export type foundationKey =
-  | "foundation1"
-  | "foundation2"
-  | "foundation3"
-  | "foundation4";
 
 export class Foundation {
   key: foundationKey;
@@ -15,6 +9,11 @@ export class Foundation {
   constructor(key: foundationKey) {
     makeAutoObservable(this);
     this.key = key;
+  }
+
+  addCard(card: CardClass) {
+    card.setLocationOnBoard(this.key);
+    this.arrayOfCards.push(card);
   }
 }
 

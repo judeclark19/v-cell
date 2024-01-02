@@ -13,8 +13,34 @@ export class Column {
   }
 
   addCard(card: CardClass) {
+    console.log("incoming card", card, card instanceof CardClass);
+    // update incoming card location
+    (card as CardClass).setLocationOnBoard(this.key);
     this.arrayOfCards.push(card);
     this.updateColumnState();
+  }
+
+  removeCard() {
+    const removedCard = this.arrayOfCards.pop();
+    this.updateColumnState();
+    return removedCard;
+  }
+
+  addCardStack(cardStack: CardClass[]) {
+    // update incoming cards location
+    cardStack.forEach((card) => {
+      card.setLocationOnBoard(this.key);
+    });
+    this.arrayOfCards = this.arrayOfCards.concat(cardStack);
+    this.updateColumnState();
+  }
+
+  removeCardStack(cardIndex: number) {
+    // splice off and remove cards
+    const removedCards = this.arrayOfCards.splice(cardIndex);
+    console.log("cards to remove", removedCards);
+    this.updateColumnState();
+    return removedCards;
   }
 
   updateColumnState() {

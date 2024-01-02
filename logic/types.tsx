@@ -43,6 +43,19 @@ export const valuesArray: Value[] = [
   "king"
 ];
 
+export type foundationKey =
+  | "foundation1"
+  | "foundation2"
+  | "foundation3"
+  | "foundation4";
+
+export const foundationKeys: foundationKey[] = [
+  "foundation1",
+  "foundation2",
+  "foundation3",
+  "foundation4"
+];
+
 export type columnKey =
   | "column1"
   | "column2"

@@ -29,7 +29,10 @@ export default function DropSpot({
     (e.target as HTMLDivElement).style.boxShadow = "";
     const card = JSON.parse(e.dataTransfer.getData("incomingCard"));
 
-    gameState.evaluateMove(card, dropId);
+    console.log(
+      "the result of evaluating move is",
+      gameState.evaluateMove(card, dropId)
+    );
   }
 
   return (

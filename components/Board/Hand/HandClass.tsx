@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import CardClass from "@/components/Card/CardClass";
+import { HandItemKey } from "@/logic/types";
 
 class Hand {
   handItem1: CardClass | null = null;
@@ -12,26 +13,15 @@ class Hand {
     makeAutoObservable(this);
   }
 
-  addCard(card: CardClass, spotNumber: number) {
-    switch (spotNumber) {
-      case 1:
-        this.handItem1 = card;
-        break;
-      case 2:
-        this.handItem2 = card;
-        break;
-      case 3:
-        this.handItem3 = card;
-        break;
-      case 4:
-        this.handItem4 = card;
-        break;
-      case 5:
-        this.handItem5 = card;
-        break;
-      default:
-        break;
-    }
+  setItemNull(key: HandItemKey) {
+    this[key] = null;
+  }
+
+  addCard(card: CardClass, key: HandItemKey) {
+    console.log("incoming card", card);
+    // update incoming card location
+    card.setLocationOnBoard(key);
+    this[key] = card;
   }
 }
 
