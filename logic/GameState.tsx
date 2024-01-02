@@ -134,12 +134,63 @@ export class GameState {
       }
     } else if (
       columnKeys.includes(card.locationOnBoard as columnKey) &&
-      dropId === "foundation"
+      dropId === "foundations"
     ) {
-      // double click a card from the tableau to send to foundation
+      // Move type 2: double click a card to move from tableau to foundation
       console.log(
-        "move type: double click send card from column to foundation"
+        "Move type 2: double click a card to move from tableau to foundation"
       );
+
+      // confirm that card is on top of column
+      const cardIsOnTop = this.cardIsOnTop(card);
+      if (!cardIsOnTop) {
+        console.log("invalid move, card is not on top");
+        return;
+      }
+
+      let foundationKey;
+      if (card.value === "ace") {
+        // find first empty foundation
+        foundationKey = foundationKeys.find((key) => {
+          return this.board.foundations[key].arrayOfCards.length === 0;
+        });
+      } else {
+        // find the foundation with the same suit as the card
+        foundationKey = foundationKeys.find((key) => {
+          return this.board.foundations[key].suit === card.suit;
+        });
+      }
+
+      if (!foundationKey) {
+        console.log("invalid move, no foundation with this suit");
+        return;
+      }
+
+      if (card.value === "ace") {
+        this.executeMoveType2(card, foundationKey as foundationKey);
+        return;
+      }
+
+      const targetFoundation =
+        this.board.foundations[foundationKey as foundationKey];
+      console.log(targetFoundation);
+      if (targetFoundation.arrayOfCards.length === 0) {
+        console.log("invalid move, foundation is empty");
+        return;
+      }
+
+      const lastCardInFoundation =
+        targetFoundation.arrayOfCards[targetFoundation.arrayOfCards.length - 1];
+      const cardsAreSequential = this.cardsAreSequentialValues(
+        lastCardInFoundation,
+        card
+      );
+
+      if (cardsAreSequential) {
+        this.executeMoveType2(card, foundationKey as foundationKey);
+      } else {
+        console.log("invalid move, cards are not sequential");
+      }
     }
   }
 
@@ -150,6 +201,15 @@ export class GameState {
     this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
     // add card to column
     this.board.tableau[dropId].addCard(card);
+  }
+
+  executeMoveType2(card: CardClass, dropId: foundationKey) {
+    // Move type 2: double click a card to move from tableau to foundation
+    const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
+    // remove card from column
+    sourceColumn.removeCard();
+    // add card to foundation
+    this.board.foundations[dropId].addCard(card);
   }
 
   cardsAreSameSuit(card1: CardClass, card2: CardClass) {}
@@ -165,7 +225,13 @@ export class GameState {
     );
   }
 
-  cardIsOnTop(card: CardClass) {}
+  cardIsOnTop(card: CardClass) {
+    const column = this.board.tableau[card.locationOnBoard as columnKey];
+    const cardIndex = column.arrayOfCards.findIndex(
+      (c) => c.value === card.value && c.suit === card.suit
+    );
+    return cardIndex === column.arrayOfCards.length - 1;
+  }
 
   executeMove() {}
 
