@@ -13,6 +13,9 @@ export class Foundation {
 
   addCard(card: CardClass) {
     card.setLocationOnBoard(this.key);
+    if (this.suit === "") {
+      this.suit = card.suit;
+    }
     this.arrayOfCards.push(card);
   }
 }

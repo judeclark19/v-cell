@@ -130,6 +130,13 @@ export class GameState {
       // Move type 3: drag card from column to column
       console.log("Move type 3: drag card from column to column");
       this.evaluateMoveType3(card, dropId as columnKey);
+    } else if (
+      columnKeys.includes(card.locationOnBoard as columnKey) &&
+      handKeys.includes(dropId as HandItemKey)
+    ) {
+      // Move type 4: drag card from column to hand
+      console.log("Move type 4: drag card from column to hand");
+      this.evaluateMoveType4(card, dropId as HandItemKey);
     }
   }
 
@@ -183,9 +190,12 @@ export class GameState {
       });
     } else {
       // find the foundation with the same suit as the card
-      foundationKey = foundationKeys.find((key) => {
+      const destinationFoundation = foundationKeys.find((key) => {
         return this.board.foundations[key].suit === card.suit;
       });
+      if (destinationFoundation) {
+        foundationKey = destinationFoundation;
+      }
     }
 
     if (!foundationKey) {
@@ -265,6 +275,33 @@ export class GameState {
 
     const removedCards = sourceColumn.removeCards(cardIndex);
     destinationColumn.addCards(removedCards);
+  }
+
+  evaluateMoveType4(card: CardClass, dropId: HandItemKey) {
+    // Move type 4: drag card from column to hand
+    const cardIsOnTop = this.cardIsOnTop(card);
+    if (!cardIsOnTop) {
+      console.log("invalid move, card is not on top");
+      return;
+    }
+
+    const destinationHandItem = this.board.hand[dropId];
+    if (destinationHandItem) {
+      console.log("invalid move, space is already occupied");
+      return;
+    }
+
+    this.executeMoveType4(card, dropId);
+  }
+
+  executeMoveType4(card: CardClass, dropId: HandItemKey) {
+    const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
+
+    // remove card from column
+    sourceColumn.removeLastCard();
+
+    // add card to hand
+    this.board.hand.addCard(card, dropId);
   }
 
   cardsAreSameSuit(card1: CardClass, card2: CardClass) {}
