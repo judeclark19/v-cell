@@ -13,7 +13,7 @@ export const contrastingSuits = {
 };
 
 export type Value =
-  | "ace"
+  | "A"
   | "2"
   | "3"
   | "4"
@@ -28,7 +28,7 @@ export type Value =
   | "king";
 
 export const valuesArray: Value[] = [
-  "ace",
+  "A",
   "2",
   "3",
   "4",

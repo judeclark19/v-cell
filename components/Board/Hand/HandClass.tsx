@@ -20,6 +20,7 @@ class Hand {
   addCard(card: CardClass, key: HandItemKey) {
     // update incoming card location
     card.setLocationOnBoard(key);
+    card.setIsActive(true);
     this[key] = card;
   }
 

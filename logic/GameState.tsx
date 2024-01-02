@@ -70,6 +70,7 @@ export class GameState {
   }
 
   dealCards() {
+    console.log("DEAL CARDS");
     this.clearBoard();
     // TODO: clear history
     this.createDeck(true);
@@ -78,6 +79,7 @@ export class GameState {
       for (let j = 0; j < 7; j++) {
         const card = this.deck.pop();
         const columnIndex = `column${i + 1}` as columnKey;
+
         // set correct card flipped V
         if (card && j === initialFaceDownCards[i]) {
           card.setIsFaceUp(false);
@@ -88,6 +90,9 @@ export class GameState {
           this.board.tableau[columnIndex].addCards([card]);
         }
       }
+      // this.board.tableau[
+      //   `column${i + 1}` as columnKey
+      // ].faceDownCardHasBeenUncovered = false;
 
       this.board.tableau[`column${i + 1}` as columnKey].updateColumnState();
     }
@@ -137,11 +142,28 @@ export class GameState {
       // Move type 4: drag card from column to hand
       console.log("Move type 4: drag card from column to hand");
       this.evaluateMoveType4(card, dropId as HandItemKey);
+    } else if (
+      handKeys.includes(card.locationOnBoard as HandItemKey) &&
+      dropId === "foundations"
+    ) {
+      // Move type 5: double click card from hand to foundation
+      console.log("Move type 5: double click card from hand to foundation");
+      this.evaluateMoveType5(card, dropId as foundationKey);
     }
   }
 
   evaluateMoveType1(card: CardClass, dropId: columnKey) {
     // Move type 1: move a card from your hand to a column
+
+    // special case: king to empty column
+    if (
+      card.value === "king" &&
+      this.board.tableau[dropId].arrayOfCards.length === 0
+    ) {
+      this.executeMoveType1(card, dropId);
+      return;
+    }
+
     const cardToStackOn =
       this.board.tableau[dropId].arrayOfCards[
         this.board.tableau[dropId].arrayOfCards.length - 1
@@ -170,6 +192,7 @@ export class GameState {
     this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
     // add card to column
     this.board.tableau[dropId].addCards([card]);
+    this.board.tableau[dropId].updateColumnState();
   }
 
   evaluateMoveType2(card: CardClass, dropId: foundationKey) {
@@ -183,19 +206,16 @@ export class GameState {
     }
 
     let foundationKey;
-    if (card.value === "ace") {
+    if (card.value === "A") {
       // find first empty foundation
       foundationKey = foundationKeys.find((key) => {
         return this.board.foundations[key].arrayOfCards.length === 0;
       });
     } else {
       // find the foundation with the same suit as the card
-      const destinationFoundation = foundationKeys.find((key) => {
+      foundationKey = foundationKeys.find((key) => {
         return this.board.foundations[key].suit === card.suit;
       });
-      if (destinationFoundation) {
-        foundationKey = destinationFoundation;
-      }
     }
 
     if (!foundationKey) {
@@ -203,7 +223,7 @@ export class GameState {
       return;
     }
 
-    if (card.value === "ace") {
+    if (card.value === "A") {
       this.executeMoveType2(card, foundationKey);
       return;
     }
@@ -234,12 +254,23 @@ export class GameState {
     const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
     // remove card from column
     sourceColumn.removeLastCard();
+    sourceColumn.updateColumnState();
     // add card to foundation
     this.board.foundations[dropId].addCard(card);
   }
 
   evaluateMoveType3(card: CardClass, dropId: columnKey) {
     // Move type 3: drag card from column to column
+
+    // special case: king to empty column
+    if (
+      card.value === "king" &&
+      this.board.tableau[dropId].arrayOfCards.length === 0
+    ) {
+      this.executeMoveType3(card, dropId);
+      return;
+    }
+
     const cardToStackOn =
       this.board.tableau[dropId].arrayOfCards[
         this.board.tableau[dropId].arrayOfCards.length - 1
@@ -275,6 +306,9 @@ export class GameState {
 
     const removedCards = sourceColumn.removeCards(cardIndex);
     destinationColumn.addCards(removedCards);
+
+    sourceColumn.updateColumnState();
+    destinationColumn.updateColumnState();
   }
 
   evaluateMoveType4(card: CardClass, dropId: HandItemKey) {
@@ -295,6 +329,7 @@ export class GameState {
   }
 
   executeMoveType4(card: CardClass, dropId: HandItemKey) {
+    // Move type 4: drag card from column to hand
     const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
 
     // remove card from column
@@ -302,6 +337,57 @@ export class GameState {
 
     // add card to hand
     this.board.hand.addCard(card, dropId);
+    sourceColumn.updateColumnState();
+  }
+
+  evaluateMoveType5(card: CardClass, dropId: foundationKey) {
+    // Move type 5: double click card from hand to foundation
+    let targetFoundation;
+    console.log("line 324");
+    if (card.value === "A") {
+      // find first empty foundation
+      targetFoundation = foundationKeys.find((key) => {
+        return this.board.foundations[key].arrayOfCards.length === 0;
+      });
+      console.log("line 330", targetFoundation);
+      this.executeMoveType5(card, targetFoundation as foundationKey);
+    } else {
+      // find the foundation with the same suit as the card
+      targetFoundation = foundationKeys.find((key) => {
+        return this.board.foundations[key].suit === card.suit;
+      });
+
+      console.log("line 337", targetFoundation);
+
+      if (!targetFoundation) {
+        console.log("invalid move, no foundation with this suit");
+        return;
+      }
+      console.log("line 343", targetFoundation);
+      const cardsAreSequential = this.cardsAreSequentialValues(
+        this.board.foundations[targetFoundation].arrayOfCards[
+          this.board.foundations[targetFoundation].arrayOfCards.length - 1
+        ],
+        card
+      );
+
+      console.log("line 351", cardsAreSequential);
+      if (!cardsAreSequential) {
+        console.log("invalid move, cards are not sequential");
+        return;
+      }
+      console.log("line 356", targetFoundation);
+      this.executeMoveType5(card, targetFoundation);
+    }
+  }
+
+  executeMoveType5(card: CardClass, dropId: foundationKey) {
+    // Move type 5: double click card from hand to foundation
+    console.log("execute move type 5", card, dropId);
+    // remove card from hand
+    this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
+    // add card to foundation
+    this.board.foundations[dropId].addCard(card);
   }
 
   cardsAreSameSuit(card1: CardClass, card2: CardClass) {}

@@ -6,6 +6,7 @@ export class Column {
   key: columnKey;
   arrayOfCards: CardClass[] = [];
   faceDownCardIndex: number;
+  faceDownCardHasBeenUncovered = false;
   constructor(key: columnKey, faceDownCardIndex: number) {
     makeAutoObservable(this);
     this.key = key;
@@ -18,13 +19,13 @@ export class Column {
       card.setLocationOnBoard(this.key);
     });
     this.arrayOfCards = this.arrayOfCards.concat(cardStack);
-    this.updateColumnState();
+    // this.updateColumnState();
   }
 
   removeLastCard() {
     // splice off and remove last card
     const removedCard = this.arrayOfCards.pop();
-    this.updateColumnState();
+    // this.updateColumnState();
     return removedCard;
   }
 
@@ -32,7 +33,7 @@ export class Column {
     // splice off and remove cards
     const removedCards = this.arrayOfCards.splice(cardIndex);
     console.log("cards to remove", removedCards);
-    this.updateColumnState();
+    // this.updateColumnState();
     return removedCards;
   }
 
@@ -41,11 +42,19 @@ export class Column {
     this.arrayOfCards.forEach((card) => {
       card.setIsActive(false);
     });
+    console.log(
+      `updateColumnState. length of column ${this.key} is`,
+      this.arrayOfCards.length
+    );
+
+    if (this.arrayOfCards.length <= this.faceDownCardIndex + 1) {
+      this.faceDownCardHasBeenUncovered = true;
+    }
 
     // loop backwards through column
     for (let i = this.arrayOfCards.length - 1; i >= 0; i--) {
       // apply face down card index
-      if (i === this.faceDownCardIndex) {
+      if (i === this.faceDownCardIndex && !this.faceDownCardHasBeenUncovered) {
         this.arrayOfCards[i].setIsFaceUp(false);
       }
 

@@ -36,7 +36,7 @@ export default function CardUI({
   function createIcons() {
     const icons = [];
 
-    if (card.value === "ace") {
+    if (card.value === "A") {
       icons.push(suitIcon, "A");
     } else if (card.value === "jack") {
       icons.push("J", suitIcon, "J");

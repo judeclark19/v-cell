@@ -95,7 +95,7 @@ export const CardStyle = styled.div<{
       font-size: ${(props) => {
         if (props.$size === "large") {
           switch (props.$value) {
-            case "ace":
+            case "A":
               return "70px";
             case "jack":
             case "queen":
@@ -106,7 +106,7 @@ export const CardStyle = styled.div<{
           }
         } else if (props.$size === "medium") {
           switch (props.$value) {
-            case "ace":
+            case "A":
               return "42px";
             case "jack":
             case "queen":
@@ -119,7 +119,7 @@ export const CardStyle = styled.div<{
       }};
       display: ${(props) => {
         switch (props.$value) {
-          case "ace":
+          case "A":
           case "jack":
           case "queen":
           case "king":
@@ -131,7 +131,7 @@ export const CardStyle = styled.div<{
 
       ${(props) => {
         switch (props.$value) {
-          case "ace":
+          case "A":
           case "jack":
           case "queen":
           case "king":
