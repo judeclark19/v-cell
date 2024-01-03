@@ -321,6 +321,7 @@ export class GameState {
 
     // cards must be sequential
     if (
+      card.value !== "king" &&
       !this.cardsAreSequentialValues(
         card,
         targetColumn.arrayOfCards[targetColumn.arrayOfCards.length - 1]
