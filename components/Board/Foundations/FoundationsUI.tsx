@@ -1,10 +1,10 @@
 import gameState from "@/logic/GameState";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { foundationKey } from "./FoundationsClass";
 import FoundationUI from "./FoundationUI";
 import styled from "styled-components";
 import { Spot } from "../Board.styles";
+import { foundationKeys } from "@/logic/types";
 
 export const FoundationsStyle = styled.div`
   display: flex;
@@ -22,13 +22,6 @@ export const FoundationsStyle = styled.div`
     }
   }
 `;
-
-const foundationKeys: foundationKey[] = [
-  "foundation1",
-  "foundation2",
-  "foundation3",
-  "foundation4"
-];
 
 const FoundationsUI = observer(() => {
   const foundations = gameState.board.foundations;
