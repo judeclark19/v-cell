@@ -11,12 +11,20 @@ export class Foundation {
     this.key = key;
   }
 
-  addCard(card: CardClass) {
-    card.setLocationOnBoard(this.key);
+  addCards(cards: CardClass[]) {
     if (this.suit === "") {
-      this.suit = card.suit;
+      this.suit = cards[0].suit;
     }
-    this.arrayOfCards.push(card);
+    cards.forEach((card) => {
+      card.setLocationOnBoard(this.key);
+      card.setIsActive(true);
+      this.arrayOfCards.push(card);
+    });
+  }
+
+  removeLastCard() {
+    const removedCard = this.arrayOfCards.pop();
+    return removedCard;
   }
 }
 

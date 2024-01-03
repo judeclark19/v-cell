@@ -3,43 +3,50 @@ import CardClass from "@/components/Card/CardClass";
 import {
   BoardType,
   HandItemKey,
-  SuitsArray,
+  Suit,
   columnKey,
   columnKeys,
   contrastingSuits,
   foundationKey,
   foundationKeys,
   handKeys,
+  suitsArray,
   valuesArray
 } from "./types";
-import { makeAutoObservable, toJS } from "mobx";
+import { makeAutoObservable } from "mobx";
 import Foundations from "../components/Board/Foundations/FoundationsClass";
 import Tableau from "@/components/Board/Tableau/TableauClass";
 import Hand from "@/components/Board/Hand/HandClass";
 
+// TODO: put this as a prop
 const initialFaceDownCards = [0, 1, 2, 3, 2, 1, 0];
 export class GameState {
   deck: CardClass[] = [];
-  suits: SuitsArray = ["hearts", "spades", "clubs", "diamonds"];
 
   board: BoardType = {
     foundations: new Foundations(),
     tableau: new Tableau(),
     hand: new Hand()
   };
+
+  history: BoardType[] = [];
+
   canAutoComplete = false;
 
   constructor() {
     makeAutoObservable(this);
-    this.createDeck();
   }
 
+  // TODO: shuffle never false so remove it
   createDeck(shuffle = false) {
     this.deck = [];
 
-    for (let suit in this.suits) {
+    for (let suit in suitsArray) {
       for (let index in valuesArray) {
-        const card = new CardClass(valuesArray[index], this.suits[suit]);
+        const card = new CardClass(
+          valuesArray[index],
+          suitsArray[suit] as Suit
+        );
         this.deck.push(card);
       }
     }
@@ -71,7 +78,7 @@ export class GameState {
 
   dealCards() {
     this.clearBoard();
-    // TODO: clear history
+    this.history = [];
     this.createDeck(true);
 
     for (let i = 0; i < 7; i++) {
@@ -89,9 +96,6 @@ export class GameState {
           this.board.tableau[columnIndex].addCards([card]);
         }
       }
-      // this.board.tableau[
-      //   `column${i + 1}` as columnKey
-      // ].faceDownCardHasBeenUncovered = false;
 
       this.board.tableau[`column${i + 1}` as columnKey].updateColumnState();
     }
@@ -105,234 +109,373 @@ export class GameState {
   }
 
   evaluateMove(card: CardClass, dropId: string) {
-    console.log(
-      `move ${card.value} of ${card.suit} from ${card.locationOnBoard} to ${dropId}`,
-      card instanceof CardClass
-    );
-
-    if (
-      handKeys.includes(card.locationOnBoard as HandItemKey) &&
-      columnKeys.includes(dropId as columnKey)
-    ) {
-      // Move type 1: move a card from your hand to a column
-      this.evaluateMoveType1or3(card, dropId as columnKey);
-    } else if (
-      columnKeys.includes(card.locationOnBoard as columnKey) &&
-      dropId === "foundations"
-    ) {
-      // Move type 2: double click a card to move from tableau to foundation
-      this.evaluateMoveType2(card, dropId as foundationKey);
-    } else if (
-      columnKeys.includes(card.locationOnBoard as columnKey) &&
-      columnKeys.includes(dropId as columnKey) &&
-      card.locationOnBoard !== dropId
-    ) {
-      // Move type 3: drag card from column to column
-      this.evaluateMoveType1or3(card, dropId as columnKey);
-    } else if (
-      columnKeys.includes(card.locationOnBoard as columnKey) &&
-      handKeys.includes(dropId as HandItemKey)
-    ) {
-      // Move type 4: drag card from column to hand
-      this.evaluateMoveType4(card, dropId as HandItemKey);
-    } else if (
-      handKeys.includes(card.locationOnBoard as HandItemKey) &&
-      dropId === "foundations"
-    ) {
-      // Move type 5: double click card from hand to foundation
-      this.evaluateMoveType5(card, dropId as foundationKey);
-    }
-  }
-
-  evaluateMoveType1or3(card: CardClass, dropId: columnKey) {
-    // Move type 1: move a card from your hand to a column
-
-    // special case: king to empty column
-    if (
-      card.value === "king" &&
-      this.board.tableau[dropId].arrayOfCards.length === 0
-    ) {
-      this.executeMoveType1(card, dropId);
-      return;
+    // from foundation
+    if (foundationKeys.includes(card.locationOnBoard as foundationKey)) {
+      // to foundation
+      if (
+        foundationKeys.includes(dropId as foundationKey) ||
+        dropId === "foundations"
+      ) {
+        this.moveFoundationToFoundation(card, dropId);
+      }
+      // to column
+      else if (columnKeys.includes(dropId as columnKey)) {
+        this.moveFoundationToColumn(card, dropId as columnKey);
+      }
+      // to hand
+      else if (handKeys.includes(dropId as HandItemKey)) {
+        this.moveFoundationToHand(card, dropId as HandItemKey);
+      }
     }
 
-    const cardToStackOn =
-      this.board.tableau[dropId].arrayOfCards[
-        this.board.tableau[dropId].arrayOfCards.length - 1
-      ];
-
-    const isContrastingSuit = this.cardsAreContrastingSuits(
-      card,
-      cardToStackOn
-    );
-    const isSequentialValue = this.cardsAreSequentialValues(
-      card,
-      cardToStackOn
-    );
-
-    if (isContrastingSuit && isSequentialValue) {
-      if (handKeys.includes(card.locationOnBoard as HandItemKey)) {
-        this.executeMoveType1(card, dropId);
-      } else if (columnKeys.includes(card.locationOnBoard as columnKey)) {
-        this.executeMoveType3(card, dropId);
+    // from column
+    else if (columnKeys.includes(card.locationOnBoard as columnKey)) {
+      // to foundation
+      if (
+        foundationKeys.includes(dropId as foundationKey) ||
+        dropId === "foundations"
+      ) {
+        this.moveColumnToFoundation(card, dropId);
+      }
+      // to column
+      else if (columnKeys.includes(dropId as columnKey)) {
+        this.moveColumnToColumn(card, dropId as columnKey);
+      }
+      // to hand
+      else if (handKeys.includes(dropId as HandItemKey)) {
+        this.moveColumnToHand(card, dropId as HandItemKey);
+      }
+    }
+    // from hand
+    else if (handKeys.includes(card.locationOnBoard as HandItemKey)) {
+      // to foundation
+      if (
+        foundationKeys.includes(dropId as foundationKey) ||
+        dropId === "foundations"
+      ) {
+        this.moveHandToFoundation(card, dropId);
+      }
+      // to column
+      else if (columnKeys.includes(dropId as columnKey)) {
+        this.moveHandToColumn(card, dropId as columnKey);
+      }
+      // to hand
+      else if (handKeys.includes(dropId as HandItemKey)) {
+        this.moveHandToHand(card, dropId as HandItemKey);
       }
     }
   }
 
-  executeMoveType1(card: CardClass, dropId: columnKey) {
-    // Move type 1: move a card from your hand to a column
+  moveFoundationToFoundation(card: CardClass, dropId: string) {
+    // only possible with aces
 
-    // remove card from hand
-    this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
-    // add card to column
-    this.board.tableau[dropId].addCards([card]);
-    this.board.tableau[dropId].updateColumnState();
+    if (dropId === "foundations") {
+      // unnecessary move
+      return;
+    }
+    const sourceFoundation =
+      this.board.foundations[card.locationOnBoard as foundationKey];
+    const targetFoundation = this.board.foundations[dropId as foundationKey];
+
+    if (card.value !== "A") {
+      // only aces can be moved to empty foundations
+      return;
+    }
+
+    if (targetFoundation.arrayOfCards.length > 0) {
+      // only aces can be moved to empty foundations
+      return;
+    }
+
+    // execute the move
+    this.takeSnapshot();
+    // remove card from foundation
+    sourceFoundation.removeLastCard();
+    // add card to foundation
+    targetFoundation.addCards([card]);
+
+    this.checkForWin();
   }
 
-  evaluateMoveType2(card: CardClass, dropId: foundationKey) {
-    // Move type 2: double click a card to move from tableau to foundation
+  moveFoundationToColumn(card: CardClass, dropId: columnKey) {
+    const sourceFoundation =
+      this.board.foundations[card.locationOnBoard as foundationKey];
+    const destinationColumn = this.board.tableau[dropId];
 
-    // confirm that card is on top of column
-    const cardIsOnTop = this.cardIsOnTop(card);
-    if (!cardIsOnTop) {
+    if (card.value === "king" && destinationColumn.arrayOfCards.length > 0) {
+      // kings can only be moved to empty columns
       return;
     }
 
+    if (card.value !== "king" && destinationColumn.arrayOfCards.length === 0) {
+      // non-kings can only be moved to non-empty columns
+      return;
+    }
+
+    if (
+      card.value !== "king" &&
+      !this.cardsAreContrastingSuits(
+        destinationColumn.arrayOfCards[
+          destinationColumn.arrayOfCards.length - 1
+        ],
+        card
+      )
+    ) {
+      // cards must be contrasting suits
+      return;
+    }
+
+    if (
+      card.value !== "king" &&
+      !this.cardsAreSequentialValues(
+        card,
+        destinationColumn.arrayOfCards[
+          destinationColumn.arrayOfCards.length - 1
+        ]
+      )
+    ) {
+      // cards must be sequential
+      return;
+    }
+
+    // execute the move
+    this.takeSnapshot();
+    // remove card from foundation
+    sourceFoundation.removeLastCard();
+    // add card to column
+    destinationColumn.addCards([card]);
+    destinationColumn.updateColumnState();
+
+    this.checkForWin();
+  }
+
+  moveFoundationToHand(card: CardClass, dropId: HandItemKey) {
+    // handItem must be empty
+    if (this.board.hand[dropId]) return;
+
+    // execute the move
+    this.takeSnapshot();
+    // remove card from foundation
+    const sourceFoundation =
+      this.board.foundations[card.locationOnBoard as foundationKey];
+    sourceFoundation.removeLastCard();
+    // add card to hand
+    this.board.hand.addCard(card, dropId);
+
+    // this.checkForWin();
+  }
+
+  moveColumnToFoundation(card: CardClass, dropId: string) {
+    // card must not be buried
+    if (!this.cardIsOnTop(card)) return;
+
+    // if card was double clicked, we will need to calculate the target foundation
     let foundationKey;
-    if (card.value === "A") {
-      // find first empty foundation
-      foundationKey = foundationKeys.find((key) => {
-        return this.board.foundations[key].arrayOfCards.length === 0;
-      });
-      this.executeMoveType2(card, foundationKey as foundationKey);
+
+    if (dropId === "foundations") {
+      foundationKey = this.findTargetFoundation(card);
     } else {
-      // find the foundation with the same suit as the card
-      foundationKey = foundationKeys.find((key) => {
-        return this.board.foundations[key].suit === card.suit;
-      });
+      foundationKey = dropId as foundationKey;
     }
 
-    if (!foundationKey) {
-      return;
-    }
+    if (!foundationKey) return;
 
     const targetFoundation = this.board.foundations[foundationKey];
 
-    if (targetFoundation.arrayOfCards.length === 0) {
+    // cards must be sequential
+    if (
+      card.value !== "A" &&
+      !this.cardsAreSequentialValues(
+        targetFoundation.arrayOfCards[targetFoundation.arrayOfCards.length - 1],
+        card
+      )
+    )
       return;
-    }
 
-    const lastCardInFoundation =
-      targetFoundation.arrayOfCards[targetFoundation.arrayOfCards.length - 1];
-    const cardsAreSequential = this.cardsAreSequentialValues(
-      lastCardInFoundation,
-      card
-    );
-
-    if (cardsAreSequential) {
-      this.executeMoveType2(card, foundationKey);
-    }
-  }
-
-  executeMoveType2(card: CardClass, dropId: foundationKey) {
-    // Move type 2: double click a card to move from tableau to foundation
-    const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
+    // execute the move
+    this.takeSnapshot();
     // remove card from column
+    const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
     sourceColumn.removeLastCard();
     sourceColumn.updateColumnState();
+
     // add card to foundation
-    this.board.foundations[dropId].addCard(card);
+    targetFoundation.addCards([card]);
+
+    this.checkForWin();
   }
 
-  executeMoveType3(card: CardClass, dropId: columnKey) {
-    // Move type 3: drag card from column to column
+  moveColumnToColumn(card: CardClass, dropId: columnKey) {
+    const targetColumn = this.board.tableau[dropId];
     const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
-    const destinationColumn = this.board.tableau[dropId];
-    // find index of card in source column
+
+    // cards must be contrasting suits
+    if (
+      card.value !== "king" &&
+      !this.cardsAreContrastingSuits(
+        targetColumn.arrayOfCards[targetColumn.arrayOfCards.length - 1],
+        card
+      )
+    )
+      return;
+
+    // cards must be sequential
+    if (
+      !this.cardsAreSequentialValues(
+        card,
+        targetColumn.arrayOfCards[targetColumn.arrayOfCards.length - 1]
+      )
+    )
+      return;
+
+    // execute move
+    this.takeSnapshot();
+    // remove cards from source column
     const cardIndex = sourceColumn.arrayOfCards.findIndex(
       (c) => c.value === card.value && c.suit === card.suit
     );
-
     const removedCards = sourceColumn.removeCards(cardIndex);
-    destinationColumn.addCards(removedCards);
-
     sourceColumn.updateColumnState();
-    destinationColumn.updateColumnState();
+    // add cards to target column
+    targetColumn.addCards(removedCards);
+    targetColumn.updateColumnState();
+
+    this.checkForWin();
   }
 
-  evaluateMoveType4(card: CardClass, dropId: HandItemKey) {
-    // Move type 4: drag card from column to hand
-    const cardIsOnTop = this.cardIsOnTop(card);
-    if (!cardIsOnTop) {
-      return;
-    }
+  moveColumnToHand(card: CardClass, dropId: HandItemKey) {
+    // card must not be buried
+    if (!this.cardIsOnTop(card)) return;
 
-    const destinationHandItem = this.board.hand[dropId];
-    if (destinationHandItem) {
-      // invalid move, space is already occupied
-      return;
-    }
+    // hand item must be empty
+    if (this.board.hand[dropId]) return;
 
-    this.executeMoveType4(card, dropId);
-  }
-
-  executeMoveType4(card: CardClass, dropId: HandItemKey) {
-    // Move type 4: drag card from column to hand
-    const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
-
+    // execute move
+    this.takeSnapshot();
     // remove card from column
+    const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
     sourceColumn.removeLastCard();
-
+    sourceColumn.updateColumnState();
     // add card to hand
     this.board.hand.addCard(card, dropId);
-    sourceColumn.updateColumnState();
+
+    this.checkForWin();
   }
 
-  evaluateMoveType5(card: CardClass, dropId: foundationKey) {
-    // Move type 5: double click card from hand to foundation
-    let targetFoundation;
-    if (card.value === "A") {
-      // find first empty foundation
-      targetFoundation = foundationKeys.find((key) => {
-        return this.board.foundations[key].arrayOfCards.length === 0;
-      });
-      this.executeMoveType5(card, targetFoundation as foundationKey);
+  moveHandToFoundation(card: CardClass, dropId: string) {
+    // if card was double clicked, we will need to calculate the target foundation
+    let foundationKey;
+
+    if (dropId === "foundations") {
+      foundationKey = this.findTargetFoundation(card);
     } else {
-      // find the foundation with the same suit as the card
-      targetFoundation = foundationKeys.find((key) => {
-        return this.board.foundations[key].suit === card.suit;
-      });
-
-      if (!targetFoundation) {
-        // invalid move, no foundation with this suit
-        return;
-      }
-
-      const cardsAreSequential = this.cardsAreSequentialValues(
-        this.board.foundations[targetFoundation].arrayOfCards[
-          this.board.foundations[targetFoundation].arrayOfCards.length - 1
-        ],
-        card
-      );
-
-      if (!cardsAreSequential) {
-        return;
-      }
-
-      this.executeMoveType5(card, targetFoundation);
+      foundationKey = dropId as foundationKey;
     }
-  }
 
-  executeMoveType5(card: CardClass, dropId: foundationKey) {
-    // Move type 5: double click card from hand to foundation
+    if (!foundationKey) return;
+    const targetFoundation = this.board.foundations[foundationKey];
+
+    // cards must be sequential
+    if (
+      card.value !== "A" &&
+      !this.cardsAreSequentialValues(targetFoundation.arrayOfCards[0], card)
+    )
+      return;
+
+    // execute the move
+    this.takeSnapshot();
 
     // remove card from hand
     this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
     // add card to foundation
-    this.board.foundations[dropId].addCard(card);
+    targetFoundation.addCards([card]);
+
+    this.checkForWin();
   }
 
-  cardsAreSameSuit(card1: CardClass, card2: CardClass) {}
+  moveHandToColumn(card: CardClass, dropId: columnKey) {
+    const destinationColumn = this.board.tableau[dropId];
+
+    if (card.value === "king" && destinationColumn.arrayOfCards.length > 0) {
+      // kings can only go in empty columns
+      return;
+    } else if (
+      card.value !== "king" &&
+      destinationColumn.arrayOfCards.length === 0
+    ) {
+      // non-kings can only go in non-empty columns
+      return;
+    } else if (
+      card.value !== "king" &&
+      destinationColumn.arrayOfCards.length > 0
+    ) {
+      // cards must be sequential
+      if (
+        !this.cardsAreSequentialValues(
+          card,
+          destinationColumn.arrayOfCards[
+            destinationColumn.arrayOfCards.length - 1
+          ]
+        )
+      )
+        return;
+      // cards must be contrasting suits
+      if (
+        !this.cardsAreContrastingSuits(
+          destinationColumn.arrayOfCards[
+            destinationColumn.arrayOfCards.length - 1
+          ],
+          card
+        )
+      )
+        return;
+    }
+
+    // execute the move
+    this.takeSnapshot();
+
+    // remove card from hand
+    this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
+
+    // add card to column
+    destinationColumn.addCards([card]);
+    destinationColumn.updateColumnState();
+
+    this.checkForWin();
+  }
+
+  moveHandToHand(card: CardClass, dropId: HandItemKey) {
+    // destination hand item must be empty
+    if (this.board.hand[dropId]) return;
+
+    // execute the move
+    this.takeSnapshot();
+
+    // remove card from hand
+    this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
+    // add card to hand
+    this.board.hand.addCard(card, dropId);
+  }
+
+  findTargetFoundation(card: CardClass): foundationKey | undefined {
+    let foundationKey;
+
+    if (card.value === "A") {
+      // find first empty foundation
+      foundationKey = foundationKeys.find(
+        (key) => this.board.foundations[key].arrayOfCards.length === 0
+      );
+    } else {
+      // find foundation with matching suit
+      foundationKey = foundationKeys.find(
+        (key) =>
+          this.board.foundations[key].arrayOfCards.length > 0 &&
+          this.board.foundations[key].arrayOfCards[0].suit === card.suit
+      );
+    }
+
+    return foundationKey;
+  }
 
   cardsAreContrastingSuits(card1: CardClass, card2: CardClass) {
     return contrastingSuits[card1.suit].includes(card2.suit);
@@ -345,6 +488,17 @@ export class GameState {
     );
   }
 
+  cardsCanStackInColumn(card1: CardClass, card2: CardClass) {
+    // card 2 is the one to be stacked upon
+
+    const isContrastingSuit = this.cardsAreContrastingSuits(card1, card2);
+    const isSequentialValue = this.cardsAreSequentialValues(card1, card2);
+
+    if (isContrastingSuit && isSequentialValue) {
+      return true;
+    } else return false;
+  }
+
   cardIsOnTop(card: CardClass) {
     const column = this.board.tableau[card.locationOnBoard as columnKey];
     const cardIndex = column.arrayOfCards.findIndex(
@@ -353,29 +507,90 @@ export class GameState {
     return cardIndex === column.arrayOfCards.length - 1;
   }
 
-  executeMove() {}
-
   takeSnapshot() {
-    // const handCopy = _.cloneDeep(this.hand);
-    // const boardCopy = _.cloneDeep(this.board);
-    // this.history.push({ hand: handCopy, board: boardCopy });
+    const boardCopy = _.cloneDeep(this.board);
+    this.history.push(boardCopy);
   }
 
-  undo() {}
+  undo() {
+    if (this.history.length > 0) {
+      const stateToRestore = this.history.pop();
+      if (!stateToRestore) return;
+
+      // foundation
+      foundationKeys.forEach((key) => {
+        // empty the foundation
+        this.board.foundations[key].arrayOfCards = [];
+
+        // create new cards from state
+        const cards = stateToRestore.foundations[key].arrayOfCards.map(
+          (card) => {
+            const newCard = new CardClass(card.value, card.suit);
+            newCard.setIsActive(card.isActive);
+            newCard.setIsFaceUp(card.isFaceUp);
+            newCard.setLocationOnBoard(card.locationOnBoard);
+            return newCard;
+          }
+        );
+
+        // add cards to foundation
+        if (cards.length > 0) {
+          this.board.foundations[key].addCards(cards);
+        }
+      });
+
+      // tableau
+      columnKeys.forEach((key) => {
+        // empty the column
+        this.board.tableau[key].arrayOfCards = [];
+
+        // create new cards from state
+        const cards = stateToRestore.tableau[key].arrayOfCards.map((card) => {
+          const newCard = new CardClass(card.value, card.suit);
+          newCard.setIsActive(card.isActive);
+          newCard.setIsFaceUp(card.isFaceUp);
+          newCard.setLocationOnBoard(card.locationOnBoard);
+          return newCard;
+        });
+
+        // add cards to column
+        this.board.tableau[key].addCards(cards);
+        this.board.tableau[key].updateColumnState();
+      });
+
+      // hand
+      handKeys.forEach((key) => {
+        // empty the hand
+        this.board.hand[key] = null;
+
+        // create new cards from state
+        const card = stateToRestore.hand[key];
+        if (card) {
+          const newCard = new CardClass(card.value, card.suit);
+          newCard.setIsActive(card.isActive);
+          newCard.setIsFaceUp(card.isFaceUp);
+          newCard.setLocationOnBoard(card.locationOnBoard);
+          this.board.hand[key] = newCard;
+        }
+      });
+    }
+  }
 
   checkForWin() {
     // if all cards are active in the columns, you win
-    // let allCardsActive = true;
-    // for (let i = 1; i <= 7; i++) {
-    //   this.board[`column${i}` as keyof BoardType].forEach((card) => {
-    //     if (!card.isActive) {
-    //       allCardsActive = false;
-    //     }
-    //   });
-    // }
-    // if (allCardsActive) {
-    //   this.canAutoComplete = true;
-    // }
+    let allCardsActive = true;
+
+    columnKeys.forEach((key) => {
+      this.board.tableau[key].arrayOfCards.forEach((card) => {
+        if (!card.isActive) {
+          allCardsActive = false;
+        }
+      });
+    });
+
+    if (allCardsActive) {
+      this.canAutoComplete = true;
+    }
   }
 
   autoComplete() {}

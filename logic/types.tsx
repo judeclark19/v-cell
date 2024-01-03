@@ -3,7 +3,7 @@ import Tableau from "@/components/Board/Tableau/TableauClass";
 import Hand from "@/components/Board/Hand/HandClass";
 
 export type Suit = "hearts" | "spades" | "clubs" | "diamonds";
-export type SuitsArray = ["hearts", "spades", "clubs", "diamonds"];
+export const suitsArray: Suit[] = ["hearts", "spades", "clubs", "diamonds"];
 
 export const contrastingSuits = {
   hearts: ["spades", "clubs"],
