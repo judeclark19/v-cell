@@ -379,7 +379,10 @@ export class GameState {
     // cards must be sequential
     if (
       card.value !== "A" &&
-      !this.cardsAreSequentialValues(targetFoundation.arrayOfCards[0], card)
+      !this.cardsAreSequentialValues(
+        targetFoundation.arrayOfCards[targetFoundation.arrayOfCards.length - 1],
+        card
+      )
     )
       return;
 
@@ -471,7 +474,7 @@ export class GameState {
       foundationKey = foundationKeys.find(
         (key) =>
           this.board.foundations[key].arrayOfCards.length > 0 &&
-          this.board.foundations[key].arrayOfCards[0].suit === card.suit
+          this.board.foundations[key].suit === card.suit
       );
     }
 
@@ -594,7 +597,31 @@ export class GameState {
     }
   }
 
-  autoComplete() {}
+  autoComplete() {
+    while (
+      foundationKeys.some(
+        (key) => this.board.foundations[key].arrayOfCards.length < 13
+      )
+    ) {
+      columnKeys.forEach((key) => {
+        const column = this.board.tableau[key];
+        const topCard = column.arrayOfCards[column.arrayOfCards.length - 1];
+        if (!topCard) return;
+        const foundationKey = this.findTargetFoundation(topCard);
+        if (foundationKey) {
+          this.moveColumnToFoundation(topCard, foundationKey);
+        }
+      });
+      handKeys.forEach((key) => {
+        const cardInHand = this.board.hand[key];
+        if (!cardInHand) return;
+        const foundationKey = this.findTargetFoundation(cardInHand);
+        if (foundationKey) {
+          this.moveHandToFoundation(cardInHand, foundationKey);
+        }
+      });
+    }
+  }
 }
 
 const gameState = new GameState();

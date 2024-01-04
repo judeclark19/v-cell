@@ -63,7 +63,7 @@ const Board = observer(() => {
           }}
           disabled={!gameState.canAutoComplete}
           onClick={() => {
-            gameState.undo();
+            gameState.autoComplete();
           }}
         >
           Autocomplete

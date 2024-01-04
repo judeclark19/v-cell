@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { CardStyle, cardSizes } from "../Card/CardUI.styles";
 
-export const cardOffsetAmount = 40;
+export const cardOffsetAmount = 32;
 
 export const GameTitle = styled.h1`
   width: 100%;
@@ -25,7 +25,7 @@ export const GameControlButton = styled.button`
 export const BoardContainer = styled.div`
   background-color: #5c5c5c;
   padding: 20px;
-  max-width: 1380px;
+  max-width: 1000px;
   height: calc(100vh - 20px);
   gap: 30px !important;
   margin: auto;

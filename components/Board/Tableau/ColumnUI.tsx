@@ -8,25 +8,25 @@ import CardUI from "@/components/Card/CardUI";
 const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
   if (columnData.arrayOfCards.length === 0) {
     return (
-      <DropSpot size="large" key={columnData.key} dropId={columnData.key}>
-        <Spot $size="large" />
+      <DropSpot size="medium" key={columnData.key} dropId={columnData.key}>
+        <Spot $size="medium" />
       </DropSpot>
     );
   }
 
   return (
-    <Spot key={columnData.key} $size="large">
+    <Spot key={columnData.key} $size="medium">
       {columnData.arrayOfCards.map((card, i) => {
         // final card will have a drop spot
         if (i === columnData.arrayOfCards.length - 1) {
           return (
             <DropSpot
-              size="large"
+              size="medium"
               key={`${card.value}_of_${card.suit}`}
               dropId={columnData.key}
             >
               <CardUI
-                size="large"
+                size="medium"
                 card={card}
                 zIndex={i + 1}
                 offset={i * cardOffsetAmount}
@@ -37,7 +37,7 @@ const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
         } else
           return (
             <CardUI
-              size="large"
+              size="medium"
               key={`${card.value}_of_${card.suit}`}
               card={card}
               zIndex={i + 1}

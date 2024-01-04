@@ -38,12 +38,13 @@ export const CardStyle = styled.div<{
   display: flex;
   flex-direction: column;
   z-index: ${(props) => props.$zIndex};
-  top: ${(props) =>
+  /* top: ${(props) =>
     props.$offset
       ? `${props.$offset + 4}px`
       : props.$size === "large"
       ? "4px"
-      : "2px"};
+      : "2px"}; */
+  top: ${(props) => (props.$offset ? `${props.$offset + 2}px` : "2px")};
   left: ${(props) => (props.$size === "large" ? "4px" : "2px")};
 
   transition: left 0.2s ease-in-out;
