@@ -309,6 +309,11 @@ export class GameState {
     const targetColumn = this.board.tableau[dropId];
     const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
 
+    if (card.value !== "king" && targetColumn.arrayOfCards.length === 0) {
+      // non-kings can only go in non-empty columns
+      return;
+    }
+
     // cards must be contrasting suits
     if (
       card.value !== "king" &&
