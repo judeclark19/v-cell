@@ -2,18 +2,28 @@ import styled from "styled-components";
 import { CardStyle, cardSize, cardSizes } from "../Card/CardUI.styles";
 import { Orientation } from "@/logic/BoardOrientation";
 
-export const cardOffsetAmount = 32;
-
-export const GameTitle = styled.h1`
+export const GameTitle = styled.h1<{ $windowWidth: number }>`
   width: 100%;
   text-align: center;
   margin-top: 50px;
-  font-size: 100px;
+  margin-bottom: ${({ $windowWidth }) => $windowWidth < 675 && "25px"};
+  font-size: ${({ $windowWidth }) => ($windowWidth >= 675 ? "100px" : "50px")};
+`;
+
+export const GameControlButtons = styled.div<{ $windowWidth: number }>`
+  display: flex;
+  justify-content: center;
+  gap: ${({ $windowWidth }) => ($windowWidth >= 675 ? "40px" : "20px")};
+  margin-bottom: ${({ $windowWidth }) =>
+    $windowWidth >= 675 ? "40px" : "20px"};
+
+  button {
+    font-size: ${({ $windowWidth }) => ($windowWidth >= 675 ? "18px" : "14px")};
+    padding: ${({ $windowWidth }) => ($windowWidth >= 675 ? "10px" : "5px")};
+  }
 `;
 
 export const GameControlButton = styled.button`
-  font-size: 18px;
-  padding: 10px;
   cursor: pointer;
   border-radius: 4px;
 
@@ -31,9 +41,15 @@ export const BoardContainer = styled.div<{
   padding: 20px;
   width: ${(props) => props.$orientation === "landscape" && "1400px"};
   max-width: calc(100vw - 20px);
-  /* height: calc(100vh - 20px); */
-  height: ${(props) =>
-    props.$windowWidth < 1180 ? "650px" : "calc(100vh - 20px)"};
+  height: ${({ $windowWidth }) => {
+    if ($windowWidth >= 1180) {
+      return "fit-content";
+    } else if ($windowWidth < 1180 && $windowWidth >= 500) {
+      return "650px";
+    } else if ($windowWidth < 500) {
+      return "450px";
+    }
+  }};
   gap: 30px !important;
   margin: auto;
   display: flex;
@@ -47,9 +63,6 @@ export const BoardContainer = styled.div<{
     flex-grow: 1;
     overflow-y: auto;
     padding: 10px;
-
-    // if orientation === portrait, set width to 100%
-    /* width: ${(props) => props.$orientation === "landscape" && "100%"}; */
   }
 `;
 
@@ -63,6 +76,8 @@ export const Spot = styled.div<{
   width: ${(props) =>
     cardSizes[props.$size].width + cardSizes[props.$size].spotPadding}px;
   position: relative;
+  display: grid;
+  place-items: center;
 
   > span {
     height: fit-content !important;
@@ -74,8 +89,10 @@ export const Spot = styled.div<{
           return "60px";
         case "small":
           return "40px";
+        case "tiny":
+          return "30px";
         default:
-          return "40px";
+          return "28px";
       }
     }};
     color: rgba(255, 255, 255, 0.5);

@@ -35,11 +35,6 @@ export const FoundationsStyle = styled.div<{
   ${Spot} {
     display: grid;
     place-items: center;
-    /* > span {
-      height: fit-content !important;
-      font-size: 90px;
-      color: rgba(255, 255, 255, 0.5);
-    } */
   }
 `;
 

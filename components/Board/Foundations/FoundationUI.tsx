@@ -6,6 +6,7 @@ import CardUI from "@/components/Card/CardUI";
 import { Spot } from "../Board.styles";
 import { useRecoilValue } from "recoil";
 import { windowWidthState } from "@/logic/BoardOrientation";
+import { getCardSize } from "../Board";
 
 const FoundationUI = observer(
   ({ foundationData }: { foundationData: Foundation }) => {
@@ -13,15 +14,15 @@ const FoundationUI = observer(
 
     return (
       <DropSpot
-        size={windowWidth < 1180 ? "small" : "medium"}
+        size={getCardSize(windowWidth)}
         key={foundationData.key}
         dropId={foundationData.key}
       >
-        <Spot $size={windowWidth < 1180 ? "small" : "medium"}>
+        <Spot $size={getCardSize(windowWidth)}>
           <span>A</span>
           {foundationData.arrayOfCards.map((card, i) => (
             <CardUI
-              size={windowWidth < 1180 ? "small" : "medium"}
+              size={getCardSize(windowWidth)}
               key={`${card.value}_of_${card.suit}`}
               card={card}
               zIndex={i + 1}

@@ -12,6 +12,7 @@ import {
   boardOrientationState,
   windowWidthState
 } from "@/logic/BoardOrientation";
+import { getCardSize } from "../Board";
 
 const HandStyles = styled.div<{
   $orientation: Orientation;
@@ -26,8 +27,6 @@ const HandStyles = styled.div<{
       return "center";
     } else return "space-between";
   }};
-  /* gap: ${({ $orientation }) =>
-    $orientation === "landscape" ? "20px" : "50px"}; */
   gap: ${(props) => {
     if (props.$orientation === "landscape") {
       return "20px";
@@ -38,6 +37,8 @@ const HandStyles = styled.div<{
   flex-direction: ${({ $orientation }) =>
     $orientation === "landscape" ? "column" : "row"};
 
+  width: ${({ $windowWidth }) => $windowWidth >= 1180 && "fit-content"};
+
   ${Spot} {
     border: 2px solid #000080;
   }
@@ -47,20 +48,17 @@ const HandUI = observer(() => {
   const hand = gameState.board.hand;
   const orientation = useRecoilValue(boardOrientationState);
   const windowWidth = useRecoilValue(windowWidthState);
+
   return (
     <HandStyles $orientation={orientation} $windowWidth={windowWidth}>
       {handKeys.map((key) => {
         const card = hand[key];
         return (
-          <DropSpot
-            size={windowWidth < 1180 ? "small" : "medium"}
-            key={key}
-            dropId={key}
-          >
-            <Spot $size={windowWidth < 1180 ? "small" : "medium"}>
+          <DropSpot size={getCardSize(windowWidth)} key={key} dropId={key}>
+            <Spot $size={getCardSize(windowWidth)}>
               {card && (
                 <CardUI
-                  size={windowWidth < 1180 ? "small" : "medium"}
+                  size={getCardSize(windowWidth)}
                   card={card}
                   zIndex={1}
                 />

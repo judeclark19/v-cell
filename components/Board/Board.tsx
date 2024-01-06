@@ -1,5 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { BoardContainer, GameControlButton, GameTitle } from "./Board.styles";
+import { useEffect, useState } from "react";
+import {
+  BoardContainer,
+  GameControlButton,
+  GameControlButtons,
+  GameTitle,
+  Spot
+} from "./Board.styles";
 import gameState from "@/logic/GameState";
 import { observer } from "mobx-react-lite";
 import { Luckiest_Guy } from "next/font/google";
@@ -12,8 +18,38 @@ import {
   boardOrientationState,
   windowWidthState
 } from "@/logic/BoardOrientation";
+import DropSpot from "./DropSpot/DropSpot";
+import CardUI from "../Card/CardUI";
+import CardClass from "../Card/CardClass";
+import { cardSize } from "../Card/CardUI.styles";
 
 const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
+
+const testMode = false;
+
+export const getCardSize = (windowWidth: number) => {
+  // above 1180 medium, btw 675 and 1180 small, below 675 xSmall
+  if (windowWidth >= 1180) {
+    return "large";
+  } else if (windowWidth >= 675) {
+    return "medium";
+  } else if (windowWidth >= 500) {
+    return "small";
+  } else return "tiny";
+};
+
+export const getCardOffsetAmount = (size: cardSize) => {
+  switch (size) {
+    case "large":
+      return 32;
+    case "medium":
+      return 25;
+    case "small":
+      return 20;
+    case "tiny":
+      return 14;
+  }
+};
 
 const Board = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
@@ -55,18 +91,57 @@ const Board = observer(() => {
     return <div>Loading...</div>;
   }
 
+  if (testMode)
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <Spot $size="large">
+          <DropSpot size="large" dropId="testdrop1">
+            <CardUI
+              size="large"
+              card={new CardClass("queen", "spades")}
+              zIndex={1}
+            />
+          </DropSpot>
+        </Spot>
+
+        <Spot $size="medium">
+          <DropSpot size="medium" dropId="testdrop2">
+            <CardUI
+              size="medium"
+              card={new CardClass("queen", "spades")}
+              zIndex={1}
+            />
+          </DropSpot>
+        </Spot>
+
+        <Spot $size="small">
+          <DropSpot size="small" dropId="testdrop3">
+            <CardUI
+              size="small"
+              card={new CardClass("queen", "spades")}
+              zIndex={1}
+            />
+          </DropSpot>
+        </Spot>
+
+        <Spot $size="tiny">
+          <DropSpot size="tiny" dropId="testdrop4">
+            <CardUI
+              size="tiny"
+              card={new CardClass("queen", "spades")}
+              zIndex={1}
+            />
+          </DropSpot>
+        </Spot>
+      </div>
+    );
+
   return (
     <>
-      <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
-      <div
-        className="buttons"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "40px",
-          padding: "40px"
-        }}
-      >
+      <GameTitle className={luckyGuy.className} $windowWidth={windowWidth}>
+        V-Cell
+      </GameTitle>
+      <GameControlButtons $windowWidth={windowWidth}>
         <GameControlButton
           style={{
             backgroundColor: "#0099cc",
@@ -102,7 +177,7 @@ const Board = observer(() => {
         >
           Autocomplete
         </GameControlButton>
-      </div>
+      </GameControlButtons>
       <BoardContainer $orientation={orientation} $windowWidth={windowWidth}>
         <FoundationsUI />
         <div className="scroll">

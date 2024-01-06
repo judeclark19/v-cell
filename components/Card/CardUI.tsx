@@ -1,6 +1,7 @@
 import { CardStyle, cardSize } from "./CardUI.styles";
 import CardClass from "./CardClass";
 import gameState from "@/logic/GameState";
+import { useState } from "react";
 
 export default function CardUI({
   size,
@@ -16,6 +17,9 @@ export default function CardUI({
   spacer?: boolean;
   handleCardClick?: (event: React.MouseEvent) => void;
 }) {
+  const [dragging, setDragging] = useState(false);
+  const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
+
   let suitIcon = "";
 
   switch (card.suit) {
@@ -36,7 +40,9 @@ export default function CardUI({
   function createIcons() {
     const icons = [];
 
-    if (card.value === "A") {
+    if (size === "small" || size === "tiny") {
+      icons.push(suitIcon);
+    } else if (card.value === "A") {
       icons.push(suitIcon, "A");
     } else if (card.value === "jack") {
       icons.push("J", suitIcon, "J");
@@ -53,7 +59,25 @@ export default function CardUI({
     return icons;
   }
 
+  const getCardTitle = () => {
+    if (size !== "small" && size !== "tiny") {
+      return card.value;
+    } else {
+      switch (card.value) {
+        case "jack":
+          return "J";
+        case "queen":
+          return "Q";
+        case "king":
+          return "K";
+        default:
+          return card.value;
+      }
+    }
+  };
+
   const handleDragStart = (e: React.DragEvent<HTMLElement>) => {
+    console.log("drag event", e.target);
     e.dataTransfer.setData("incomingCard", JSON.stringify(card));
   };
 
@@ -79,10 +103,11 @@ export default function CardUI({
         if (!card.isActive) return;
         gameState.evaluateMove(card, "foundations");
       }}
+      className="card"
     >
       <div className="card-front">
         <div className="card-title">
-          <h1>{card.value}</h1> <span>{suitIcon}</span>
+          <h1>{getCardTitle()}</h1> <span>{suitIcon}</span>
         </div>
         <div className="emojis">
           {createIcons().map((icon, i) => (
