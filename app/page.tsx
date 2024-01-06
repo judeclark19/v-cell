@@ -1,11 +1,13 @@
 "use client";
-
+import { RecoilRoot, atom } from "recoil";
 import Board from "@/components/Board/Board";
 
 export default function Home() {
   return (
     <div>
-      <Board />
+      <RecoilRoot>
+        <Board />
+      </RecoilRoot>
       <footer
         style={{
           display: "flex",

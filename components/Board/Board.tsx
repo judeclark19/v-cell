@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BoardContainer, GameControlButton, GameTitle } from "./Board.styles";
 import gameState from "@/logic/GameState";
 import { observer } from "mobx-react-lite";
@@ -6,15 +6,49 @@ import { Luckiest_Guy } from "next/font/google";
 import FoundationsUI from "./Foundations/FoundationsUI";
 import TableauUI from "./Tableau/TableauUI";
 import HandUI from "./Hand/HandUI";
+import { useRecoilState } from "recoil";
+import {
+  Orientation,
+  boardOrientationState,
+  windowWidthState
+} from "@/logic/BoardOrientation";
 
 const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 
 const Board = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
+  const [orientation, setBoardOrientation] = useRecoilState(
+    boardOrientationState
+  );
+  const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
+
+  let lastKnownOrientation: Orientation = orientation;
+
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+
+    let newOrientation: Orientation =
+      window.innerWidth <= 980 ? "portrait" : "landscape";
+
+    if (newOrientation !== lastKnownOrientation) {
+      console.log(newOrientation);
+      setBoardOrientation(newOrientation);
+      lastKnownOrientation = newOrientation;
+    }
+  };
 
   useEffect(() => {
     gameState.dealCards();
     setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    handleResize();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   if (isLoading) {
@@ -69,7 +103,7 @@ const Board = observer(() => {
           Autocomplete
         </GameControlButton>
       </div>
-      <BoardContainer>
+      <BoardContainer $orientation={orientation} $windowWidth={windowWidth}>
         <FoundationsUI />
         <div className="scroll">
           <TableauUI />

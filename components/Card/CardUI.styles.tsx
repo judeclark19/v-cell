@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Suit, Value } from "@/logic/types";
 
+export type cardSize = "large" | "medium" | "small";
+
 export const cardSizes = {
   large: {
     height: 210,
@@ -11,11 +13,16 @@ export const cardSizes = {
     height: 140,
     width: 100,
     spotPadding: 8
+  },
+  small: {
+    height: 100,
+    width: 75,
+    spotPadding: 4
   }
 };
 
 export const CardStyle = styled.div<{
-  $size: "large" | "medium";
+  $size: cardSize;
   $suit: Suit;
   $value: Value;
   $zIndex: number;
@@ -38,14 +45,24 @@ export const CardStyle = styled.div<{
   display: flex;
   flex-direction: column;
   z-index: ${(props) => props.$zIndex};
-  /* top: ${(props) =>
+  top: ${(props) =>
     props.$offset
-      ? `${props.$offset + 4}px`
-      : props.$size === "large"
-      ? "4px"
-      : "2px"}; */
-  top: ${(props) => (props.$offset ? `${props.$offset + 2}px` : "2px")};
-  left: ${(props) => (props.$size === "large" ? "4px" : "2px")};
+      ? `${props.$offset + 2}px`
+      : props.$size === "small"
+      ? "0px"
+      : "2px"};
+  left: ${(props) => {
+    switch (props.$size) {
+      case "large":
+        return "4px";
+      case "medium":
+        return "2px";
+      case "small":
+        return "0px";
+      default:
+        return "0px";
+    }
+  }};
 
   transition: left 0.2s ease-in-out;
 
@@ -63,7 +80,7 @@ export const CardStyle = styled.div<{
   .card-front {
     display: ${(props) => (props.$isFaceUp ? "block" : "none")};
 
-    padding: 4px;
+    padding: ${(props) => (props.$size === "small" ? "2px" : "4px")};
 
     .card-title {
       pointer-events: none;
@@ -78,20 +95,34 @@ export const CardStyle = styled.div<{
               return "32px";
             case "medium":
               return "24px";
+            case "small":
+              return "18px";
             default:
-              return "32px";
+              return "24px";
           }
         }};
       }
 
       span {
-        font-size: 20px;
+        font-size: ${(props) => {
+          switch (props.$size) {
+            case "large":
+              return "20px";
+            case "medium":
+              return "18px";
+            case "small":
+              return "14px";
+            default:
+              return "18px";
+          }
+        }};
       }
     }
 
     .emojis {
       pointer-events: none;
       user-select: none;
+      margin-top: ${(props) => props.$size === "small" && "4px"};
       flex-grow: 1;
       font-size: ${(props) => {
         if (props.$size === "large") {
@@ -116,8 +147,20 @@ export const CardStyle = styled.div<{
             default:
               return "26px";
           }
+        } else if (props.$size === "small") {
+          switch (props.$value) {
+            case "A":
+              return "28px";
+            case "jack":
+            case "queen":
+            case "king":
+              return "18px";
+            default:
+              return "18px";
+          }
         }
       }};
+
       display: ${(props) => {
         switch (props.$value) {
           case "A":
@@ -143,7 +186,13 @@ export const CardStyle = styled.div<{
           default:
             return `
                  grid-template-columns: repeat(3, 1fr);
-                 grid-auto-rows: ${props.$size === "large" ? "40px" : "26px"};
+             grid-auto-rows: ${
+               props.$size === "large"
+                 ? "40px"
+                 : props.$size === "medium"
+                 ? "26px"
+                 : "16px"
+             };
 
                     div {
                         display: grid;

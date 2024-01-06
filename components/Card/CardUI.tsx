@@ -1,4 +1,4 @@
-import { CardStyle } from "./CardUI.styles";
+import { CardStyle, cardSize } from "./CardUI.styles";
 import CardClass from "./CardClass";
 import gameState from "@/logic/GameState";
 
@@ -9,7 +9,7 @@ export default function CardUI({
   offset,
   handleCardClick
 }: {
-  size: "large" | "medium";
+  size: cardSize;
   card: CardClass;
   zIndex: number;
   offset?: number;

@@ -1,6 +1,6 @@
 import React from "react";
 import gameState from "@/logic/GameState";
-import { cardSizes } from "@/components/Card/CardUI.styles";
+import { cardSize, cardSizes } from "@/components/Card/CardUI.styles";
 import CardClass from "@/components/Card/CardClass";
 
 export default function DropSpot({
@@ -8,7 +8,7 @@ export default function DropSpot({
   dropId,
   children
 }: {
-  size: "large" | "medium";
+  size: cardSize;
   dropId: string;
   children: React.ReactNode;
 }) {

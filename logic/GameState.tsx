@@ -282,6 +282,11 @@ export class GameState {
 
     const targetFoundation = this.board.foundations[foundationKey];
 
+    if (card.value !== "A" && targetFoundation.arrayOfCards.length === 0) {
+      // only aces can be moved to empty foundations
+      return;
+    }
+
     // cards must be sequential
     if (
       card.value !== "A" &&
@@ -380,6 +385,11 @@ export class GameState {
 
     if (!foundationKey) return;
     const targetFoundation = this.board.foundations[foundationKey];
+
+    if (card.value !== "A" && targetFoundation.arrayOfCards.length === 0) {
+      // only aces can be moved to empty foundations
+      return;
+    }
 
     // cards must be sequential
     if (

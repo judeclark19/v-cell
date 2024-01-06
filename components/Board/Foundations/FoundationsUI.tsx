@@ -5,29 +5,51 @@ import FoundationUI from "./FoundationUI";
 import styled from "styled-components";
 import { Spot } from "../Board.styles";
 import { foundationKeys } from "@/logic/types";
+import { useRecoilValue } from "recoil";
+import {
+  Orientation,
+  boardOrientationState,
+  windowWidthState
+} from "@/logic/BoardOrientation";
 
-export const FoundationsStyle = styled.div`
+export const FoundationsStyle = styled.div<{
+  $orientation: Orientation;
+  $windowWidth: number;
+}>`
   display: flex;
-  gap: 50px;
-  width: 100%;
-  justify-content: end;
+  flex-wrap: wrap;
+  gap: ${(props) => {
+    if (props.$orientation === "landscape") {
+      return "20px";
+    } else if (props.$windowWidth >= 720) {
+      return "50px";
+    } else return "10px";
+  }};
+  width: ${({ $orientation }) =>
+    $orientation === "portrait" ? "100%" : "fit-content"};
+  justify-content: ${({ $orientation }) =>
+    $orientation === "landscape" ? "start" : "end"};
+  flex-direction: ${({ $orientation }) =>
+    $orientation === "landscape" ? "column" : "row"};
 
   ${Spot} {
     display: grid;
     place-items: center;
-    > span {
+    /* > span {
       height: fit-content !important;
       font-size: 90px;
       color: rgba(255, 255, 255, 0.5);
-    }
+    } */
   }
 `;
 
 const FoundationsUI = observer(() => {
   const foundations = gameState.board.foundations;
+  const orientation = useRecoilValue(boardOrientationState);
+  const windowWidth = useRecoilValue(windowWidthState);
 
   return (
-    <FoundationsStyle>
+    <FoundationsStyle $orientation={orientation} $windowWidth={windowWidth}>
       {foundationKeys.map((key) => {
         return <FoundationUI key={key} foundationData={foundations[key]} />;
       })}

@@ -6,11 +6,37 @@ import gameState from "@/logic/GameState";
 import DropSpot from "../DropSpot/DropSpot";
 import CardUI from "@/components/Card/CardUI";
 import { handKeys } from "@/logic/types";
+import { useRecoilValue } from "recoil";
+import {
+  Orientation,
+  boardOrientationState,
+  windowWidthState
+} from "@/logic/BoardOrientation";
 
-const HandStyles = styled.div`
+const HandStyles = styled.div<{
+  $orientation: Orientation;
+  $windowWidth: number;
+}>`
   display: flex;
-  justify-content: center;
-  gap: 50px;
+  flex-wrap: wrap;
+  justify-content: ${(props) => {
+    if (props.$orientation === "landscape") {
+      return "start";
+    } else if (props.$windowWidth >= 720) {
+      return "center";
+    } else return "space-between";
+  }};
+  /* gap: ${({ $orientation }) =>
+    $orientation === "landscape" ? "20px" : "50px"}; */
+  gap: ${(props) => {
+    if (props.$orientation === "landscape") {
+      return "20px";
+    } else if (props.$windowWidth >= 720) {
+      return "50px";
+    } else return "10px";
+  }};
+  flex-direction: ${({ $orientation }) =>
+    $orientation === "landscape" ? "column" : "row"};
 
   ${Spot} {
     border: 2px solid #000080;
@@ -19,17 +45,26 @@ const HandStyles = styled.div`
 
 const HandUI = observer(() => {
   const hand = gameState.board.hand;
-
+  const orientation = useRecoilValue(boardOrientationState);
+  const windowWidth = useRecoilValue(windowWidthState);
   return (
-    <HandStyles>
+    <HandStyles $orientation={orientation} $windowWidth={windowWidth}>
       {handKeys.map((key) => {
         const card = hand[key];
-        // no
         return (
-          <DropSpot size="medium" key={key} dropId={key}>
-            <Spot $size="medium">
-              {card && <CardUI size="medium" card={card} zIndex={1} />}
-              {/*  */}
+          <DropSpot
+            size={windowWidth < 1180 ? "small" : "medium"}
+            key={key}
+            dropId={key}
+          >
+            <Spot $size={windowWidth < 1180 ? "small" : "medium"}>
+              {card && (
+                <CardUI
+                  size={windowWidth < 1180 ? "small" : "medium"}
+                  card={card}
+                  zIndex={1}
+                />
+              )}
             </Spot>
           </DropSpot>
         );
