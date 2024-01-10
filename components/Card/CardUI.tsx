@@ -77,7 +77,6 @@ export default function CardUI({
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLElement>) => {
-    console.log("drag event", e.target);
     e.dataTransfer.setData("incomingCard", JSON.stringify(card));
   };
 

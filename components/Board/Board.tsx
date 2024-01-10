@@ -67,7 +67,6 @@ const Board = observer(() => {
       window.innerWidth <= 980 ? "portrait" : "landscape";
 
     if (newOrientation !== lastKnownOrientation) {
-      console.log(newOrientation);
       setBoardOrientation(newOrientation);
       lastKnownOrientation = newOrientation;
     }
