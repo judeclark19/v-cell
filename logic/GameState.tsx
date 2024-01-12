@@ -319,6 +319,11 @@ export class GameState {
       return;
     }
 
+    if (card.value === "king" && targetColumn.arrayOfCards.length > 0) {
+      // kings can only go in empty columns
+      return;
+    }
+
     // cards must be contrasting suits
     if (
       card.value !== "king" &&

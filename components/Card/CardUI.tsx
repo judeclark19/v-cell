@@ -17,8 +17,7 @@ export default function CardUI({
   spacer?: boolean;
   handleCardClick?: (event: React.MouseEvent) => void;
 }) {
-  const [dragging, setDragging] = useState(false);
-  const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
+  const [lastTapTimestamp, setLastTapTimestamp] = useState(0);
 
   let suitIcon = "";
 
@@ -94,8 +93,20 @@ export default function CardUI({
       $isFaceUp={card.isFaceUp}
       draggable={card.isActive && card.isFaceUp}
       onDragStart={handleDragStart}
-      onClick={(e) => {
-        if (handleCardClick) handleCardClick(e);
+      onPointerUp={(e) => {
+        console.log("pointer down");
+        e.stopPropagation();
+        const timeSinceLastTap = Date.now() - lastTapTimestamp;
+        if (timeSinceLastTap <= 300) {
+          console.log("double tap");
+          if (!card.isActive) return;
+          gameState.evaluateMove(card, "foundations");
+        } else {
+          console.log("single tap");
+          if (handleCardClick) handleCardClick(e);
+        }
+
+        setLastTapTimestamp(Date.now());
       }}
       onDoubleClick={(e) => {
         e.stopPropagation();

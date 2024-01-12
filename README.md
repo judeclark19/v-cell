@@ -4,9 +4,9 @@
 
 ## Current bugs
 
-- [] Kings can go on top of anything!!
+- [x] Kings can go on top of anything!!
 - [] Double click to foundation sometimes sends to wrong suit
-- [] Sometimes the hand loses a spot or maybe just gets shrunk to 0
+- [x] Sometimes the hand loses a spot or maybe just gets shrunk to 0
 - [] columns can only be max height 19 so limit the height of the tableau accordingly
 
 ## Todo list

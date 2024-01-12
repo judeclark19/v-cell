@@ -37,21 +37,17 @@ export default function DropSpot({
   }
 
   return (
-    <div>
-      <div
-        id={dropId}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        style={{
-          height: `${
-            cardSizes[size].height + cardSizes[size].spotPadding / 2
-          }px`,
-          width: `${cardSizes[size].width + cardSizes[size].spotPadding / 2}px`
-        }}
-      >
-        {children}
-      </div>
+    <div
+      id={dropId}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      style={{
+        height: `${cardSizes[size].height + cardSizes[size].spotPadding / 2}px`,
+        width: `${cardSizes[size].width + cardSizes[size].spotPadding / 2}px`
+      }}
+    >
+      {children}
     </div>
   );
 }
