@@ -77,7 +77,7 @@ export class GameState {
   dealCards() {
     this.clearBoard();
     this.history = [];
-    this.createDeck(true);
+    this.createDeck();
 
     for (let i = 0; i < 7; i++) {
       for (let j = 0; j < 7; j++) {

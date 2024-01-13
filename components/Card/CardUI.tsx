@@ -9,15 +9,13 @@ const CardUI = observer(
     size,
     card,
     zIndex,
-    offset,
-    handleCardClick
+    offset
   }: {
     size: cardSize;
     card: CardClass;
     zIndex: number;
     offset?: number;
     spacer?: boolean;
-    handleCardClick?: (event: React.MouseEvent) => void;
   }) => {
     const [lastTapTimestamp, setLastTapTimestamp] = useState(0);
 
@@ -77,10 +75,6 @@ const CardUI = observer(
       }
     };
 
-    const handleDragStart = (e: React.DragEvent<HTMLElement>) => {
-      e.dataTransfer.setData("incomingCard", JSON.stringify(card));
-    };
-
     return (
       <CardStyle
         key={`${card.value}_of_${card.suit}`}
@@ -96,32 +90,23 @@ const CardUI = observer(
         $offset={offset}
         $isActive={card.isActive}
         $isFaceUp={card.isFaceUp}
-        draggable={card.isActive && card.isFaceUp}
-        onDragStart={handleDragStart}
         onPointerDown={(e) => {
           e.stopPropagation();
           e.preventDefault();
-          gameState.setCardBeingTouched(card);
+          gameState.setCardBeingTouched(
+            card.isActive && card.isFaceUp ? card : null
+          );
         }}
         onPointerUp={(e) => {
+          // this function listens for a double click which is interpreted as an attempt to send a card up to the foundations
           e.stopPropagation();
-
           const timeSinceLastTap = Date.now() - lastTapTimestamp;
           if (timeSinceLastTap <= 300) {
-            // double tap or click
             if (!card.isActive) return;
             gameState.evaluateMove(card, "foundations");
-          } else {
-            // single tap or click
-            if (handleCardClick) handleCardClick(e);
           }
 
           setLastTapTimestamp(Date.now());
-        }}
-        onDoubleClick={(e) => {
-          e.stopPropagation();
-          if (!card.isActive) return;
-          gameState.evaluateMove(card, "foundations");
         }}
         onContextMenu={(e) => {
           e.preventDefault();

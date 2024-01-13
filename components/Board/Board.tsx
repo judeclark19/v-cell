@@ -74,7 +74,7 @@ const Board = observer(() => {
     }
   };
 
-  const handlePointerDown = (event: PointerEvent) => {
+  const handlePointerDown = () => {
     gameState.setIsDragging(false);
   };
 
@@ -85,6 +85,37 @@ const Board = observer(() => {
   };
 
   const handlePointerUp = (event: PointerEvent) => {
+    if (!gameState.isDragging) {
+      // if the card wasn't dragged then the user didn't make a move
+      gameState.setCardBeingTouched(null);
+      return;
+    }
+
+    const elementUnderPointer = document.elementFromPoint(
+      event.clientX,
+      event.clientY
+    );
+
+    const dropId = elementUnderPointer
+      ?.closest("[data-dropid]")
+      ?.getAttribute("data-dropid");
+
+    if (!dropId || !gameState.cardBeingTouched) {
+      console.log("dropId or cardBeingTouched is null");
+      console.log("dropId: ", dropId);
+      console.log("cardBeingTouched: ", gameState.cardBeingTouched);
+      gameState.setIsDragging(false);
+      gameState.setCardBeingTouched(null);
+      return;
+    }
+    if (dropId === gameState.cardBeingTouched.locationOnBoard) {
+      console.log("dropId is same as cardBeingTouched.locationOnBoard");
+      gameState.setIsDragging(false);
+      gameState.setCardBeingTouched(null);
+      return;
+    }
+
+    gameState.evaluateMove(gameState.cardBeingTouched, dropId);
     gameState.setIsDragging(false);
     gameState.setCardBeingTouched(null);
   };
@@ -95,7 +126,6 @@ const Board = observer(() => {
   }, []);
 
   useEffect(() => {
-    // document.addEventListener("pointerdown", (event) => {});
     document.addEventListener("pointermove", handlePointerMove);
     document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("pointerup", handlePointerUp);
@@ -203,12 +233,6 @@ const Board = observer(() => {
           Autocomplete
         </GameControlButton>
       </GameControlButtons>
-      {/* <div>
-        card being touched:{" "}
-        {gameState.cardBeingTouched &&
-          `${gameState.cardBeingTouched.value} of ${gameState.cardBeingTouched.suit}`}
-      </div>
-      <div>isDragging? {gameState.isDragging ? "true" : "false"}</div> */}
       <BoardContainer $orientation={orientation} $windowWidth={windowWidth}>
         {gameState.cardBeingTouched && gameState.isDragging && (
           <CardBeingDragged
