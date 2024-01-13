@@ -66,25 +66,25 @@ export const BoardContainer = styled.div<{
   }
 `;
 
-interface CardBeingTouchedProps {
+interface CardBeingDraggedProps {
   $size: cardSize;
   $left: number;
   $top: number;
 }
 
-export const CardBeingTouched = styled.div.attrs<CardBeingTouchedProps>(
+export const CardBeingDragged = styled.div.attrs<CardBeingDraggedProps>(
   (props) => ({
     style: {
       left: `${props.$left}px`,
       top: `${props.$top}px`
     }
   })
-)<CardBeingTouchedProps>`
+)<CardBeingDraggedProps>`
   position: absolute;
   border: 1px solid gray;
-  z-index: 30;
+  /* z-index: 30; */
   border-radius: 5px;
-  background-color: aqua;
+  /* background-color: aqua; */
   height: ${(props) => cardSizes[props.$size].height}px;
   width: ${(props) => cardSizes[props.$size].width}px;
 `;

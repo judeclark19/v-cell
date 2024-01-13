@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   BoardContainer,
-  CardBeingTouched,
+  CardBeingDragged,
   GameControlButton,
   GameControlButtons,
   GameTitle,
@@ -85,7 +85,6 @@ const Board = observer(() => {
   };
 
   const handlePointerUp = (event: PointerEvent) => {
-    console.log("POINTER UP handler!");
     gameState.setIsDragging(false);
     gameState.setCardBeingTouched(null);
   };
@@ -212,7 +211,7 @@ const Board = observer(() => {
       <div>isDragging? {gameState.isDragging ? "true" : "false"}</div> */}
       <BoardContainer $orientation={orientation} $windowWidth={windowWidth}>
         {gameState.cardBeingTouched && gameState.isDragging && (
-          <CardBeingTouched
+          <CardBeingDragged
             $size={getCardSize(windowWidth)}
             $left={
               dragPosition.left - getCardOffsetAmount(getCardSize(windowWidth))
@@ -220,7 +219,18 @@ const Board = observer(() => {
             $top={
               dragPosition.top - getCardOffsetAmount(getCardSize(windowWidth))
             }
-          />
+          >
+            <CardUI
+              size={getCardSize(windowWidth)}
+              card={
+                new CardClass(
+                  gameState.cardBeingTouched.value,
+                  gameState.cardBeingTouched.suit
+                )
+              }
+              zIndex={100}
+            />
+          </CardBeingDragged>
         )}
 
         <FoundationsUI />
