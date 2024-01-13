@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   BoardContainer,
+  CardBeingTouched,
   GameControlButton,
   GameControlButtons,
   GameTitle,
@@ -57,6 +58,7 @@ const Board = observer(() => {
     boardOrientationState
   );
   const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
+  const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
 
   let lastKnownOrientation: Orientation = orientation;
 
@@ -72,17 +74,42 @@ const Board = observer(() => {
     }
   };
 
+  const handlePointerDown = (event: PointerEvent) => {
+    gameState.setIsDragging(false);
+  };
+
+  const handlePointerMove = (event: PointerEvent) => {
+    if (!gameState.cardBeingTouched) return;
+    gameState.setIsDragging(true);
+    setDragPosition({ left: event.clientX, top: event.clientY });
+  };
+
+  const handlePointerUp = (event: PointerEvent) => {
+    console.log("POINTER UP handler!");
+    gameState.setIsDragging(false);
+    gameState.setCardBeingTouched(null);
+  };
+
   useEffect(() => {
     gameState.dealCards();
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
+    // document.addEventListener("pointerdown", (event) => {});
+    document.addEventListener("pointermove", handlePointerMove);
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("pointerup", handlePointerUp);
+    document.addEventListener("pointercancel", handlePointerUp);
     window.addEventListener("resize", handleResize);
 
     handleResize();
     return () => {
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("pointermove", handlePointerMove);
+      document.removeEventListener("pointerup", handlePointerUp);
+      document.removeEventListener("pointercancel", handlePointerUp);
     };
   }, []);
 
@@ -177,7 +204,25 @@ const Board = observer(() => {
           Autocomplete
         </GameControlButton>
       </GameControlButtons>
+      {/* <div>
+        card being touched:{" "}
+        {gameState.cardBeingTouched &&
+          `${gameState.cardBeingTouched.value} of ${gameState.cardBeingTouched.suit}`}
+      </div>
+      <div>isDragging? {gameState.isDragging ? "true" : "false"}</div> */}
       <BoardContainer $orientation={orientation} $windowWidth={windowWidth}>
+        {gameState.cardBeingTouched && gameState.isDragging && (
+          <CardBeingTouched
+            $size={getCardSize(windowWidth)}
+            $left={
+              dragPosition.left - getCardOffsetAmount(getCardSize(windowWidth))
+            }
+            $top={
+              dragPosition.top - getCardOffsetAmount(getCardSize(windowWidth))
+            }
+          />
+        )}
+
         <FoundationsUI />
         <div className="scroll">
           <TableauUI />

@@ -30,15 +30,15 @@ export class GameState {
   };
 
   history: BoardType[] = [];
-
+  cardBeingTouched: CardClass | null = null;
+  isDragging = false;
   canAutoComplete = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  // TODO: shuffle never false so remove it
-  createDeck(shuffle = false) {
+  createDeck() {
     this.deck = [];
 
     for (let suit in suitsArray) {
@@ -51,9 +51,7 @@ export class GameState {
       }
     }
 
-    if (shuffle) {
-      this.shuffleDeck();
-    }
+    this.shuffleDeck();
   }
 
   shuffleDeck() {
@@ -106,6 +104,14 @@ export class GameState {
       card.setLocationOnBoard(`handItem${i + 1}`);
       this.board.hand.addCard(card, `handItem${i + 1}` as HandItemKey);
     });
+  }
+
+  setCardBeingTouched(card: CardClass | null) {
+    this.cardBeingTouched = card;
+  }
+
+  setIsDragging(isDragging: boolean) {
+    this.isDragging = isDragging;
   }
 
   evaluateMove(card: CardClass, dropId: string) {

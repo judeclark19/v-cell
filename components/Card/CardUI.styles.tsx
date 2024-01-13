@@ -35,13 +35,22 @@ export const CardStyle = styled.div<{
   $suit: Suit;
   $value: Value;
   $zIndex: number;
+  $isBeingDragged: boolean;
   $offset?: number;
   $isActive?: boolean;
   $isFaceUp?: boolean;
 }>`
   cursor: ${(props) => (props.$isActive ? "pointer" : "default")};
   pointer-events: ${(props) => (props.$isActive ? "auto" : "none")};
+  touch-action: none;
   position: absolute;
+  opacity: ${(props) => {
+    if (props.$isBeingDragged) {
+      return "0";
+    } else {
+      return "1";
+    }
+  }};
   background-color: white;
   color: black;
   border: 1px solid gray;
