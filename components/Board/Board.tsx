@@ -11,10 +11,11 @@ import { Luckiest_Guy } from "next/font/google";
 import FoundationsUI from "./Foundations/FoundationsUI";
 import TableauUI from "./Tableau/TableauUI";
 import HandUI from "./Hand/HandUI";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   Orientation,
   boardOrientationState,
+  windowHeightState,
   windowWidthState
 } from "@/logic/OrientationAndSize";
 import { cardSize } from "../Card/CardUI.styles";
@@ -41,12 +42,14 @@ const Board = observer(() => {
     boardOrientationState
   );
   const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
+  const setWindowHeight = useSetRecoilState(windowHeightState);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
 
   let lastKnownOrientation: Orientation = orientation;
 
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
+    setWindowHeight(window.innerHeight);
 
     let newOrientation: Orientation =
       window.innerWidth <= 980 ? "portrait" : "landscape";
@@ -127,7 +130,7 @@ const Board = observer(() => {
       document.removeEventListener("pointerup", handlePointerUp);
       document.removeEventListener("pointercancel", handlePointerUp);
     };
-  }, []);
+  }, [handleResize]);
 
   if (isLoading) {
     return <div>Loading...</div>;
