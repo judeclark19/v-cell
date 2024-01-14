@@ -10,10 +10,10 @@ import { useRecoilValue } from "recoil";
 import {
   Orientation,
   boardOrientationState,
+  getCardSize,
   windowHeightState,
   windowWidthState
-} from "@/logic/BoardOrientation";
-import { getCardSize } from "../Board";
+} from "@/logic/OrientationAndSize";
 
 const HandStyles = styled.div<{
   $orientation: Orientation;

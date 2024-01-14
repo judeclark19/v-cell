@@ -10,7 +10,7 @@ import {
   Orientation,
   boardOrientationState,
   windowWidthState
-} from "@/logic/BoardOrientation";
+} from "@/logic/OrientationAndSize";
 
 export const FoundationsStyle = styled.div<{
   $orientation: Orientation;

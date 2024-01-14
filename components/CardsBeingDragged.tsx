@@ -1,8 +1,12 @@
 import { observer } from "mobx-react-lite";
 import { cardSize, cardSizes } from "./Card/CardUI.styles";
-import { getCardOffsetAmount, getCardSize } from "./Board/Board";
+import { getCardOffsetAmount } from "./Board/Board";
 import { useRecoilValue } from "recoil";
-import { windowHeightState, windowWidthState } from "@/logic/BoardOrientation";
+import {
+  getCardSize,
+  windowHeightState,
+  windowWidthState
+} from "@/logic/OrientationAndSize";
 import styled from "styled-components";
 import CardUI from "./Card/CardUI";
 import CardClass from "./Card/CardClass";

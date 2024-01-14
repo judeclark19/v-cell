@@ -3,8 +3,7 @@ import {
   BoardContainer,
   GameControlButton,
   GameControlButtons,
-  GameTitle,
-  Spot
+  GameTitle
 } from "./Board.styles";
 import gameState from "@/logic/GameState";
 import { observer } from "mobx-react-lite";
@@ -17,29 +16,11 @@ import {
   Orientation,
   boardOrientationState,
   windowWidthState
-} from "@/logic/BoardOrientation";
-import DropSpot from "./DropSpot/DropSpot";
-import CardUI from "../Card/CardUI";
-import CardClass from "../Card/CardClass";
+} from "@/logic/OrientationAndSize";
 import { cardSize } from "../Card/CardUI.styles";
 import CardsBeingDragged from "../CardsBeingDragged";
 
 const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
-
-export const getCardSize = (windowWidth: number, windowHeight: number) => {
-  if (windowHeight < 500 && windowWidth >= 500) {
-    return "small";
-  }
-
-  // above 1180 medium, btw 675 and 1180 small, below 675 xSmall
-  if (windowWidth >= 1180) {
-    return "large";
-  } else if (windowWidth >= 675) {
-    return "medium";
-  } else if (windowWidth >= 500) {
-    return "small";
-  } else return "tiny";
-};
 
 export const getCardOffsetAmount = (size: cardSize) => {
   switch (size) {
@@ -60,7 +41,6 @@ const Board = observer(() => {
     boardOrientationState
   );
   const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
-  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
 
   let lastKnownOrientation: Orientation = orientation;

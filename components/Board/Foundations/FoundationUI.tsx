@@ -5,8 +5,11 @@ import DropSpot from "../DropSpot/DropSpot";
 import CardUI from "@/components/Card/CardUI";
 import { Spot } from "../Board.styles";
 import { useRecoilValue } from "recoil";
-import { windowHeightState, windowWidthState } from "@/logic/BoardOrientation";
-import { getCardSize } from "../Board";
+import {
+  getCardSize,
+  windowHeightState,
+  windowWidthState
+} from "@/logic/OrientationAndSize";
 
 const FoundationUI = observer(
   ({ foundationData }: { foundationData: Foundation }) => {

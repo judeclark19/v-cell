@@ -4,10 +4,14 @@ import ColumnUI from "./ColumnUI";
 import styled from "styled-components";
 import gameState from "@/logic/GameState";
 import { columnKeys } from "@/logic/types";
-import { getCardOffsetAmount, getCardSize } from "../Board";
+import { getCardOffsetAmount } from "../Board";
 import { cardSizes } from "@/components/Card/CardUI.styles";
 import { useRecoilValue } from "recoil";
-import { windowHeightState, windowWidthState } from "@/logic/BoardOrientation";
+import {
+  getCardSize,
+  windowHeightState,
+  windowWidthState
+} from "@/logic/OrientationAndSize";
 
 const TableauStyles = styled.div<{
   $windowWidth: number;

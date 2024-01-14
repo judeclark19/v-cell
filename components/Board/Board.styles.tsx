@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { CardStyle, cardSize, cardSizes } from "../Card/CardUI.styles";
-import { Orientation } from "@/logic/BoardOrientation";
+import { Orientation } from "@/logic/OrientationAndSize";
 
 export const GameTitle = styled.h1<{ $windowWidth: number }>`
   width: 100%;
