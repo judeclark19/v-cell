@@ -3,6 +3,7 @@ import CardClass from "./CardClass";
 import gameState from "@/logic/GameState";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
+import { columnKeys } from "@/logic/types";
 
 const CardUI = observer(
   ({
@@ -85,7 +86,10 @@ const CardUI = observer(
         $value={card.value}
         $zIndex={zIndex}
         $isBeingDragged={
-          gameState.cardBeingTouched === card && gameState.isDragging
+          gameState.isDragging &&
+          gameState.cardsBeingTouched?.findIndex((c) => c.id === card.id) !==
+            -1 &&
+          card.locationOnBoard !== "dragging"
         }
         $offset={offset}
         $isActive={card.isActive}
@@ -93,7 +97,7 @@ const CardUI = observer(
         onPointerDown={(e) => {
           e.stopPropagation();
           e.preventDefault();
-          gameState.setCardBeingTouched(
+          gameState.setCardsBeingTouched(
             card.isActive && card.isFaceUp ? card : null
           );
         }}

@@ -75,14 +75,14 @@ export const columnKeys: columnKey[] = [
   "column7"
 ];
 
-export type HandItemKey =
+export type handItemKey =
   | "handItem1"
   | "handItem2"
   | "handItem3"
   | "handItem4"
   | "handItem5";
 
-export const handKeys: HandItemKey[] = [
+export const handKeys: handItemKey[] = [
   "handItem1",
   "handItem2",
   "handItem3",

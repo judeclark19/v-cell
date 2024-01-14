@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   BoardContainer,
-  CardBeingDragged,
   GameControlButton,
   GameControlButtons,
   GameTitle,
@@ -23,6 +22,7 @@ import DropSpot from "./DropSpot/DropSpot";
 import CardUI from "../Card/CardUI";
 import CardClass from "../Card/CardClass";
 import { cardSize } from "../Card/CardUI.styles";
+import CardsBeingDragged from "../CardsBeingDragged";
 
 const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 
@@ -79,7 +79,7 @@ const Board = observer(() => {
   };
 
   const handlePointerMove = (event: PointerEvent) => {
-    if (!gameState.cardBeingTouched) return;
+    if (!gameState.cardsBeingTouched) return;
     gameState.setIsDragging(true);
     setDragPosition({ left: event.clientX, top: event.clientY });
   };
@@ -87,7 +87,7 @@ const Board = observer(() => {
   const handlePointerUp = (event: PointerEvent) => {
     if (!gameState.isDragging) {
       // if the card wasn't dragged then the user didn't make a move
-      gameState.setCardBeingTouched(null);
+      gameState.setCardsBeingTouched(null);
       return;
     }
 
@@ -100,21 +100,21 @@ const Board = observer(() => {
       ?.closest("[data-dropid]")
       ?.getAttribute("data-dropid");
 
-    if (!dropId || !gameState.cardBeingTouched) {
+    if (!dropId || !gameState.cardsBeingTouched) {
       gameState.setIsDragging(false);
-      gameState.setCardBeingTouched(null);
+      gameState.setCardsBeingTouched(null);
       return;
     }
 
-    if (dropId === gameState.cardBeingTouched.locationOnBoard) {
+    if (dropId === gameState.cardsBeingTouched[0].locationOnBoard) {
       gameState.setIsDragging(false);
-      gameState.setCardBeingTouched(null);
+      gameState.setCardsBeingTouched(null);
       return;
     }
 
-    gameState.evaluateMove(gameState.cardBeingTouched, dropId);
+    gameState.evaluateMove(gameState.cardsBeingTouched[0], dropId);
     gameState.setIsDragging(false);
-    gameState.setCardBeingTouched(null);
+    gameState.setCardsBeingTouched(null);
   };
 
   useEffect(() => {
@@ -237,27 +237,8 @@ const Board = observer(() => {
         </div>
       </GameControlButtons>
       <BoardContainer $orientation={orientation} $windowWidth={windowWidth}>
-        {gameState.cardBeingTouched && gameState.isDragging && (
-          <CardBeingDragged
-            $size={getCardSize(windowWidth)}
-            $left={
-              dragPosition.left - getCardOffsetAmount(getCardSize(windowWidth))
-            }
-            $top={
-              dragPosition.top - getCardOffsetAmount(getCardSize(windowWidth))
-            }
-          >
-            <CardUI
-              size={getCardSize(windowWidth)}
-              card={
-                new CardClass(
-                  gameState.cardBeingTouched.value,
-                  gameState.cardBeingTouched.suit
-                )
-              }
-              zIndex={100}
-            />
-          </CardBeingDragged>
+        {gameState.cardsBeingTouched && gameState.isDragging && (
+          <CardsBeingDragged dragPosition={dragPosition} />
         )}
 
         <FoundationsUI />

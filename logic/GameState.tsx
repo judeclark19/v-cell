@@ -2,7 +2,7 @@ import _ from "lodash";
 import CardClass from "@/components/Card/CardClass";
 import {
   BoardType,
-  HandItemKey,
+  handItemKey,
   Suit,
   columnKey,
   columnKeys,
@@ -30,7 +30,7 @@ export class GameState {
   };
 
   history: BoardType[] = [];
-  cardBeingTouched: CardClass | null = null;
+  cardsBeingTouched: CardClass[] | null = null;
   isDragging = false;
   canAutoComplete = false;
 
@@ -78,6 +78,7 @@ export class GameState {
     this.clearBoard();
     this.history = [];
     this.createDeck();
+    this.canAutoComplete = false;
 
     for (let i = 0; i < 7; i++) {
       for (let j = 0; j < 7; j++) {
@@ -102,12 +103,33 @@ export class GameState {
     this.deck.forEach((card, i) => {
       card.setIsActive(true);
       card.setLocationOnBoard(`handItem${i + 1}`);
-      this.board.hand.addCard(card, `handItem${i + 1}` as HandItemKey);
+      this.board.hand.addCard(card, `handItem${i + 1}` as handItemKey);
     });
   }
 
-  setCardBeingTouched(card: CardClass | null) {
-    this.cardBeingTouched = card;
+  setCardsBeingTouched(card: CardClass | null) {
+    if (!card) {
+      this.cardsBeingTouched = null;
+      return;
+    }
+
+    if (
+      foundationKeys.includes(card?.locationOnBoard as foundationKey) ||
+      handKeys.includes(card?.locationOnBoard as handItemKey)
+    ) {
+      console.log([card]);
+      this.cardsBeingTouched = [card];
+      return;
+    }
+
+    // card is in a column
+    const entireColumn =
+      this.board.tableau[card.locationOnBoard as columnKey].arrayOfCards;
+
+    const cardIndex = entireColumn.findIndex((c) => c.id === card.id);
+
+    const cardsToMove = entireColumn.slice(cardIndex);
+    this.cardsBeingTouched = cardsToMove;
   }
 
   setIsDragging(isDragging: boolean) {
@@ -129,8 +151,8 @@ export class GameState {
         this.moveFoundationToColumn(card, dropId as columnKey);
       }
       // to hand
-      else if (handKeys.includes(dropId as HandItemKey)) {
-        this.moveFoundationToHand(card, dropId as HandItemKey);
+      else if (handKeys.includes(dropId as handItemKey)) {
+        this.moveFoundationToHand(card, dropId as handItemKey);
       }
     }
 
@@ -148,12 +170,12 @@ export class GameState {
         this.moveColumnToColumn(card, dropId as columnKey);
       }
       // to hand
-      else if (handKeys.includes(dropId as HandItemKey)) {
-        this.moveColumnToHand(card, dropId as HandItemKey);
+      else if (handKeys.includes(dropId as handItemKey)) {
+        this.moveColumnToHand(card, dropId as handItemKey);
       }
     }
     // from hand
-    else if (handKeys.includes(card.locationOnBoard as HandItemKey)) {
+    else if (handKeys.includes(card.locationOnBoard as handItemKey)) {
       // to foundation
       if (
         foundationKeys.includes(dropId as foundationKey) ||
@@ -166,8 +188,8 @@ export class GameState {
         this.moveHandToColumn(card, dropId as columnKey);
       }
       // to hand
-      else if (handKeys.includes(dropId as HandItemKey)) {
-        this.moveHandToHand(card, dropId as HandItemKey);
+      else if (handKeys.includes(dropId as handItemKey)) {
+        this.moveHandToHand(card, dropId as handItemKey);
       }
     }
   }
@@ -255,7 +277,7 @@ export class GameState {
     this.checkForWin();
   }
 
-  moveFoundationToHand(card: CardClass, dropId: HandItemKey) {
+  moveFoundationToHand(card: CardClass, dropId: handItemKey) {
     // handItem must be empty
     if (this.board.hand[dropId]) return;
 
@@ -365,7 +387,7 @@ export class GameState {
     this.checkForWin();
   }
 
-  moveColumnToHand(card: CardClass, dropId: HandItemKey) {
+  moveColumnToHand(card: CardClass, dropId: handItemKey) {
     // card must not be buried
     if (!this.cardIsOnTop(card)) return;
 
@@ -416,7 +438,7 @@ export class GameState {
     this.takeSnapshot();
 
     // remove card from hand
-    this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
+    this.board.hand.removeCard(card.locationOnBoard as handItemKey);
     // add card to foundation
     targetFoundation.addCards([card]);
 
@@ -465,7 +487,7 @@ export class GameState {
     this.takeSnapshot();
 
     // remove card from hand
-    this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
+    this.board.hand.removeCard(card.locationOnBoard as handItemKey);
 
     // add card to column
     destinationColumn.addCards([card]);
@@ -474,7 +496,7 @@ export class GameState {
     this.checkForWin();
   }
 
-  moveHandToHand(card: CardClass, dropId: HandItemKey) {
+  moveHandToHand(card: CardClass, dropId: handItemKey) {
     // destination hand item must be empty
     if (this.board.hand[dropId]) return;
 
@@ -482,7 +504,7 @@ export class GameState {
     this.takeSnapshot();
 
     // remove card from hand
-    this.board.hand.removeCard(card.locationOnBoard as HandItemKey);
+    this.board.hand.removeCard(card.locationOnBoard as handItemKey);
     // add card to hand
     this.board.hand.addCard(card, dropId);
   }

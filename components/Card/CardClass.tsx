@@ -7,7 +7,6 @@ class CardClass {
   id: string;
   isActive: boolean;
   isFaceUp: boolean;
-  isFlipping: boolean;
   locationOnBoard: string | null;
 
   constructor(value: Value, suit: Suit) {
@@ -17,7 +16,6 @@ class CardClass {
     this.id = `${value}_of_${suit}`;
     this.isActive = false;
     this.isFaceUp = true;
-    this.isFlipping = false;
     this.locationOnBoard = null;
   }
 
@@ -27,10 +25,6 @@ class CardClass {
 
   setIsFaceUp(isFaceUp: boolean) {
     this.isFaceUp = isFaceUp;
-  }
-
-  setIsFlipping(isFlipping: boolean) {
-    this.isFlipping = isFlipping;
   }
 
   setLocationOnBoard(location: string | null) {
