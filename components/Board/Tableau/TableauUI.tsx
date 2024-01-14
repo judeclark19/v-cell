@@ -4,6 +4,8 @@ import ColumnUI from "./ColumnUI";
 import styled from "styled-components";
 import gameState from "@/logic/GameState";
 import { columnKeys } from "@/logic/types";
+import { getCardOffsetAmount, getCardSize } from "../Board";
+import { cardSizes } from "@/components/Card/CardUI.styles";
 
 const TableauStyles = styled.div<{
   $windowWidth: number;
@@ -12,7 +14,11 @@ const TableauStyles = styled.div<{
   flex-wrap: nowrap;
   justify-content: space-between;
   width: 100%;
-  height: ${({ $windowWidth }) => ($windowWidth < 1180 ? "500px" : "850px")};
+  height: ${(props) => {
+    const cardHeight = cardSizes[getCardSize(props.$windowWidth)].height;
+    const offset = getCardOffsetAmount(getCardSize(props.$windowWidth));
+    return `${cardHeight + offset * 20}px`;
+  }};
 `;
 
 const TableauUI = observer(() => {

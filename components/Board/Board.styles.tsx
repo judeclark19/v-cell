@@ -70,6 +70,11 @@ export const BoardContainer = styled.div<{
     props.$orientation === "landscape" ? "row" : "column"};
   border-radius: 4px;
 
+  @media screen and (max-width: 768px) {
+    padding: 20px 10px;
+    max-width: calc(100vw - 10px);
+  }
+
   .scroll {
     background-color: #487860;
     border-radius: 4px;
