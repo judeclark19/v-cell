@@ -117,7 +117,6 @@ export class GameState {
       foundationKeys.includes(card?.locationOnBoard as foundationKey) ||
       handKeys.includes(card?.locationOnBoard as handItemKey)
     ) {
-      console.log([card]);
       this.cardsBeingTouched = [card];
       return;
     }
