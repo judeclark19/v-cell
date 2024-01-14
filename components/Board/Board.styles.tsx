@@ -12,6 +12,8 @@ export const GameTitle = styled.h1<{ $windowWidth: number }>`
 
 export const GameControlButtons = styled.div<{ $windowWidth: number }>`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: ${({ $windowWidth }) => ($windowWidth >= 675 ? "40px" : "20px")};
   margin-bottom: ${({ $windowWidth }) =>
@@ -20,6 +22,17 @@ export const GameControlButtons = styled.div<{ $windowWidth: number }>`
   button {
     font-size: ${({ $windowWidth }) => ($windowWidth >= 675 ? "18px" : "14px")};
     padding: ${({ $windowWidth }) => ($windowWidth >= 675 ? "10px" : "5px")};
+  }
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .deal-again {
+    font-size: ${({ $windowWidth }) => ($windowWidth >= 675 ? "20px" : "16px")};
+    padding: ${({ $windowWidth }) => ($windowWidth >= 675 ? "14px" : "10px")};
   }
 `;
 
@@ -84,7 +97,7 @@ export const CardBeingDragged = styled.div.attrs<CardBeingDraggedProps>(
   border: 1px solid gray;
   /* z-index: 30; */
   border-radius: 5px;
-  /* background-color: aqua; */
+  background-color: aqua;
   height: ${(props) => cardSizes[props.$size].height}px;
   width: ${(props) => cardSizes[props.$size].width}px;
 `;

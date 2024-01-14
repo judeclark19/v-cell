@@ -101,15 +101,12 @@ const Board = observer(() => {
       ?.getAttribute("data-dropid");
 
     if (!dropId || !gameState.cardBeingTouched) {
-      console.log("dropId or cardBeingTouched is null");
-      console.log("dropId: ", dropId);
-      console.log("cardBeingTouched: ", gameState.cardBeingTouched);
       gameState.setIsDragging(false);
       gameState.setCardBeingTouched(null);
       return;
     }
+
     if (dropId === gameState.cardBeingTouched.locationOnBoard) {
-      console.log("dropId is same as cardBeingTouched.locationOnBoard");
       gameState.setIsDragging(false);
       gameState.setCardBeingTouched(null);
       return;
@@ -197,41 +194,47 @@ const Board = observer(() => {
         V-Cell
       </GameTitle>
       <GameControlButtons $windowWidth={windowWidth}>
-        <GameControlButton
-          style={{
-            backgroundColor: "#0099cc",
-            borderColor: "#0099cc"
-          }}
-          onClick={() => {
-            gameState.dealCards();
-          }}
-        >
-          Deal again
-        </GameControlButton>
-        <GameControlButton
-          style={{
-            backgroundColor: "#dc3a3a",
-            borderColor: "#dc3a3a"
-          }}
-          disabled={gameState.history.length === 0}
-          onClick={() => {
-            gameState.undo();
-          }}
-        >
-          Undo
-        </GameControlButton>
-        <GameControlButton
-          style={{
-            backgroundColor: "#33d849",
-            borderColor: "#33d849"
-          }}
-          disabled={!gameState.canAutoComplete}
-          onClick={() => {
-            gameState.autoComplete();
-          }}
-        >
-          Autocomplete
-        </GameControlButton>
+        <div>
+          <GameControlButton
+            className="deal-again"
+            style={{
+              backgroundColor: "#0099cc",
+              borderColor: "#0099cc"
+            }}
+            onClick={() => {
+              gameState.dealCards();
+            }}
+          >
+            Deal again
+          </GameControlButton>
+        </div>
+        <div>
+          {" "}
+          <GameControlButton
+            style={{
+              backgroundColor: "#dc3a3a",
+              borderColor: "#dc3a3a"
+            }}
+            disabled={gameState.history.length === 0}
+            onClick={() => {
+              gameState.undo();
+            }}
+          >
+            Undo
+          </GameControlButton>
+          <GameControlButton
+            style={{
+              backgroundColor: "#33d849",
+              borderColor: "#33d849"
+            }}
+            disabled={!gameState.canAutoComplete}
+            onClick={() => {
+              gameState.autoComplete();
+            }}
+          >
+            Autocomplete
+          </GameControlButton>
+        </div>
       </GameControlButtons>
       <BoardContainer $orientation={orientation} $windowWidth={windowWidth}>
         {gameState.cardBeingTouched && gameState.isDragging && (
