@@ -26,9 +26,11 @@ import CardsBeingDragged from "../CardsBeingDragged";
 
 const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 
-const testMode = false;
+export const getCardSize = (windowWidth: number, windowHeight: number) => {
+  if (windowHeight < 500 && windowWidth >= 500) {
+    return "small";
+  }
 
-export const getCardSize = (windowWidth: number) => {
   // above 1180 medium, btw 675 and 1180 small, below 675 xSmall
   if (windowWidth >= 1180) {
     return "large";
@@ -58,6 +60,7 @@ const Board = observer(() => {
     boardOrientationState
   );
   const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
 
   let lastKnownOrientation: Orientation = orientation;
@@ -150,51 +153,6 @@ const Board = observer(() => {
     return <div>Loading...</div>;
   }
 
-  if (testMode)
-    return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-        <Spot $size="large">
-          <DropSpot size="large" dropId="testdrop1">
-            <CardUI
-              size="large"
-              card={new CardClass("queen", "spades")}
-              zIndex={1}
-            />
-          </DropSpot>
-        </Spot>
-
-        <Spot $size="medium">
-          <DropSpot size="medium" dropId="testdrop2">
-            <CardUI
-              size="medium"
-              card={new CardClass("queen", "spades")}
-              zIndex={1}
-            />
-          </DropSpot>
-        </Spot>
-
-        <Spot $size="small">
-          <DropSpot size="small" dropId="testdrop3">
-            <CardUI
-              size="small"
-              card={new CardClass("queen", "spades")}
-              zIndex={1}
-            />
-          </DropSpot>
-        </Spot>
-
-        <Spot $size="tiny">
-          <DropSpot size="tiny" dropId="testdrop4">
-            <CardUI
-              size="tiny"
-              card={new CardClass("queen", "spades")}
-              zIndex={1}
-            />
-          </DropSpot>
-        </Spot>
-      </div>
-    );
-
   return (
     <>
       <GameTitle className={luckyGuy.className} $windowWidth={windowWidth}>
@@ -216,7 +174,6 @@ const Board = observer(() => {
           </GameControlButton>
         </div>
         <div>
-          {" "}
           <GameControlButton
             style={{
               backgroundColor: "#dc3a3a",

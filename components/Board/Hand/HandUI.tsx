@@ -10,6 +10,7 @@ import { useRecoilValue } from "recoil";
 import {
   Orientation,
   boardOrientationState,
+  windowHeightState,
   windowWidthState
 } from "@/logic/BoardOrientation";
 import { getCardSize } from "../Board";
@@ -48,17 +49,22 @@ const HandUI = observer(() => {
   const hand = gameState.board.hand;
   const orientation = useRecoilValue(boardOrientationState);
   const windowWidth = useRecoilValue(windowWidthState);
+  const windowHeight = useRecoilValue(windowHeightState);
 
   return (
     <HandStyles $orientation={orientation} $windowWidth={windowWidth}>
       {handKeys.map((key) => {
         const card = hand[key];
         return (
-          <DropSpot size={getCardSize(windowWidth)} key={key} dropId={key}>
-            <Spot $size={getCardSize(windowWidth)}>
+          <DropSpot
+            size={getCardSize(windowWidth, windowHeight)}
+            key={key}
+            dropId={key}
+          >
+            <Spot $size={getCardSize(windowWidth, windowHeight)}>
               {card && (
                 <CardUI
-                  size={getCardSize(windowWidth)}
+                  size={getCardSize(windowWidth, windowHeight)}
                   card={card}
                   zIndex={1}
                 />

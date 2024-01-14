@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { cardSize, cardSizes } from "./Card/CardUI.styles";
 import { getCardOffsetAmount, getCardSize } from "./Board/Board";
 import { useRecoilValue } from "recoil";
-import { windowWidthState } from "@/logic/BoardOrientation";
+import { windowHeightState, windowWidthState } from "@/logic/BoardOrientation";
 import styled from "styled-components";
 import CardUI from "./Card/CardUI";
 import CardClass from "./Card/CardClass";
@@ -32,15 +32,20 @@ export const CardsBeingDraggedStyle = styled.div.attrs<CardsBeingDraggedProps>(
 const CardsBeingDragged = observer(
   ({ dragPosition }: { dragPosition: { left: number; top: number } }) => {
     const windowWidth = useRecoilValue(windowWidthState);
+    const windowHeight = useRecoilValue(windowHeightState);
     const cardsToRender = gameState.cardsBeingTouched;
 
     return (
       <CardsBeingDraggedStyle
-        $size={getCardSize(windowWidth)}
+        $size={getCardSize(windowWidth, windowHeight)}
         $left={
-          dragPosition.left - getCardOffsetAmount(getCardSize(windowWidth))
+          dragPosition.left -
+          getCardOffsetAmount(getCardSize(windowWidth, windowHeight))
         }
-        $top={dragPosition.top - getCardOffsetAmount(getCardSize(windowWidth))}
+        $top={
+          dragPosition.top -
+          getCardOffsetAmount(getCardSize(windowWidth, windowHeight))
+        }
       >
         {cardsToRender &&
           cardsToRender.map((card, index) => {
@@ -50,10 +55,13 @@ const CardsBeingDragged = observer(
             return (
               <CardUI
                 key={card.id}
-                size={getCardSize(windowWidth)}
+                size={getCardSize(windowWidth, windowHeight)}
                 card={cardClass}
                 zIndex={100 + index}
-                offset={index * getCardOffsetAmount(getCardSize(windowWidth))}
+                offset={
+                  index *
+                  getCardOffsetAmount(getCardSize(windowWidth, windowHeight))
+                }
               />
             );
           })}
