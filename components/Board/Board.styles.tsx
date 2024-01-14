@@ -63,6 +63,7 @@ export const BoardContainer = styled.div<{
       return "450px";
     }
   }};
+  max-height: 100vh;
   gap: 30px !important;
   margin: auto;
   display: flex;

@@ -25,7 +25,6 @@ export const CardsBeingDraggedStyle = styled.div.attrs<CardsBeingDraggedProps>(
   position: absolute;
   border: 1px solid gray;
   border-radius: 5px;
-  background-color: aqua;
   height: ${(props) => cardSizes[props.$size].height}px;
   width: ${(props) => cardSizes[props.$size].width}px;
 `;

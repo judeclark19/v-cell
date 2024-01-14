@@ -80,8 +80,15 @@ const Board = observer(() => {
 
   const handlePointerMove = (event: PointerEvent) => {
     if (!gameState.cardsBeingTouched) return;
-    gameState.setIsDragging(true);
-    setDragPosition({ left: event.clientX, top: event.clientY });
+    gameState.setIsDragging(true); // Get the scroll positions
+    const scrollX = window.scrollX || document.documentElement.scrollLeft;
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+
+    // Add the scroll positions to the clientX and clientY
+    setDragPosition({
+      left: event.clientX + scrollX,
+      top: event.clientY + scrollY
+    });
   };
 
   const handlePointerUp = (event: PointerEvent) => {
@@ -236,7 +243,13 @@ const Board = observer(() => {
           </GameControlButton>
         </div>
       </GameControlButtons>
-      <BoardContainer $orientation={orientation} $windowWidth={windowWidth}>
+      <BoardContainer
+        onPointerLeave={(e) => {
+          handlePointerUp(e as unknown as PointerEvent);
+        }}
+        $orientation={orientation}
+        $windowWidth={windowWidth}
+      >
         {gameState.cardsBeingTouched && gameState.isDragging && (
           <CardsBeingDragged dragPosition={dragPosition} />
         )}
