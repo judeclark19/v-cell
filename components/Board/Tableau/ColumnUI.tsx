@@ -22,14 +22,16 @@ const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
         key={columnData.key}
         dropId={columnData.key}
       >
-        <Spot $size={getCardSize(windowWidth, windowHeight)} />
+        <Spot $size={getCardSize(windowWidth, windowHeight)}>
+          <span className="label">K</span>
+        </Spot>
       </DropSpot>
     );
   }
 
   return (
     <Spot key={columnData.key} $size={getCardSize(windowWidth, windowHeight)}>
-      <span>K</span>
+      <span className="label">K</span>
       {columnData.arrayOfCards.map((card, i) => {
         // final card will have a drop spot
         if (i === columnData.arrayOfCards.length - 1) {

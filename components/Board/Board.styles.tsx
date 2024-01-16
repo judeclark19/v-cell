@@ -58,6 +58,7 @@ export const BoardContainer = styled.div<{
       return "450px";
     }
   }};
+  min-height: calc(100vh - 20px);
   max-height: calc(100vh - 100px);
   gap: 30px !important;
   margin: auto;
@@ -75,7 +76,6 @@ export const BoardContainer = styled.div<{
     border-radius: 4px;
     overflow-y: auto;
     padding: 10px;
-    border: 2px solid red;
   }
 `;
 export const Spot = styled.div<{
@@ -91,7 +91,7 @@ export const Spot = styled.div<{
   display: grid;
   place-items: center;
 
-  > span {
+  .label {
     height: fit-content !important;
     font-size: ${(props) => {
       switch (props.$size) {
