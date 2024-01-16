@@ -12,12 +12,11 @@ export const GameTitle = styled.h1<{ $windowWidth: number }>`
 
 export const GameControlButtons = styled.div<{ $windowWidth: number }>`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: ${({ $windowWidth }) => ($windowWidth >= 675 ? "40px" : "20px")};
-  margin-bottom: ${({ $windowWidth }) =>
-    $windowWidth >= 675 ? "40px" : "20px"};
+  margin: ${({ $windowWidth }) =>
+    $windowWidth >= 675 ? "40px auto" : "20px auto"};
 
   button {
     font-size: ${({ $windowWidth }) => ($windowWidth >= 675 ? "18px" : "14px")};
@@ -28,11 +27,6 @@ export const GameControlButtons = styled.div<{ $windowWidth: number }>`
     display: flex;
     align-items: center;
     gap: 20px;
-  }
-
-  .deal-again {
-    font-size: ${({ $windowWidth }) => ($windowWidth >= 675 ? "20px" : "16px")};
-    padding: ${({ $windowWidth }) => ($windowWidth >= 675 ? "14px" : "10px")};
   }
 `;
 
@@ -52,8 +46,9 @@ export const BoardContainer = styled.div<{
 }>`
   background-color: #35654d;
   padding: 20px;
-  width: ${(props) => props.$orientation === "landscape" && "1400px"};
-  max-width: calc(100vw - 20px);
+  width: ${({ $windowWidth }) =>
+    $windowWidth >= 768 ? "calc(100vw - 40px)" : "calc(100vw - 20px)"};
+  max-width: 1100px;
   height: ${({ $windowWidth }) => {
     if ($windowWidth >= 1180) {
       return "fit-content";
@@ -63,12 +58,11 @@ export const BoardContainer = styled.div<{
       return "450px";
     }
   }};
-  max-height: 100vh;
+  max-height: calc(100vh - 100px);
   gap: 30px !important;
   margin: auto;
   display: flex;
-  flex-direction: ${(props) =>
-    props.$orientation === "landscape" ? "row" : "column"};
+  flex-direction: column;
   border-radius: 4px;
 
   @media screen and (max-width: 768px) {
@@ -79,9 +73,9 @@ export const BoardContainer = styled.div<{
   .scroll {
     background-color: #487860;
     border-radius: 4px;
-    flex-grow: 1;
     overflow-y: auto;
     padding: 10px;
+    border: 2px solid red;
   }
 `;
 export const Spot = styled.div<{

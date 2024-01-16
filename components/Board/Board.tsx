@@ -141,48 +141,7 @@ const Board = observer(() => {
       <GameTitle className={luckyGuy.className} $windowWidth={windowWidth}>
         V-Cell
       </GameTitle>
-      <GameControlButtons $windowWidth={windowWidth}>
-        <div>
-          <GameControlButton
-            className="deal-again"
-            style={{
-              backgroundColor: "#0099cc",
-              borderColor: "#0099cc"
-            }}
-            onClick={() => {
-              gameState.dealCards();
-            }}
-          >
-            Deal again
-          </GameControlButton>
-        </div>
-        <div>
-          <GameControlButton
-            style={{
-              backgroundColor: "#dc3a3a",
-              borderColor: "#dc3a3a"
-            }}
-            disabled={gameState.history.length === 0}
-            onClick={() => {
-              gameState.undo();
-            }}
-          >
-            Undo
-          </GameControlButton>
-          <GameControlButton
-            style={{
-              backgroundColor: "#33d849",
-              borderColor: "#33d849"
-            }}
-            disabled={!gameState.canAutoComplete}
-            onClick={() => {
-              gameState.autoComplete();
-            }}
-          >
-            Autocomplete
-          </GameControlButton>
-        </div>
-      </GameControlButtons>
+
       <BoardContainer
         onPointerLeave={(e) => {
           handlePointerUp(e as unknown as PointerEvent);
@@ -200,6 +159,45 @@ const Board = observer(() => {
         </div>
         <HandUI />
       </BoardContainer>
+
+      <GameControlButtons $windowWidth={windowWidth}>
+        <GameControlButton
+          className="deal-again"
+          style={{
+            backgroundColor: "#0099cc",
+            borderColor: "#0099cc"
+          }}
+          onClick={() => {
+            gameState.dealCards();
+          }}
+        >
+          Deal again
+        </GameControlButton>
+        <GameControlButton
+          style={{
+            backgroundColor: "#33d849",
+            borderColor: "#33d849"
+          }}
+          disabled={!gameState.canAutoComplete}
+          onClick={() => {
+            gameState.autoComplete();
+          }}
+        >
+          Autocomplete
+        </GameControlButton>
+        <GameControlButton
+          style={{
+            backgroundColor: "#dc3a3a",
+            borderColor: "#dc3a3a"
+          }}
+          disabled={gameState.history.length === 0}
+          onClick={() => {
+            gameState.undo();
+          }}
+        >
+          Undo
+        </GameControlButton>
+      </GameControlButtons>
     </>
   );
 });

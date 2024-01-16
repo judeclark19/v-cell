@@ -19,19 +19,13 @@ export const FoundationsStyle = styled.div<{
   display: flex;
   flex-wrap: wrap;
   gap: ${(props) => {
-    if (props.$orientation === "landscape") {
-      return "20px";
-    } else if (props.$windowWidth >= 720) {
+    if (props.$windowWidth >= 720) {
       return "50px";
     } else return "10px";
   }};
-  width: ${({ $orientation }) =>
-    $orientation === "portrait" ? "100%" : "fit-content"};
-  justify-content: ${({ $orientation }) =>
-    $orientation === "landscape" ? "start" : "end"};
-  flex-direction: ${({ $orientation }) =>
-    $orientation === "landscape" ? "column" : "row"};
-
+  width: 100%;
+  justify-content: end;
+  flex-direction: row;
   ${Spot} {
     display: grid;
     place-items: center;

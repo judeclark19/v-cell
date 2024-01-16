@@ -6,10 +6,6 @@ import styled from "styled-components";
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  .flex-grow {
-    flex-grow: 1;
-  }
 `;
 
 const Footer = styled.footer`
