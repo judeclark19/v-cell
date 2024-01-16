@@ -72,7 +72,6 @@ export const BoardContainer = styled.div<{
     max-width: calc(100vw - 10px);
   }
 
-  // screen ax width 768px AND orientation landscape
   @media screen and (min-width: 768px) and (orientation: landscape) {
     min-height: 600px;
   }
