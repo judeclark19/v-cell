@@ -51,10 +51,11 @@ const CardsBeingDragged = observer(
           getCardOffsetAmount(getCardSize(windowWidth, windowHeight))
         }
       >
-        {cardsToRender &&
-          cardsToRender.map((card, index) => {
+        {gameState.cardsBeingTouched &&
+          gameState.cardsBeingTouched.map((card, index) => {
             const cardClass = new CardClass(card.value, card.suit);
             cardClass.setLocationOnBoard("dragging");
+            // cardClass.setIsActive(true);
 
             return (
               <CardUI
@@ -66,6 +67,7 @@ const CardsBeingDragged = observer(
                   index *
                   getCardOffsetAmount(getCardSize(windowWidth, windowHeight))
                 }
+                locationOnBoard={card.locationOnBoard}
               />
             );
           })}

@@ -3,20 +3,21 @@ import CardClass from "./CardClass";
 import gameState from "@/logic/GameState";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { columnKeys } from "@/logic/types";
 
 const CardUI = observer(
   ({
     size,
     card,
     zIndex,
-    offset
+    offset,
+    locationOnBoard
   }: {
     size: cardSize;
     card: CardClass;
     zIndex: number;
     offset?: number;
     spacer?: boolean;
+    locationOnBoard?: string | null;
   }) => {
     const [lastTapTimestamp, setLastTapTimestamp] = useState(0);
 
@@ -94,6 +95,7 @@ const CardUI = observer(
         $offset={offset}
         $isActive={card.isActive}
         $isFaceUp={card.isFaceUp}
+        $locationOnBoard={card.locationOnBoard}
         onPointerDown={(e) => {
           e.stopPropagation();
           e.preventDefault();

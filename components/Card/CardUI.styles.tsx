@@ -39,7 +39,9 @@ export const CardStyle = styled.div<{
   $offset?: number;
   $isActive?: boolean;
   $isFaceUp?: boolean;
+  $locationOnBoard?: string | null;
 }>`
+  overflow: hidden;
   cursor: ${(props) => (props.$isActive ? "pointer" : "default")};
   pointer-events: ${(props) => (props.$isActive ? "auto" : "none")};
   touch-action: none;
@@ -100,6 +102,11 @@ export const CardStyle = styled.div<{
 
   .card-front {
     display: ${(props) => (props.$isFaceUp ? "block" : "none")};
+    height: 100%;
+    background-color: ${(props) =>
+      props.$isActive || props.$locationOnBoard === "dragging"
+        ? "white"
+        : "#e0e0e0"};
 
     padding: ${({ $size }) => {
       switch ($size) {
