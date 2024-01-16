@@ -58,7 +58,7 @@ export const BoardContainer = styled.div<{
       return "450px";
     }
   }};
-  min-height: calc(100vh - 20px);
+  min-height: 600px;
   max-height: calc(100vh - 100px);
   gap: 30px !important;
   margin: auto;
@@ -68,7 +68,13 @@ export const BoardContainer = styled.div<{
 
   @media screen and (max-width: 768px) {
     padding: 20px 10px;
+    min-height: fit-content;
     max-width: calc(100vw - 10px);
+  }
+
+  // screen ax width 768px AND orientation landscape
+  @media screen and (min-width: 768px) and (orientation: landscape) {
+    min-height: 600px;
   }
 
   .scroll {
