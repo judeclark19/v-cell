@@ -22,6 +22,7 @@ const HandStyles = styled.div<{
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+  padding: 0 10px;
   justify-content: space-between;
   gap: ${(props) => {
     if (props.$windowWidth >= 720) {

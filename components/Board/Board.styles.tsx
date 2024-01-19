@@ -1,26 +1,41 @@
 import styled from "styled-components";
-import { CardStyle, cardSize, cardSizes } from "../Card/CardUI.styles";
-import { Orientation } from "@/logic/OrientationAndSize";
+import { cardSize, cardSizes } from "../Card/CardUI.styles";
 
-export const GameTitle = styled.h1<{ $windowWidth: number }>`
+export const GameTitle = styled.h1`
   width: 100%;
+  color: white;
   text-align: center;
   margin-top: 50px;
-  margin-bottom: ${({ $windowWidth }) => $windowWidth < 675 && "25px"};
-  font-size: ${({ $windowWidth }) => ($windowWidth >= 675 ? "100px" : "50px")};
+  margin-bottom: 20px;
+  font-size: 70px;
+
+  @media screen and (max-width: 992px) {
+    margin-top: 20px;
+    margin-bottom: 12px;
+    font-size: 40px;
+  }
 `;
 
-export const GameControlButtons = styled.div<{ $windowWidth: number }>`
+export const GameControlButtons = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${({ $windowWidth }) => ($windowWidth >= 675 ? "40px" : "20px")};
-  margin: ${({ $windowWidth }) =>
-    $windowWidth >= 675 ? "40px auto" : "20px auto"};
+  gap: 40px;
+  margin: 40px auto;
+
+  @media screen and (max-width: 992px) {
+    gap: 20px;
+    margin: 20px auto;
+  }
 
   button {
-    font-size: ${({ $windowWidth }) => ($windowWidth >= 675 ? "18px" : "14px")};
-    padding: ${({ $windowWidth }) => ($windowWidth >= 675 ? "10px" : "5px")};
+    font-size: 18px;
+    padding: 10px;
+
+    @media screen and (max-width: 992px) {
+      font-size: 14px;
+      padding: 5px;
+    }
   }
 
   > div {
@@ -32,6 +47,7 @@ export const GameControlButtons = styled.div<{ $windowWidth: number }>`
 
 export const GameControlButton = styled.button`
   cursor: pointer;
+  color: white;
   border-radius: 4px;
 
   &:disabled {
@@ -40,40 +56,26 @@ export const GameControlButton = styled.button`
   }
 `;
 
-export const BoardContainer = styled.div<{
-  $orientation: Orientation;
-  $windowWidth: number;
-}>`
+export const BoardContainer = styled.div`
   background-color: #35654d;
   padding: 20px;
-  width: ${({ $windowWidth }) =>
-    $windowWidth >= 768 ? "calc(100vw - 40px)" : "calc(100vw - 20px)"};
+  width: calc(100vw - 20px);
   max-width: 1100px;
-  height: ${({ $windowWidth }) => {
-    if ($windowWidth >= 1180) {
-      return "fit-content";
-    } else if ($windowWidth < 1180 && $windowWidth >= 500) {
-      return "650px";
-    } else if ($windowWidth < 500) {
-      return "450px";
-    }
-  }};
-  min-height: 600px;
-  max-height: calc(100vh - 100px);
-  gap: 30px !important;
+  height: fit-content;
+  min-height: 50vh;
+  max-height: 80vh;
+  gap: 30px;
   margin: auto;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
 
   @media screen and (max-width: 768px) {
-    padding: 20px 10px;
+    padding: 10px;
+    gap: 10px;
     min-height: fit-content;
+    width: calc(100vw - 40px);
     max-width: calc(100vw - 10px);
-  }
-
-  @media screen and (min-width: 768px) and (orientation: landscape) {
-    min-height: 600px;
   }
 
   .scroll {
@@ -83,6 +85,7 @@ export const BoardContainer = styled.div<{
     padding: 10px;
   }
 `;
+
 export const Spot = styled.div<{
   $size: cardSize;
 }>`
@@ -113,9 +116,5 @@ export const Spot = styled.div<{
       }
     }};
     color: rgba(255, 255, 255, 0.5);
-  }
-
-  ${CardStyle} {
-    position: absolute;
   }
 `;

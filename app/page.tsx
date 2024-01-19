@@ -6,6 +6,11 @@ import styled from "styled-components";
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+
+  .flex-grow {
+    flex-grow: 1;
+  }
 `;
 
 const Footer = styled.footer`
@@ -13,6 +18,11 @@ const Footer = styled.footer`
   gap: 20px;
   justify-content: center;
   padding: 20px;
+  color: white;
+
+  a {
+    color: inherit;
+  }
 
   hr {
     display: none;
@@ -31,6 +41,10 @@ const Footer = styled.footer`
     hr {
       display: block;
       width: 100px;
+    }
+
+    > div {
+      text-align: center;
     }
   }
 `;

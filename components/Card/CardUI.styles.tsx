@@ -267,7 +267,6 @@ export const CardStyle = styled.div<{
     display: ${(props) => (props.$isFaceUp ? "none" : "block")};
     height: 100%;
     border-radius: 2px;
-    /* padding: ${({ $size }) => ($size === "small" ? "2px" : "4px")}; */
     padding: ${({ $size }) => {
       switch ($size) {
         case "small":

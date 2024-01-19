@@ -37,7 +37,6 @@ const CardsBeingDragged = observer(
   ({ dragPosition }: { dragPosition: { left: number; top: number } }) => {
     const windowWidth = useRecoilValue(windowWidthState);
     const windowHeight = useRecoilValue(windowHeightState);
-    const cardsToRender = gameState.cardsBeingTouched;
 
     return (
       <CardsBeingDraggedStyle
@@ -55,7 +54,6 @@ const CardsBeingDragged = observer(
           gameState.cardsBeingTouched.map((card, index) => {
             const cardClass = new CardClass(card.value, card.suit);
             cardClass.setLocationOnBoard("dragging");
-            // cardClass.setIsActive(true);
 
             return (
               <CardUI
@@ -67,7 +65,6 @@ const CardsBeingDragged = observer(
                   index *
                   getCardOffsetAmount(getCardSize(windowWidth, windowHeight))
                 }
-                locationOnBoard={card.locationOnBoard}
               />
             );
           })}

@@ -41,7 +41,7 @@ const Board = observer(() => {
   const [orientation, setBoardOrientation] = useRecoilState(
     boardOrientationState
   );
-  const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
+  const setWindowWidth = useSetRecoilState(windowWidthState);
   const setWindowHeight = useSetRecoilState(windowHeightState);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
 
@@ -61,6 +61,7 @@ const Board = observer(() => {
   };
 
   const handlePointerDown = () => {
+    console.log("board handlePointerDown");
     gameState.setIsDragging(false);
   };
 
@@ -138,16 +139,12 @@ const Board = observer(() => {
 
   return (
     <>
-      <GameTitle className={luckyGuy.className} $windowWidth={windowWidth}>
-        V-Cell
-      </GameTitle>
+      <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
 
       <BoardContainer
         onPointerLeave={(e) => {
           handlePointerUp(e as unknown as PointerEvent);
         }}
-        $orientation={orientation}
-        $windowWidth={windowWidth}
       >
         {gameState.cardsBeingTouched && gameState.isDragging && (
           <CardsBeingDragged dragPosition={dragPosition} />
@@ -160,7 +157,7 @@ const Board = observer(() => {
         <HandUI />
       </BoardContainer>
 
-      <GameControlButtons $windowWidth={windowWidth}>
+      <GameControlButtons>
         <GameControlButton
           className="deal-again"
           style={{

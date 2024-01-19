@@ -18,12 +18,8 @@ export const windowHeightState = atom<number>({
 });
 
 export const getCardSize = (windowWidth: number, windowHeight: number) => {
-  if (windowHeight < 500 && windowWidth >= 500) {
-    return "small";
-  } else if (windowHeight >= 1000) return "large";
-  else if (windowWidth >= 675) {
-    return "medium";
-  } else if (windowWidth >= 500) {
-    return "small";
-  } else return "tiny";
+  if (windowHeight < 500 || windowWidth < 500) return "tiny";
+  else if (windowHeight < 700 || windowWidth < 700) return "small";
+  else if (windowHeight < 1000 || windowWidth < 1000) return "medium";
+  else return "large";
 };

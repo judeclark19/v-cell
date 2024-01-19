@@ -9,15 +9,13 @@ const CardUI = observer(
     size,
     card,
     zIndex,
-    offset,
-    locationOnBoard
+    offset
   }: {
     size: cardSize;
     card: CardClass;
     zIndex: number;
     offset?: number;
     spacer?: boolean;
-    locationOnBoard?: string | null;
   }) => {
     const [lastTapTimestamp, setLastTapTimestamp] = useState(0);
 
