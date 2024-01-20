@@ -96,11 +96,12 @@ export const Spot = styled.div<{
   width: ${(props) =>
     cardSizes[props.$size].width + cardSizes[props.$size].spotPadding}px;
   position: relative;
-  display: grid;
-  place-items: center;
 
   .label {
-    height: fit-content !important;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-items: center;
     font-size: ${(props) => {
       switch (props.$size) {
         case "large":

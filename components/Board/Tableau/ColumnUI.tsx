@@ -19,11 +19,10 @@ const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
     return (
       <DropSpot
         size={getCardSize(windowWidth, windowHeight)}
-        key={columnData.key}
         dropId={columnData.key}
       >
         <Spot $size={getCardSize(windowWidth, windowHeight)}>
-          <span className="label">K</span>
+          <div className="label">K</div>
         </Spot>
       </DropSpot>
     );
@@ -31,7 +30,7 @@ const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
 
   return (
     <Spot key={columnData.key} $size={getCardSize(windowWidth, windowHeight)}>
-      <span className="label">K</span>
+      <div className="label">K</div>
       {columnData.arrayOfCards.map((card, i) => {
         // final card will have a drop spot
         if (i === columnData.arrayOfCards.length - 1) {

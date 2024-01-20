@@ -23,7 +23,7 @@ const FoundationUI = observer(
         dropId={foundationData.key}
       >
         <Spot $size={getCardSize(windowWidth, windowHeight)}>
-          <span className="label">A</span>
+          <div className="label">A</div>
           {foundationData.arrayOfCards.map((card, i) => (
             <CardUI
               size={getCardSize(windowWidth, windowHeight)}

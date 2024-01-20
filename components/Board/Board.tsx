@@ -61,7 +61,6 @@ const Board = observer(() => {
   };
 
   const handlePointerDown = () => {
-    console.log("board handlePointerDown");
     gameState.setIsDragging(false);
   };
 
