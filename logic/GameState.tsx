@@ -34,7 +34,7 @@ export class GameState {
   isDragging = false;
   winningBoard = false;
   canAutoComplete = false;
-  winHistory: Date[] = [];
+  winCount = 0;
 
   constructor() {
     makeAutoObservable(this);
@@ -76,11 +76,18 @@ export class GameState {
     };
   }
 
+  setIsWinningBoard(isWinningBoard: boolean) {
+    if (this.winningBoard === false && isWinningBoard === true) {
+      this.winCount++;
+    }
+    this.winningBoard = isWinningBoard;
+  }
+
   dealCards() {
     this.clearBoard();
     this.history = [];
     this.createDeck();
-    this.winningBoard = false;
+    this.setIsWinningBoard(false);
     this.canAutoComplete = false;
 
     for (let i = 0; i < 7; i++) {
@@ -643,7 +650,7 @@ export class GameState {
     });
 
     if (allCardsActive) {
-      this.winningBoard = true;
+      this.setIsWinningBoard(true);
       this.canAutoComplete = true;
     }
   }

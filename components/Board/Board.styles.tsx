@@ -91,7 +91,7 @@ export const BoardContainer = styled.div<{
 export const Spot = styled.div<{
   $size: cardSize;
 }>`
-  border: 2px solid var(--gold);
+  border: 2px solid var(--goldAlpha);
   border-radius: 5px;
   height: ${(props) =>
     cardSizes[props.$size].height + cardSizes[props.$size].spotPadding}px;

@@ -21,6 +21,7 @@ import {
 import { cardSize } from "../Card/CardUI.styles";
 import CardsBeingDragged from "../CardsBeingDragged";
 import WinModal from "./WinModal/WinModal";
+import { winHistoryState } from "@/logic/WinHistory";
 
 const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 
@@ -42,6 +43,7 @@ const Board = observer(() => {
   const [orientation, setBoardOrientation] = useRecoilState(
     boardOrientationState
   );
+  const setWinHistory = useSetRecoilState(winHistoryState);
   const setWindowWidth = useSetRecoilState(windowWidthState);
   const setWindowHeight = useSetRecoilState(windowHeightState);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
@@ -113,6 +115,10 @@ const Board = observer(() => {
 
   useEffect(() => {
     gameState.dealCards();
+    const winHistoryFromStorage = JSON.parse(
+      localStorage.getItem("vCellWinHistory") || "[]"
+    );
+    setWinHistory(winHistoryFromStorage);
     setIsLoading(false);
   }, []);
 

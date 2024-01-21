@@ -96,7 +96,7 @@ export const CardStyle = styled.div<{
     `
     &:hover {
         filter: drop-shadow(5px 5px 5px rgba(255, 215, 0, 0.8));
-        border: 1px solid gold;
+        border: 1px solid var(--gold);
     }
 `}
 
