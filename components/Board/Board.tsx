@@ -170,6 +170,7 @@ const Board = observer(() => {
           onClick={() => {
             gameState.dealCards();
           }}
+          disabled={gameState.winningBoard}
         >
           Deal again
         </GameControlButton>
@@ -179,7 +180,7 @@ const Board = observer(() => {
             backgroundColor: "var(--red)",
             borderColor: "var(--red)"
           }}
-          disabled={gameState.history.length === 0}
+          disabled={gameState.history.length === 0 || gameState.winningBoard}
           onClick={() => {
             gameState.undo();
           }}
