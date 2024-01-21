@@ -20,6 +20,7 @@ import {
 } from "@/logic/OrientationAndSize";
 import { cardSize } from "../Card/CardUI.styles";
 import CardsBeingDragged from "../CardsBeingDragged";
+import WinModal from "./WinModal/WinModal";
 
 const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 
@@ -141,10 +142,12 @@ const Board = observer(() => {
       <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
 
       <BoardContainer
+        $isWinningBoard={gameState.winningBoard}
         onPointerLeave={(e) => {
           handlePointerUp(e as unknown as PointerEvent);
         }}
       >
+        {gameState.winningBoard && <WinModal />}
         {gameState.cardsBeingTouched && gameState.isDragging && (
           <CardsBeingDragged dragPosition={dragPosition} />
         )}
@@ -169,22 +172,11 @@ const Board = observer(() => {
         >
           Deal again
         </GameControlButton>
+
         <GameControlButton
           style={{
-            backgroundColor: "#33d849",
-            borderColor: "#33d849"
-          }}
-          disabled={!gameState.canAutoComplete}
-          onClick={() => {
-            gameState.autoComplete();
-          }}
-        >
-          Autocomplete
-        </GameControlButton>
-        <GameControlButton
-          style={{
-            backgroundColor: "#dc3a3a",
-            borderColor: "#dc3a3a"
+            backgroundColor: "var(--red)",
+            borderColor: "var(--red)"
           }}
           disabled={gameState.history.length === 0}
           onClick={() => {

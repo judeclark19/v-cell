@@ -32,10 +32,19 @@ export class GameState {
   history: BoardType[] = [];
   cardsBeingTouched: CardClass[] | null = null;
   isDragging = false;
+  winningBoard = false;
   canAutoComplete = false;
+  winHistory: Date[] = [];
 
   constructor() {
     makeAutoObservable(this);
+    const winsFromStorage = localStorage.getItem("vCellWinHistory");
+    if (winsFromStorage) {
+      this.winHistory = JSON.parse(winsFromStorage);
+    } else {
+      this.winHistory = [];
+      localStorage.setItem("vCellWinHistory", JSON.stringify(this.winHistory));
+    }
   }
 
   createDeck() {
@@ -78,6 +87,7 @@ export class GameState {
     this.clearBoard();
     this.history = [];
     this.createDeck();
+    this.winningBoard = false;
     this.canAutoComplete = false;
 
     for (let i = 0; i < 7; i++) {
@@ -640,6 +650,8 @@ export class GameState {
     });
 
     if (allCardsActive) {
+      this.winningBoard = true;
+      this.addWinToHistory();
       this.canAutoComplete = true;
     }
   }
@@ -667,6 +679,61 @@ export class GameState {
           this.moveHandToFoundation(cardInHand, foundationKey);
         }
       });
+    }
+
+    this.canAutoComplete = false;
+  }
+
+  addWinToHistory() {
+    const mostRecentWin = this.winHistory[this.winHistory.length - 1];
+    const now = new Date();
+    const diff = now.getTime() - mostRecentWin.getTime();
+    const diffInMinutes = diff / 1000 / 60;
+
+    // check that there is at least 1 min between mostRecentWin and now
+    if (mostRecentWin && diffInMinutes < 1) {
+      return;
+    }
+
+    if (!mostRecentWin) {
+      this.winHistory.push(new Date());
+      localStorage.setItem("vCellWinHistory", JSON.stringify(this.winHistory));
+    }
+
+    if (!mostRecentWin) {
+      this.winHistory.push(new Date());
+      localStorage.setItem("vCellWinHistory", JSON.stringify(this.winHistory));
+    }
+  }
+
+  getFirstWinDate() {
+    const date = new Date(this.winHistory[0]);
+
+    const optionsDate: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    };
+    const optionsTime: Intl.DateTimeFormatOptions = {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true
+    };
+    const formattedDate = date.toLocaleDateString("en-US", optionsDate);
+    const formattedTime = date.toLocaleTimeString("en-US", optionsTime);
+
+    const combinedDateTime = `${formattedDate} at ${formattedTime}`;
+    return combinedDateTime;
+  }
+
+  resetWinHistory() {
+    const confirmReset = window.confirm(
+      "Are you sure you want to reset your win history?"
+    );
+
+    if (confirmReset) {
+      this.winHistory = [];
+      localStorage.setItem("vCellWinHistory", JSON.stringify(this.winHistory));
     }
   }
 }

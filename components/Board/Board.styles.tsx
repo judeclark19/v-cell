@@ -48,7 +48,6 @@ export const GameControlButtons = styled.div`
 export const GameControlButton = styled.button`
   cursor: pointer;
   color: white;
-  border-radius: 4px;
 
   &:disabled {
     opacity: 0.5;
@@ -56,7 +55,9 @@ export const GameControlButton = styled.button`
   }
 `;
 
-export const BoardContainer = styled.div`
+export const BoardContainer = styled.div<{
+  $isWinningBoard: boolean;
+}>`
   background-color: #35654d;
   padding: 20px;
   width: calc(100vw - 20px);
@@ -69,6 +70,7 @@ export const BoardContainer = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 4px;
+  position: ${(props) => (props.$isWinningBoard ? "relative" : "static")};
 
   @media screen and (max-width: 768px) {
     padding: 10px;
@@ -89,7 +91,7 @@ export const BoardContainer = styled.div`
 export const Spot = styled.div<{
   $size: cardSize;
 }>`
-  border: 2px solid #fede4dbf;
+  border: 2px solid var(--gold);
   border-radius: 5px;
   height: ${(props) =>
     cardSizes[props.$size].height + cardSizes[props.$size].spotPadding}px;
