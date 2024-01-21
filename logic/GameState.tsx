@@ -644,7 +644,6 @@ export class GameState {
 
     if (allCardsActive) {
       this.winningBoard = true;
-      this.addWinToHistory();
       this.canAutoComplete = true;
     }
   }
