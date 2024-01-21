@@ -75,7 +75,6 @@ export const WinModalStyle = styled.div`
       }
     }
     .reset {
-      /* margin-top: 10px; */
       margin: 10px auto;
       background-color: var(--red);
       padding: 8px;
@@ -93,41 +92,6 @@ const WinModal = observer(() => {
     <WinModalStyle>
       <div>
         <GameTitle className={luckyGuy.className}>You Win!</GameTitle>
-
-        <div className="win-count">
-          <p>You have won</p>
-          <p
-            style={{
-              color: "gold"
-            }}
-          >
-            {gameState.winHistory.length}
-          </p>
-          <p>
-            <span>
-              {gameState.winHistory.length === 1 ? "game" : "games"} of V-Cell
-              on&nbsp;
-            </span>
-            <span>this device</span>
-          </p>
-          {gameState.winHistory.length > 0 && (
-            <p className="since">
-              since <span>{gameState.getFirstWinDate()}</span>
-            </p>
-          )}
-        </div>
-
-        {gameState.winHistory.length > 0 && (
-          <button
-            className="reset"
-            onClick={() => {
-              gameState.resetWinHistory();
-            }}
-          >
-            Reset win count
-          </button>
-        )}
-
         <GameControlButtons>
           <GameControlButton
             className="deal-again"

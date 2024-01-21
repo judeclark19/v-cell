@@ -147,7 +147,8 @@ const Board = observer(() => {
           handlePointerUp(e as unknown as PointerEvent);
         }}
       >
-        {gameState.winningBoard && <WinModal />}
+        {/* {gameState.winningBoard && <WinModal />} */}
+        <WinModal />
         {gameState.cardsBeingTouched && gameState.isDragging && (
           <CardsBeingDragged dragPosition={dragPosition} />
         )}
