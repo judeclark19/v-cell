@@ -35,6 +35,7 @@ export class GameState {
   winningBoard = false;
   canAutoComplete = false;
   winCount = 0;
+  isWinModalOpen = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -79,8 +80,14 @@ export class GameState {
   setIsWinningBoard(isWinningBoard: boolean) {
     if (this.winningBoard === false && isWinningBoard === true) {
       this.winCount++;
+      this.setIsWinModalOpen(true);
     }
     this.winningBoard = isWinningBoard;
+  }
+
+  setIsWinModalOpen(isWinModalOpen: boolean) {
+    // this function doesn't have any sideeffects yet so it's redundant atm
+    this.isWinModalOpen = isWinModalOpen;
   }
 
   dealCards() {
@@ -89,6 +96,7 @@ export class GameState {
     this.createDeck();
     this.setIsWinningBoard(false);
     this.canAutoComplete = false;
+    this.setIsWinModalOpen(false);
 
     for (let i = 0; i < 7; i++) {
       for (let j = 0; j < 7; j++) {

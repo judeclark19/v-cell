@@ -50,19 +50,6 @@ const Board = observer(() => {
 
   let lastKnownOrientation: Orientation = orientation;
 
-  const handleResize = () => {
-    setWindowWidth(window.innerWidth);
-    setWindowHeight(window.innerHeight);
-
-    let newOrientation: Orientation =
-      window.innerWidth <= 980 ? "portrait" : "landscape";
-
-    if (newOrientation !== lastKnownOrientation) {
-      setBoardOrientation(newOrientation);
-      lastKnownOrientation = newOrientation;
-    }
-  };
-
   const handlePointerDown = () => {
     gameState.setIsDragging(false);
   };
@@ -123,6 +110,19 @@ const Board = observer(() => {
   }, []);
 
   useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      setWindowHeight(window.innerHeight);
+
+      let newOrientation: Orientation =
+        window.innerWidth <= 980 ? "portrait" : "landscape";
+
+      if (newOrientation !== lastKnownOrientation) {
+        setBoardOrientation(newOrientation);
+        lastKnownOrientation = newOrientation;
+      }
+    };
+
     document.addEventListener("pointermove", handlePointerMove);
     document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("pointerup", handlePointerUp);
@@ -137,7 +137,7 @@ const Board = observer(() => {
       document.removeEventListener("pointerup", handlePointerUp);
       document.removeEventListener("pointercancel", handlePointerUp);
     };
-  }, [handleResize]);
+  }, [setWinHistory]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -153,7 +153,7 @@ const Board = observer(() => {
           handlePointerUp(e as unknown as PointerEvent);
         }}
       >
-        {gameState.winningBoard && <WinModal />}
+        {gameState.isWinModalOpen && <WinModal />}
 
         {gameState.cardsBeingTouched && gameState.isDragging && (
           <CardsBeingDragged dragPosition={dragPosition} />
@@ -176,7 +176,6 @@ const Board = observer(() => {
           onClick={() => {
             gameState.dealCards();
           }}
-          disabled={gameState.winningBoard}
         >
           Deal again
         </GameControlButton>
@@ -193,6 +192,25 @@ const Board = observer(() => {
         >
           Undo
         </GameControlButton>
+        <GameControlButton
+          style={{
+            backgroundColor: "#33d849",
+            borderColor: "#33d849"
+          }}
+          disabled={!gameState.canAutoComplete}
+          onClick={() => {
+            gameState.autoComplete();
+          }}
+        >
+          Autocomplete
+        </GameControlButton>
+        {/* <button
+          onClick={() => {
+            gameState.setIsWinningBoard(true);
+          }}
+        >
+          win
+        </button> */}
       </GameControlButtons>
     </>
   );

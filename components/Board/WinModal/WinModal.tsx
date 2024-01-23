@@ -31,12 +31,28 @@ export const WinModalStyle = styled.div`
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.2);
+    position: relative;
 
     @media screen and (max-width: 768px) {
       padding: 20px;
     }
     @media screen and (max-width: 480px) {
       padding: 10px;
+    }
+
+    .modal-close {
+      cursor: pointer;
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      font-size: 28px;
+      opacity: 0.7;
+      transition: all 150ms ease-in-out;
+
+      &:hover {
+        opacity: 1;
+        scale: 1.1;
+      }
     }
 
     ${GameTitle} {
@@ -95,6 +111,11 @@ export const WinModalStyle = styled.div`
       padding: 8px;
       width: fit-content;
     }
+
+    ${GameControlButtons} {
+      margin-top: 12px;
+      margin-bottom: 0;
+    }
   }
 `;
 
@@ -134,6 +155,12 @@ const WinModal = observer(() => {
   return (
     <WinModalStyle>
       <div>
+        <span
+          onClick={() => gameState.setIsWinModalOpen(false)}
+          className={`modal-close ${luckyGuy.className}`}
+        >
+          X
+        </span>
         <GameTitle className={luckyGuy.className}>You Win!</GameTitle>
 
         <div className="win-count">
@@ -179,18 +206,6 @@ const WinModal = observer(() => {
             }}
           >
             Deal again
-          </GameControlButton>
-          <GameControlButton
-            style={{
-              backgroundColor: "#33d849",
-              borderColor: "#33d849"
-            }}
-            disabled={!gameState.canAutoComplete}
-            onClick={() => {
-              gameState.autoComplete();
-            }}
-          >
-            Autocomplete
           </GameControlButton>
         </GameControlButtons>
       </div>
