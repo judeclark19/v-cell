@@ -148,7 +148,7 @@ const Board = observer(() => {
       <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
 
       <BoardContainer
-        $isWinningBoard={gameState.winningBoard}
+        $isModalOpen={gameState.isWinModalOpen}
         onPointerLeave={(e) => {
           handlePointerUp(e as unknown as PointerEvent);
         }}

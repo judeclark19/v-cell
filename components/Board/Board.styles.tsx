@@ -56,7 +56,7 @@ export const GameControlButton = styled.button`
 `;
 
 export const BoardContainer = styled.div<{
-  $isWinningBoard: boolean;
+  $isModalOpen: boolean;
 }>`
   background-color: #35654d;
   padding: 20px;
@@ -70,7 +70,7 @@ export const BoardContainer = styled.div<{
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  position: ${(props) => (props.$isWinningBoard ? "relative" : "static")};
+  position: ${(props) => (props.$isModalOpen ? "relative" : "static")};
 
   @media screen and (max-width: 768px) {
     padding: 10px;
