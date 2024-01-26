@@ -3,7 +3,7 @@ import CardClass from "./CardClass";
 import gameState from "@/logic/GameState";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { poppins } from "@/app/page";
+import { poppins } from "../Board/Board";
 
 const CardUI = observer(
   ({

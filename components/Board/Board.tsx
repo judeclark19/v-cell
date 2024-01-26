@@ -26,7 +26,11 @@ import WinModal from "../Modals/WinModal";
 import { winHistoryState } from "@/logic/WinHistory";
 import InstructionsModal from "../Modals/InstructionsModal";
 import { FaInfoCircle } from "react-icons/fa";
-import { poppins } from "@/app/page";
+// import { poppins } from "@/app/page";
+import { Luckiest_Guy, Poppins } from "next/font/google";
+
+export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
+export const poppins = Poppins({ weight: "400", subsets: ["latin"] });
 
 export const getCardOffsetAmount = (size: cardSize) => {
   switch (size) {

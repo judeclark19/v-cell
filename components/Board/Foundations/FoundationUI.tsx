@@ -10,7 +10,7 @@ import {
   windowHeightState,
   windowWidthState
 } from "@/logic/OrientationAndSize";
-import { poppins } from "@/app/page";
+import { poppins } from "../Board";
 
 const FoundationUI = observer(
   ({ foundationData }: { foundationData: Foundation }) => {

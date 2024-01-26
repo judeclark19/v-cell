@@ -4,15 +4,12 @@ import {
   GameControlButtons,
   GameTitle
 } from "../Board/Board.styles";
-import { Luckiest_Guy } from "next/font/google";
 import gameState from "@/logic/GameState";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { winHistoryState } from "@/logic/WinHistory";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
-import { poppins } from "@/app/page";
-
-const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
+import { luckyGuy, poppins } from "../Board/Board";
 
 const WinModal = observer(() => {
   const [winHistory, setWinHistory] = useRecoilState(winHistoryState);

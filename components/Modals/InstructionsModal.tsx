@@ -8,7 +8,7 @@ import {
   GameControlButtons,
   GameTitle
 } from "../Board/Board.styles";
-import { luckyGuy, poppins } from "@/app/page";
+import { luckyGuy, poppins } from "../Board/Board";
 
 const InstructionsModal = observer(() => {
   const [slideNumber, setSlideNumber] = useState(0);
@@ -95,6 +95,7 @@ const InstructionsModal = observer(() => {
         <GameControlButtons>
           <div>
             <GameControlButton
+              className={poppins.className}
               onClick={() => {
                 setSlideNumber(slideNumber - 1);
               }}
@@ -103,6 +104,7 @@ const InstructionsModal = observer(() => {
               Back
             </GameControlButton>
             <GameControlButton
+              className={poppins.className}
               onClick={() => {
                 if (slideNumber === 3) {
                   gameState.setIsInstructionsModalOpen(false);
