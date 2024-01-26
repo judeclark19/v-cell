@@ -8,25 +8,29 @@ export const cardSizes = {
     height: 140,
     width: 100,
     spotPadding: 8,
-    top: 2
+    top: 2,
+    shadowSize: 5
   },
   medium: {
     height: 100,
     width: 75,
     spotPadding: 6,
-    top: 1.5
+    top: 1.5,
+    shadowSize: 4
   },
   small: {
     height: 60,
     width: 50,
     spotPadding: 4,
-    top: 0
+    top: 0,
+    shadowSize: 3
   },
   tiny: {
     height: 40,
     width: 30,
     spotPadding: 2,
-    top: 0
+    top: 0,
+    shadowSize: 2
   }
 };
 
@@ -60,7 +64,9 @@ export const CardStyle = styled.div<{
   height: ${(props) => cardSizes[props.$size].height}px;
   width: ${(props) => cardSizes[props.$size].width}px;
   color: ${(props) =>
-    props.$suit === "hearts" || props.$suit === "diamonds" ? "red" : "black"};
+    props.$suit === "hearts" || props.$suit === "diamonds"
+      ? "var(--red)"
+      : "black"};
 
   display: flex;
   flex-direction: column;
@@ -89,13 +95,19 @@ export const CardStyle = styled.div<{
 
   transition: left 0.2s ease-in-out;
 
-  filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+  filter: ${(props) => {
+    return `drop-shadow(${cardSizes[props.$size].shadowSize}px ${
+      cardSizes[props.$size].shadowSize
+    }px 5px rgba(0, 0, 0, 0.5))`;
+  }};
 
   ${(props) =>
     props.$isActive &&
     `
     &:hover {
-        filter: drop-shadow(5px 5px 5px rgba(255, 215, 0, 0.8));
+        filter: drop-shadow(${cardSizes[props.$size].shadowSize}px ${
+      cardSizes[props.$size].shadowSize
+    }px 5px rgba(255, 215, 0, 0.8));
         border: 1px solid var(--gold);
     }
 `}
@@ -113,11 +125,11 @@ export const CardStyle = styled.div<{
         case "large":
           return "4px";
         case "medium":
-          return "2px";
+          return "3px";
         case "small":
-          return "1px";
+          return "2px";
         case "tiny":
-          return "0px";
+          return "1px";
         default:
           return "4px";
       }
@@ -170,9 +182,11 @@ export const CardStyle = styled.div<{
       margin-top: ${(props) => {
         switch (props.$size) {
           case "medium":
-            return "4px";
+            return "0px";
           case "small":
-            return "-4px";
+            return "-10px";
+          case "tiny":
+            return "-8px";
           default:
             return "0px";
         }
@@ -184,18 +198,18 @@ export const CardStyle = styled.div<{
         if (props.$size === "large") {
           switch (props.$value) {
             case "A":
-              return "42px";
+              return "34px";
             case "jack":
             case "queen":
             case "king":
-              return "28px";
+              return "24px";
             default:
-              return "26px";
+              return "24px";
           }
         } else if (props.$size === "medium") {
           switch (props.$value) {
             case "A":
-              return "28px";
+              return "24px";
             case "jack":
             case "queen":
             case "king":
@@ -205,22 +219,8 @@ export const CardStyle = styled.div<{
           }
         } else if (props.$size === "small") {
           return "30px";
-        }
-      }};
-
-      display: ${(props) => {
-        if (props.$size == "large" || props.$size == "medium") {
-          switch (props.$value) {
-            case "A":
-            case "jack":
-            case "queen":
-            case "king":
-              return "flex";
-            default:
-              return "grid";
-          }
-        } else {
-          return "grid";
+        } else if (props.$size === "tiny") {
+          return "20px";
         }
       }};
 
@@ -232,11 +232,18 @@ export const CardStyle = styled.div<{
             case "queen":
             case "king":
               return `
+              display: flex;
                     flex-direction: column;
                     align-items: center;
+
+                    > div {
+                      // border: 2px solid lime;
+                      margin-top: ${props.$size === "large" ? "-2" : "-4"}px;
+                    }
                     `;
             default:
               return `
+              display: grid;
                  grid-template-columns: repeat(3, 1fr);
              grid-auto-rows: ${
                props.$size === "large"
@@ -257,7 +264,9 @@ export const CardStyle = styled.div<{
             `;
           }
         } else {
-          return `place-items: center;`;
+          return `
+          display:grid;
+          place-items: center;`;
         }
       }}
     }

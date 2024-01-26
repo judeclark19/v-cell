@@ -9,7 +9,8 @@
   --background-start-rgb: 0, 0, 0;
   --background-end-rgb: 0, 0, 0;
 
-  --red: #dc3a3a;
+  /* other red shades: #dc3a3a; #c33f32 */
+  --red: #ef3e56;
   --goldAlpha: #fede4dbf;
   --gold: #fede4d;
 }

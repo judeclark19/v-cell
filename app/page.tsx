@@ -2,6 +2,10 @@
 import { RecoilRoot } from "recoil";
 import Board from "@/components/Board/Board";
 import styled from "styled-components";
+import { Luckiest_Guy, Poppins } from "next/font/google";
+
+export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
+export const poppins = Poppins({ weight: "400", subsets: ["latin"] });
 
 const PageWrapper = styled.div`
   display: flex;
@@ -57,7 +61,7 @@ export default function Home() {
           <Board />
         </RecoilRoot>
       </div>
-      <Footer>
+      <Footer className={poppins.className}>
         <div>
           A 2023-2024&nbsp;
           <strong>

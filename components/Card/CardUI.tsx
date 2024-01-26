@@ -3,6 +3,7 @@ import CardClass from "./CardClass";
 import gameState from "@/logic/GameState";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
+import { poppins } from "@/app/page";
 
 const CardUI = observer(
   ({
@@ -117,7 +118,7 @@ const CardUI = observer(
         onContextMenu={(e) => {
           e.preventDefault();
         }}
-        className="card"
+        className={`card ${poppins.className}`}
       >
         <div className="card-front">
           <div className="card-title">

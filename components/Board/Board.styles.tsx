@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { cardSize, cardSizes } from "../Card/CardUI.styles";
 
 export const GameTitle = styled.h1`
@@ -29,6 +28,31 @@ export const HeaderImage = styled.div`
     width: 100%;
     max-width: 700px;
     height: auto;
+  }
+`;
+
+export const HowToPlay = styled.div<{
+  $isInstructionsModalOpen: boolean;
+}>`
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: ${(props) => (props.$isInstructionsModalOpen ? "0.5" : "1")};
+
+  ${(props) => (props.$isInstructionsModalOpen ? "pointer-events: none;" : "")}
+
+  &:hover {
+    cursor: pointer;
+    span {
+      text-decoration: underline;
+      color: var(--gold);
+    }
+
+    .info-icon {
+      color: var(--gold);
+    }
   }
 `;
 
@@ -119,6 +143,7 @@ export const Spot = styled.div<{
   .label {
     height: 100%;
     width: 100%;
+    line-height: 100%;
     display: grid;
     place-items: center;
     font-size: ${(props) => {

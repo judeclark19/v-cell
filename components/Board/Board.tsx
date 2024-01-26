@@ -3,14 +3,13 @@ import {
   BoardContainer,
   GameControlButton,
   GameControlButtons,
-  GameTitle,
-  HeaderImage
+  HeaderImage,
+  HowToPlay
 } from "./Board.styles";
 import headerImage from "@/assets/images/v-cell_header1.jpg";
 import Image from "next/image";
 import gameState from "@/logic/GameState";
 import { observer } from "mobx-react-lite";
-import { Luckiest_Guy } from "next/font/google";
 import FoundationsUI from "./Foundations/FoundationsUI";
 import TableauUI from "./Tableau/TableauUI";
 import HandUI from "./Hand/HandUI";
@@ -23,10 +22,11 @@ import {
 } from "@/logic/OrientationAndSize";
 import { cardSize } from "../Card/CardUI.styles";
 import CardsBeingDragged from "../CardsBeingDragged";
-import WinModal from "./WinModal/WinModal";
+import WinModal from "../Modals/WinModal";
 import { winHistoryState } from "@/logic/WinHistory";
-
-const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
+import InstructionsModal from "../Modals/InstructionsModal";
+import { FaInfoCircle } from "react-icons/fa";
+import { poppins } from "@/app/page";
 
 export const getCardOffsetAmount = (size: cardSize) => {
   switch (size) {
@@ -110,6 +110,12 @@ const Board = observer(() => {
     );
     setWinHistory(winHistoryFromStorage);
     setIsLoading(false);
+
+    const knowsHowToPlay = localStorage.getItem("vCellKnowsHowToPlay");
+    if (!knowsHowToPlay) {
+      gameState.setIsInstructionsModalOpen(true);
+      localStorage.setItem("vCellKnowsHowToPlay", "true");
+    }
   }, []);
 
   useEffect(() => {
@@ -158,14 +164,28 @@ const Board = observer(() => {
           alt="Picture of the author"
         />
       </HeaderImage>
+      <HowToPlay
+        className={poppins.className}
+        onClick={() => {
+          if (!gameState.isInstructionsModalOpen) {
+            gameState.setIsInstructionsModalOpen(true);
+          }
+        }}
+        $isInstructionsModalOpen={gameState.isInstructionsModalOpen}
+      >
+        <span>How to play</span> <FaInfoCircle className="info-icon" />
+      </HowToPlay>
 
       <BoardContainer
-        $isModalOpen={gameState.isWinModalOpen}
+        $isModalOpen={
+          gameState.isWinModalOpen || gameState.isInstructionsModalOpen
+        }
         onPointerLeave={(e) => {
           handlePointerUp(e as unknown as PointerEvent);
         }}
       >
         {gameState.isWinModalOpen && <WinModal />}
+        {gameState.isInstructionsModalOpen && <InstructionsModal />}
 
         {gameState.cardsBeingTouched && gameState.isDragging && (
           <CardsBeingDragged dragPosition={dragPosition} />
@@ -178,10 +198,10 @@ const Board = observer(() => {
         <HandUI />
       </BoardContainer>
 
-      <GameControlButtons>
+      <GameControlButtons className={poppins.className}>
         <div>
           <GameControlButton
-            className="deal-again"
+            className={`deal-again ${poppins.className}`}
             style={{
               backgroundColor: "#0099cc",
               borderColor: "#0099cc"
@@ -197,6 +217,7 @@ const Board = observer(() => {
               backgroundColor: "var(--red)",
               borderColor: "var(--red)"
             }}
+            className={poppins.className}
             disabled={gameState.history.length === 0 || gameState.winningBoard}
             onClick={() => {
               gameState.undo();
@@ -213,6 +234,7 @@ const Board = observer(() => {
                 backgroundColor: "#33d849",
                 borderColor: "#33d849"
               }}
+              className={poppins.className}
               disabled={!gameState.canAutoComplete}
               onClick={() => {
                 gameState.autoComplete();
@@ -223,13 +245,13 @@ const Board = observer(() => {
           </div>
         )}
 
-        {/* <button
+        <button
           onClick={() => {
             gameState.setIsWinningBoard(true);
           }}
         >
           win
-        </button> */}
+        </button>
       </GameControlButtons>
     </>
   );

@@ -36,6 +36,7 @@ export class GameState {
   canAutoComplete = false;
   winCount = 0;
   isWinModalOpen = false;
+  isInstructionsModalOpen = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -86,8 +87,13 @@ export class GameState {
   }
 
   setIsWinModalOpen(isWinModalOpen: boolean) {
-    // this function doesn't have any sideeffects yet so it's redundant atm
+    // this function doesn't have any side effects yet so it's redundant atm
     this.isWinModalOpen = isWinModalOpen;
+  }
+
+  setIsInstructionsModalOpen(isInstructionsModalOpen: boolean) {
+    // this function doesn't have any side effects yet so it's redundant atm
+    this.isInstructionsModalOpen = isInstructionsModalOpen;
   }
 
   dealCards() {

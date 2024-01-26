@@ -10,6 +10,7 @@ import {
   windowHeightState,
   windowWidthState
 } from "@/logic/OrientationAndSize";
+import { poppins } from "@/app/page";
 
 const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
   const windowWidth = useRecoilValue(windowWidthState);
@@ -22,7 +23,7 @@ const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
         dropId={columnData.key}
       >
         <Spot $size={getCardSize(windowWidth, windowHeight)}>
-          <div className="label">K</div>
+          <div className={`label ${poppins.className}`}>K</div>
         </Spot>
       </DropSpot>
     );
