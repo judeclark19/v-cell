@@ -249,13 +249,13 @@ const Board = observer(() => {
           </div>
         )}
 
-        <button
+        {/* <button
           onClick={() => {
             gameState.setIsWinningBoard(true);
           }}
         >
           win
-        </button>
+        </button> */}
       </GameControlButtons>
     </>
   );

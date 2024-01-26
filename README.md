@@ -2,11 +2,6 @@
 
 **Link to deployed app: [https://react-solitaire-5be2a31a8c87.herokuapp.com/](https://react-solitaire-5be2a31a8c87.herokuapp.com/)**
 
-## Current bugs - need more replication data
-
-- [] Double click to foundation sometimes sends to wrong suit
-- [] Autocomplete sometimes turns on too soon
-
 ## Todo list
 
 - [x] Basic card design to tell them apart at a glance
@@ -21,15 +16,17 @@
 - [x] Double click to send a card to the foundation
 - [x] Win game/autocomplete
 - [x] Touch events
-- [ ] How To Play instructions
+- [x] How To Play instructions
 - [ ] Keeping score
 - [ ] Loading state
+- [ ] Make a favicon out of the varsity V
 
 ### Deprioritized
 
 - [ ] Different color hover for valid vs invalid move
 - [ ] Flip animation
 - [x] Better dragging animation
+- [ ] Cute wooden border
 
 ## Advanced
 
