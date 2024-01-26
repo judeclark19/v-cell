@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { cardSize, cardSizes } from "../Card/CardUI.styles";
 
 export const GameTitle = styled.h1`
@@ -16,8 +17,24 @@ export const GameTitle = styled.h1`
   }
 `;
 
+export const HeaderImage = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 30px auto;
+  width: calc(100vw - 20px);
+  max-width: 1100px;
+  background-color: #ef3e56;
+  border-radius: 4px;
+  img {
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+  }
+`;
+
 export const GameControlButtons = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 40px;
@@ -76,7 +93,7 @@ export const BoardContainer = styled.div<{
     padding: 10px;
     gap: 10px;
     min-height: fit-content;
-    width: calc(100vw - 40px);
+    width: calc(100vw - 20px);
     max-width: calc(100vw - 10px);
   }
 

@@ -3,8 +3,11 @@ import {
   BoardContainer,
   GameControlButton,
   GameControlButtons,
-  GameTitle
+  GameTitle,
+  HeaderImage
 } from "./Board.styles";
+import headerImage from "@/assets/images/v-cell_header1.jpg";
+import Image from "next/image";
 import gameState from "@/logic/GameState";
 import { observer } from "mobx-react-lite";
 import { Luckiest_Guy } from "next/font/google";
@@ -145,7 +148,16 @@ const Board = observer(() => {
 
   return (
     <>
-      <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
+      {/* <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
+       */}
+      <HeaderImage>
+        <Image
+          src={headerImage}
+          width={1700}
+          height={400}
+          alt="Picture of the author"
+        />
+      </HeaderImage>
 
       <BoardContainer
         $isModalOpen={gameState.isWinModalOpen}
@@ -167,43 +179,50 @@ const Board = observer(() => {
       </BoardContainer>
 
       <GameControlButtons>
-        <GameControlButton
-          className="deal-again"
-          style={{
-            backgroundColor: "#0099cc",
-            borderColor: "#0099cc"
-          }}
-          onClick={() => {
-            gameState.dealCards();
-          }}
-        >
-          Deal again
-        </GameControlButton>
+        <div>
+          <GameControlButton
+            className="deal-again"
+            style={{
+              backgroundColor: "#0099cc",
+              borderColor: "#0099cc"
+            }}
+            onClick={() => {
+              gameState.dealCards();
+            }}
+          >
+            Deal again
+          </GameControlButton>
+          <GameControlButton
+            style={{
+              backgroundColor: "var(--red)",
+              borderColor: "var(--red)"
+            }}
+            disabled={gameState.history.length === 0 || gameState.winningBoard}
+            onClick={() => {
+              gameState.undo();
+            }}
+          >
+            Undo
+          </GameControlButton>
+        </div>
 
-        <GameControlButton
-          style={{
-            backgroundColor: "var(--red)",
-            borderColor: "var(--red)"
-          }}
-          disabled={gameState.history.length === 0 || gameState.winningBoard}
-          onClick={() => {
-            gameState.undo();
-          }}
-        >
-          Undo
-        </GameControlButton>
-        <GameControlButton
-          style={{
-            backgroundColor: "#33d849",
-            borderColor: "#33d849"
-          }}
-          disabled={!gameState.canAutoComplete}
-          onClick={() => {
-            gameState.autoComplete();
-          }}
-        >
-          Autocomplete
-        </GameControlButton>
+        {gameState.canAutoComplete && (
+          <div>
+            <GameControlButton
+              style={{
+                backgroundColor: "#33d849",
+                borderColor: "#33d849"
+              }}
+              disabled={!gameState.canAutoComplete}
+              onClick={() => {
+                gameState.autoComplete();
+              }}
+            >
+              Autocomplete
+            </GameControlButton>
+          </div>
+        )}
+
         {/* <button
           onClick={() => {
             gameState.setIsWinningBoard(true);
