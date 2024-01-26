@@ -3,14 +3,13 @@ import { Column } from "./TableauClass";
 import DropSpot from "../DropSpot/DropSpot";
 import { Spot } from "../Board.styles";
 import CardUI from "@/components/Card/CardUI";
-import { getCardOffsetAmount } from "../Board";
+import { getCardOffsetAmount, poppins } from "../Board";
 import { useRecoilValue } from "recoil";
 import {
   getCardSize,
   windowHeightState,
   windowWidthState
 } from "@/logic/OrientationAndSize";
-import { poppins } from "@/app/page";
 
 const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
   const windowWidth = useRecoilValue(windowWidthState);
