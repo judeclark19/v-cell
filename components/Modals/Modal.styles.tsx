@@ -118,11 +118,15 @@ export const WinModalStyle = styled.div`
 export const InstructionsModalStyle = styled.div`
   .slide {
     box-sizing: border-box;
-    width: 345px;
+    width: 500px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
     margin-bottom: 1rem;
+
+    @media screen and (max-width: 992px) {
+      width: 345px;
+    }
 
     @media screen and (max-width: 480px) {
       width: 250px;
