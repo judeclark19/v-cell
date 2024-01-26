@@ -17,14 +17,14 @@
 - [x] Win game/autocomplete
 - [x] Touch events
 - [x] How To Play instructions
-- [ ] Keeping score
-- [ ] Loading state
-- [ ] Make a favicon out of the varsity V
+- [ ] Make a favicon out of the varsity V, use it for card back
+- [ ] Flip animation
 
 ### Deprioritized
 
+- [ ] Keeping score
+- [ ] Loading state
 - [ ] Different color hover for valid vs invalid move
-- [ ] Flip animation
 - [x] Better dragging animation
 - [ ] Cute wooden border
 
