@@ -186,7 +186,7 @@ export const CardStyle = styled.div<{
           case "small":
             return "-10px";
           case "tiny":
-            return "-8px";
+            return "-4px";
           default:
             return "0px";
         }
@@ -220,7 +220,7 @@ export const CardStyle = styled.div<{
         } else if (props.$size === "small") {
           return "30px";
         } else if (props.$size === "tiny") {
-          return "20px";
+          return "14px";
         }
       }};
 
