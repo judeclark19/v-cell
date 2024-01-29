@@ -209,7 +209,7 @@ export const CardStyle = styled.div<{
         } else if (props.$size === "small") {
           return "30px";
         } else if (props.$size === "tiny") {
-          return "20px";
+          return "18px";
         }
       }};
 

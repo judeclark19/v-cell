@@ -15,11 +15,13 @@ const PageWrapper = styled.div`
 
 const Footer = styled.footer`
   display: flex;
-  gap: 20px;
+  gap: 40px;
   justify-content: center;
-  padding: 20px;
+  padding: 40px;
   color: white;
+  margin-top: 10px;
 
+  background-color: #1c5f3d;
   a {
     color: inherit;
   }
@@ -33,6 +35,7 @@ const Footer = styled.footer`
     align-items: center;
     font-size: 14px;
     gap: 14px;
+    padding: 20px;
 
     .vertical-line {
       display: none;
