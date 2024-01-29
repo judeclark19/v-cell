@@ -695,6 +695,7 @@ export class GameState {
     }
 
     this.canAutoComplete = false;
+    this.setIsWinModalOpen(true);
   }
 }
 

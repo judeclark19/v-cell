@@ -198,7 +198,7 @@ const Board = observer(() => {
           onClick={() => {
             gameState.dealCards();
           }}
-          disabled={gameState.winningBoard}
+          disabled={gameState.winningBoard && gameState.canAutoComplete}
         >
           Deal again
         </GameControlButton>
