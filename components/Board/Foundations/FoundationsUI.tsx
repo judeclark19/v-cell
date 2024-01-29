@@ -7,7 +7,7 @@ import { GameControlButton, Spot } from "../Board.styles";
 import { foundationKeys } from "@/logic/types";
 import { useRecoilValue } from "recoil";
 import { windowWidthState } from "@/logic/OrientationAndSize";
-import { poppins } from "../Board";
+import { questrial } from "../Board";
 import {
   AutocompleteDiv,
   FoundationFlex,
@@ -28,7 +28,7 @@ const FoundationsUI = observer(() => {
                 backgroundColor: "#33d849",
                 borderColor: "#33d849"
               }}
-              className={poppins.className}
+              className={questrial.className}
               disabled={!gameState.canAutoComplete}
               onClick={() => {
                 gameState.autoComplete();

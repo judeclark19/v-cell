@@ -10,7 +10,7 @@ import {
   windowHeightState,
   windowWidthState
 } from "@/logic/OrientationAndSize";
-import { poppins } from "../Board";
+import { questrial } from "../Board";
 
 const FoundationUI = observer(
   ({ foundationData }: { foundationData: Foundation }) => {
@@ -24,7 +24,7 @@ const FoundationUI = observer(
         dropId={foundationData.key}
       >
         <Spot $size={getCardSize(windowWidth, windowHeight)}>
-          <div className={`label ${poppins.className}`}>A</div>
+          <div className={`label ${questrial.className}`}>A</div>
           {foundationData.arrayOfCards.map((card, i) => (
             <CardUI
               size={getCardSize(windowWidth, windowHeight)}

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { winHistoryState } from "@/logic/WinHistory";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
-import { luckyGuy, poppins } from "../Board/Board";
+import { luckyGuy, questrial } from "../Board/Board";
 
 const WinModal = observer(() => {
   const [winHistory, setWinHistory] = useRecoilState(winHistoryState);
@@ -47,7 +47,7 @@ const WinModal = observer(() => {
 
   return (
     <ModalStyle $isClosing={isClosing}>
-      <WinModalStyle className={poppins.className}>
+      <WinModalStyle className={questrial.className}>
         <span
           onClick={() => {
             setIsClosing(true);
@@ -82,7 +82,7 @@ const WinModal = observer(() => {
 
         {winHistory.length > 0 && (
           <button
-            className={`reset ${poppins.className}`}
+            className={`reset ${questrial.className}`}
             onClick={() => {
               const confirm = window.confirm(
                 "Are you sure you want to reset your win count?"
@@ -97,7 +97,7 @@ const WinModal = observer(() => {
         )}
         <GameControlButtons>
           <GameControlButton
-            className={`deal-again ${poppins.className}`}
+            className={`deal-again ${questrial.className}`}
             style={{
               backgroundColor: "#0099cc",
               borderColor: "#0099cc"

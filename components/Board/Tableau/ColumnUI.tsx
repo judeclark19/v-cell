@@ -3,7 +3,7 @@ import { Column } from "./TableauClass";
 import DropSpot from "../DropSpot/DropSpot";
 import { Spot } from "../Board.styles";
 import CardUI from "@/components/Card/CardUI";
-import { getCardOffsetAmount, poppins } from "../Board";
+import { getCardOffsetAmount, questrial } from "../Board";
 import { useRecoilValue } from "recoil";
 import {
   getCardSize,
@@ -22,7 +22,7 @@ const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
         dropId={columnData.key}
       >
         <Spot $size={getCardSize(windowWidth, windowHeight)}>
-          <div className={`label ${poppins.className}`}>K</div>
+          <div className={`label ${questrial.className}`}>K</div>
         </Spot>
       </DropSpot>
     );

@@ -8,16 +8,25 @@ import {
   GameControlButtons,
   GameTitle
 } from "../Board/Board.styles";
-import { luckyGuy, poppins } from "../Board/Board";
+import { luckyGuy, questrial } from "../Board/Board";
 
 const InstructionsModal = observer(() => {
   const [slideNumber, setSlideNumber] = useState(0);
+  const [isClosing, setIsClosing] = useState(false);
 
   return (
-    <ModalStyle className={poppins.className}>
+    <ModalStyle $isClosing={isClosing} className={questrial.className}>
       <InstructionsModalStyle>
         <span
-          onClick={() => gameState.setIsInstructionsModalOpen(false)}
+          onClick={() => {
+            setIsClosing(true);
+            // .3 seconds same amount of time as keyframe animation
+
+            setTimeout(() => {
+              gameState.setIsInstructionsModalOpen(false);
+              setIsClosing(false);
+            }, 300);
+          }}
           className={`modal-close ${luckyGuy.className}`}
         >
           X
@@ -95,7 +104,7 @@ const InstructionsModal = observer(() => {
         <GameControlButtons>
           <div>
             <GameControlButton
-              className={poppins.className}
+              className={questrial.className}
               onClick={() => {
                 setSlideNumber(slideNumber - 1);
               }}
@@ -104,7 +113,7 @@ const InstructionsModal = observer(() => {
               Back
             </GameControlButton>
             <GameControlButton
-              className={poppins.className}
+              className={questrial.className}
               onClick={() => {
                 if (slideNumber === 3) {
                   gameState.setIsInstructionsModalOpen(false);

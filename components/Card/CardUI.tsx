@@ -3,7 +3,9 @@ import CardClass from "./CardClass";
 import gameState from "@/logic/GameState";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { poppins } from "../Board/Board";
+import { questrial } from "../Board/Board";
+import Image from "next/image";
+import cardBackImage from "@/assets/images/V.png";
 
 const CardUI = observer(
   ({
@@ -118,7 +120,7 @@ const CardUI = observer(
         onContextMenu={(e) => {
           e.preventDefault();
         }}
-        className={`card ${poppins.className}`}
+        className={`card ${questrial.className}`}
       >
         <div className="card-front">
           <div className="card-title">
@@ -133,7 +135,12 @@ const CardUI = observer(
           </div>
         </div>
         <div className="card-back">
-          <h2>the back</h2>
+          <Image
+            src={cardBackImage}
+            width={240}
+            height={245}
+            alt="V-Cell logo"
+          />
         </div>
       </CardStyle>
     );

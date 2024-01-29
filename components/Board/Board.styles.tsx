@@ -22,7 +22,6 @@ export const HeaderImage = styled.div`
   margin: 30px auto;
   width: calc(100vw - 20px);
   max-width: 1100px;
-  background-color: #ef3e56;
   border-radius: 4px;
   img {
     width: 100%;
@@ -96,7 +95,6 @@ export const GameControlButton = styled.button`
 export const BoardContainer = styled.div<{
   $isModalOpen: boolean;
 }>`
-  background-color: #35654d;
   padding: 20px;
   width: calc(100vw - 20px);
   max-width: 1100px;

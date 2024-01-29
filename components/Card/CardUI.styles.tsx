@@ -113,7 +113,8 @@ export const CardStyle = styled.div<{
 `}
 
   .card-front {
-    display: ${(props) => (props.$isFaceUp ? "block" : "none")};
+    display: ${(props) => (props.$isFaceUp ? "flex" : "none")};
+    flex-direction: column;
     height: 100%;
     background-color: ${(props) =>
       props.$isActive || props.$locationOnBoard === "dragging"
@@ -179,18 +180,6 @@ export const CardStyle = styled.div<{
     .emojis {
       pointer-events: none;
       user-select: none;
-      margin-top: ${(props) => {
-        switch (props.$size) {
-          case "medium":
-            return "0px";
-          case "small":
-            return "-10px";
-          case "tiny":
-            return "-4px";
-          default:
-            return "0px";
-        }
-      }};
 
       flex-grow: 1;
       font-weight: ${(props) => (props.$size === "tiny" ? "bold" : "normal")};
@@ -220,7 +209,7 @@ export const CardStyle = styled.div<{
         } else if (props.$size === "small") {
           return "30px";
         } else if (props.$size === "tiny") {
-          return "14px";
+          return "20px";
         }
       }};
 
@@ -235,30 +224,19 @@ export const CardStyle = styled.div<{
               display: flex;
                     flex-direction: column;
                     align-items: center;
-
-                    > div {
-                      // border: 2px solid lime;
-                      margin-top: ${props.$size === "large" ? "-2" : "-4"}px;
-                    }
+                  justify-content: space-evenly;
                     `;
             default:
               return `
               display: grid;
                  grid-template-columns: repeat(3, 1fr);
-             grid-auto-rows: ${
-               props.$size === "large"
-                 ? "26px"
-                 : props.$size === "medium"
-                 ? "16px"
-                 : "14px"
-             };
+                grid-template-rows: repeat(3, 1fr);
 
                     div {
                         display: grid;
 
                      span {
                         justify-self: center;
-                        margin-top: -8px;
                         }
                     }
             `;
@@ -269,14 +247,22 @@ export const CardStyle = styled.div<{
           place-items: center;`;
         }
       }}
+
+      span {
+        height: 100%;
+      }
     }
   }
 
   .card-back {
-    display: ${(props) => (props.$isFaceUp ? "none" : "block")};
+    display: ${(props) => (props.$isFaceUp ? "none" : "grid")};
+    place-items: center;
+    background-color: var(--red);
+    border: 1px solid red;
     height: 100%;
     border-radius: 2px;
-    padding: ${({ $size }) => {
+    border-color: white;
+    border-width: ${({ $size }) => {
       switch ($size) {
         case "small":
           return "2px";
@@ -286,30 +272,11 @@ export const CardStyle = styled.div<{
           return "4px";
       }
     }};
-    h2 {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      height: 100%;
-      background-color: #c33f34;
-      border-radius: ${({ $size }) => ($size === "tiny" ? "2px" : "0")};
-      color: white;
-      user-select: none;
-      font-size: ${({ $size }) => {
-        switch ($size) {
-          case "large":
-            return "24px";
-          case "medium":
-            return "16px";
-          case "small":
-            return "12px";
-          case "tiny":
-            return "8px";
-          default:
-            return "42px";
-        }
-      }};
+
+    img {
+      height: auto;
+      width: 100%;
+      object-fit: cover;
     }
   }
 `;

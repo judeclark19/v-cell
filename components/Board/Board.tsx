@@ -6,7 +6,7 @@ import {
   HeaderImage,
   HowToPlay
 } from "./Board.styles";
-import headerImage from "@/assets/images/v-cell_header1.jpg";
+import headerImage from "@/assets/images/v-cell_header1.png";
 import Image from "next/image";
 import gameState from "@/logic/GameState";
 import { observer } from "mobx-react-lite";
@@ -26,11 +26,10 @@ import WinModal from "../Modals/WinModal";
 import { winHistoryState } from "@/logic/WinHistory";
 import InstructionsModal from "../Modals/InstructionsModal";
 import { FaInfoCircle } from "react-icons/fa";
-// import { poppins } from "@/app/page";
-import { Luckiest_Guy, Poppins } from "next/font/google";
+import { Luckiest_Guy, Questrial } from "next/font/google";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
-export const poppins = Poppins({ weight: "400", subsets: ["latin"] });
+export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
 
 export const getCardOffsetAmount = (size: cardSize) => {
   switch (size) {
@@ -165,20 +164,9 @@ const Board = observer(() => {
           src={headerImage}
           width={1700}
           height={400}
-          alt="Picture of the author"
+          alt="V-Cell header image"
         />
       </HeaderImage>
-      <HowToPlay
-        className={poppins.className}
-        onClick={() => {
-          if (!gameState.isInstructionsModalOpen) {
-            gameState.setIsInstructionsModalOpen(true);
-          }
-        }}
-        $isInstructionsModalOpen={gameState.isInstructionsModalOpen}
-      >
-        <span>How to play</span> <FaInfoCircle className="info-icon" />
-      </HowToPlay>
 
       <BoardContainer
         $isModalOpen={
@@ -200,9 +188,9 @@ const Board = observer(() => {
         <HandUI />
       </BoardContainer>
 
-      <GameControlButtons className={poppins.className}>
+      <GameControlButtons className={questrial.className}>
         <GameControlButton
-          className={`deal-again ${poppins.className}`}
+          className={`deal-again ${questrial.className}`}
           style={{
             backgroundColor: "#0099cc",
             borderColor: "#0099cc"
@@ -219,7 +207,7 @@ const Board = observer(() => {
             backgroundColor: "var(--red)",
             borderColor: "var(--red)"
           }}
-          className={poppins.className}
+          className={questrial.className}
           disabled={gameState.history.length === 0 || gameState.winningBoard}
           onClick={() => {
             gameState.undo();
@@ -228,14 +216,28 @@ const Board = observer(() => {
           Undo
         </GameControlButton>
 
-        <button
-          onClick={() => {
-            gameState.setIsWinModalOpen(true);
-          }}
-        >
-          win
-        </button>
+        {process.env.NODE_ENV !== "production" && (
+          <button
+            onClick={() => {
+              gameState.setIsWinModalOpen(true);
+            }}
+          >
+            win
+          </button>
+        )}
       </GameControlButtons>
+
+      <HowToPlay
+        className={questrial.className}
+        onClick={() => {
+          if (!gameState.isInstructionsModalOpen) {
+            gameState.setIsInstructionsModalOpen(true);
+          }
+        }}
+        $isInstructionsModalOpen={gameState.isInstructionsModalOpen}
+      >
+        <span>How to play</span> <FaInfoCircle className="info-icon" />
+      </HowToPlay>
     </>
   );
 });

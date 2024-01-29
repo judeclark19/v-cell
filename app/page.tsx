@@ -1,6 +1,6 @@
 "use client";
 import { RecoilRoot } from "recoil";
-import Board, { poppins } from "@/components/Board/Board";
+import Board, { questrial } from "@/components/Board/Board";
 import styled from "styled-components";
 
 const PageWrapper = styled.div`
@@ -57,7 +57,8 @@ export default function Home() {
           <Board />
         </RecoilRoot>
       </div>
-      <Footer className={poppins.className}>
+
+      <Footer className={questrial.className}>
         <div>
           A 2023-2024&nbsp;
           <strong>
