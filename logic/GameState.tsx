@@ -81,7 +81,6 @@ export class GameState {
   setIsWinningBoard(isWinningBoard: boolean) {
     if (this.winningBoard === false && isWinningBoard === true) {
       this.winCount++;
-      this.setIsWinModalOpen(true);
     }
     this.winningBoard = isWinningBoard;
   }
