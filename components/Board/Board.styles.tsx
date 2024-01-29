@@ -58,7 +58,6 @@ export const HowToPlay = styled.div<{
 
 export const GameControlButtons = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 40px;
@@ -67,16 +66,6 @@ export const GameControlButtons = styled.div`
   @media screen and (max-width: 992px) {
     gap: 20px;
     margin: 20px auto;
-  }
-
-  button {
-    font-size: 18px;
-    padding: 10px;
-
-    @media screen and (max-width: 992px) {
-      font-size: 14px;
-      padding: 5px;
-    }
   }
 
   > div {
@@ -90,9 +79,17 @@ export const GameControlButton = styled.button`
   cursor: pointer;
   color: white;
 
+  font-size: 18px;
+  padding: 10px;
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  @media screen and (max-width: 992px) {
+    font-size: 14px;
+    padding: 5px;
   }
 `;
 

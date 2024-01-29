@@ -190,11 +190,9 @@ const Board = observer(() => {
       >
         {gameState.isWinModalOpen && <WinModal />}
         {gameState.isInstructionsModalOpen && <InstructionsModal />}
-
         {gameState.cardsBeingTouched && gameState.isDragging && (
           <CardsBeingDragged dragPosition={dragPosition} />
         )}
-
         <FoundationsUI />
         <div className="scroll">
           <TableauUI />
@@ -203,59 +201,40 @@ const Board = observer(() => {
       </BoardContainer>
 
       <GameControlButtons className={poppins.className}>
-        <div>
-          <GameControlButton
-            className={`deal-again ${poppins.className}`}
-            style={{
-              backgroundColor: "#0099cc",
-              borderColor: "#0099cc"
-            }}
-            onClick={() => {
-              gameState.dealCards();
-            }}
-          >
-            Deal again
-          </GameControlButton>
-          <GameControlButton
-            style={{
-              backgroundColor: "var(--red)",
-              borderColor: "var(--red)"
-            }}
-            className={poppins.className}
-            disabled={gameState.history.length === 0 || gameState.winningBoard}
-            onClick={() => {
-              gameState.undo();
-            }}
-          >
-            Undo
-          </GameControlButton>
-        </div>
-
-        {gameState.canAutoComplete && (
-          <div>
-            <GameControlButton
-              style={{
-                backgroundColor: "#33d849",
-                borderColor: "#33d849"
-              }}
-              className={poppins.className}
-              disabled={!gameState.canAutoComplete}
-              onClick={() => {
-                gameState.autoComplete();
-              }}
-            >
-              Autocomplete
-            </GameControlButton>
-          </div>
-        )}
-
-        {/* <button
+        <GameControlButton
+          className={`deal-again ${poppins.className}`}
+          style={{
+            backgroundColor: "#0099cc",
+            borderColor: "#0099cc"
+          }}
           onClick={() => {
-            gameState.setIsWinningBoard(true);
+            gameState.dealCards();
+          }}
+          disabled={gameState.winningBoard}
+        >
+          Deal again
+        </GameControlButton>
+        <GameControlButton
+          style={{
+            backgroundColor: "var(--red)",
+            borderColor: "var(--red)"
+          }}
+          className={poppins.className}
+          disabled={gameState.history.length === 0 || gameState.winningBoard}
+          onClick={() => {
+            gameState.undo();
+          }}
+        >
+          Undo
+        </GameControlButton>
+
+        <button
+          onClick={() => {
+            gameState.setIsWinModalOpen(true);
           }}
         >
           win
-        </button> */}
+        </button>
       </GameControlButtons>
     </>
   );

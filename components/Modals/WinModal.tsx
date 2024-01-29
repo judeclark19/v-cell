@@ -5,7 +5,7 @@ import {
   GameTitle
 } from "../Board/Board.styles";
 import gameState from "@/logic/GameState";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { winHistoryState } from "@/logic/WinHistory";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
@@ -13,6 +13,7 @@ import { luckyGuy, poppins } from "../Board/Board";
 
 const WinModal = observer(() => {
   const [winHistory, setWinHistory] = useRecoilState(winHistoryState);
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
     if (gameState.winCount > 0) {
@@ -45,10 +46,18 @@ const WinModal = observer(() => {
   }
 
   return (
-    <ModalStyle>
+    <ModalStyle $isClosing={isClosing}>
       <WinModalStyle className={poppins.className}>
         <span
-          onClick={() => gameState.setIsWinModalOpen(false)}
+          onClick={() => {
+            setIsClosing(true);
+            // .3 seconds same amount of time as keyframe animation
+
+            setTimeout(() => {
+              gameState.setIsWinModalOpen(false);
+              setIsClosing(false);
+            }, 300);
+          }}
           className={`modal-close ${luckyGuy.className}`}
         >
           X

@@ -1,7 +1,31 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { GameControlButtons, GameTitle } from "../Board/Board.styles";
 
-export const ModalStyle = styled.div`
+const growIn = keyframes`
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
+const shrinkOut = keyframes`
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0);
+    opacity: 0;
+  }
+`;
+
+export const ModalStyle = styled.div<{
+  $isClosing: boolean;
+}>`
   position: absolute;
   top: 0;
   left: 0;
@@ -15,6 +39,15 @@ export const ModalStyle = styled.div`
   > div {
     background-color: black;
     border-radius: 12px;
+    animation: ${(props) =>
+      props.$isClosing
+        ? css`
+            ${shrinkOut} 0.3s ease-out forwards
+          `
+        : css`
+            ${growIn} 0.3s ease-out forwards
+          `};
+    transform-origin: center;
     padding: 40px;
     display: flex;
     flex-direction: column;
