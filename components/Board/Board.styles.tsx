@@ -102,6 +102,7 @@ export const BoardContainer = styled.div<{
   width: ${(props) => {
     return `${cardSizes[props.$cardSize].width * 7 + 130}px`;
   }};
+  max-width: calc(100vw - 20px);
   height: fit-content;
   min-height: 50vh;
   max-height: 80vh;
