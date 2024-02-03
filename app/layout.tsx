@@ -3,7 +3,7 @@ import { Questrial } from "next/font/google";
 
 import "./globals.css";
 
-export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
+const questrial = Questrial({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "V-Cell",

@@ -5,7 +5,7 @@ export const GameTitle = styled.h1`
   width: 100%;
   color: white;
   text-align: center;
-  margin-top: 50px;
+  margin-top: 40px;
   margin-bottom: 20px;
   font-size: 70px;
 
