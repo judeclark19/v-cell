@@ -15,8 +15,8 @@ export default function DropSpot({
       id={dropId}
       data-dropid={dropId}
       style={{
-        height: `${cardSizes[size].height + cardSizes[size].spotPadding / 2}px`,
-        width: `${cardSizes[size].width + cardSizes[size].spotPadding / 2}px`
+        height: `${cardSizes[size].height + cardSizes[size].spotPadding}px`,
+        width: `${cardSizes[size].width + cardSizes[size].spotPadding}px`
       }}
     >
       {children}

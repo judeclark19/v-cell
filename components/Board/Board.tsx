@@ -28,6 +28,11 @@ import { winHistoryState } from "@/logic/WinHistory";
 import InstructionsModal from "../Modals/InstructionsModal";
 import { FaInfoCircle } from "react-icons/fa";
 import { Luckiest_Guy, Questrial } from "next/font/google";
+import {
+  handlePointerDown,
+  handlePointerMove,
+  handlePointerUp
+} from "@/logic/UIFunctions";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
@@ -56,56 +61,6 @@ const Board = observer(() => {
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
 
   let lastKnownOrientation: Orientation = orientation;
-
-  const handlePointerDown = () => {
-    gameState.setIsDragging(false);
-  };
-
-  const handlePointerMove = (event: PointerEvent) => {
-    if (!gameState.cardsBeingTouched) return;
-    gameState.setIsDragging(true); // Get the scroll positions
-    const scrollX = window.scrollX || document.documentElement.scrollLeft;
-    const scrollY = window.scrollY || document.documentElement.scrollTop;
-
-    // Add the scroll positions to the clientX and clientY
-    setDragPosition({
-      left: event.clientX + scrollX,
-      top: event.clientY + scrollY
-    });
-  };
-
-  const handlePointerUp = (event: PointerEvent) => {
-    if (!gameState.isDragging) {
-      // if the card wasn't dragged then the user didn't make a move
-      gameState.setCardsBeingTouched(null);
-      return;
-    }
-
-    const elementUnderPointer = document.elementFromPoint(
-      event.clientX,
-      event.clientY
-    );
-
-    const dropId = elementUnderPointer
-      ?.closest("[data-dropid]")
-      ?.getAttribute("data-dropid");
-
-    if (!dropId || !gameState.cardsBeingTouched) {
-      gameState.setIsDragging(false);
-      gameState.setCardsBeingTouched(null);
-      return;
-    }
-
-    if (dropId === gameState.cardsBeingTouched[0].locationOnBoard) {
-      gameState.setIsDragging(false);
-      gameState.setCardsBeingTouched(null);
-      return;
-    }
-
-    gameState.evaluateMove(gameState.cardsBeingTouched[0], dropId);
-    gameState.setIsDragging(false);
-    gameState.setCardsBeingTouched(null);
-  };
 
   useEffect(() => {
     gameState.dealCards();
@@ -136,7 +91,9 @@ const Board = observer(() => {
       }
     };
 
-    document.addEventListener("pointermove", handlePointerMove);
+    document.addEventListener("pointermove", (e) => {
+      handlePointerMove(e, setDragPosition);
+    });
     document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("pointerup", handlePointerUp);
     document.addEventListener("pointercancel", handlePointerUp);
@@ -146,7 +103,9 @@ const Board = observer(() => {
     return () => {
       window.removeEventListener("resize", handleResize);
       document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("pointermove", handlePointerMove);
+      document.removeEventListener("pointermove", (e) => {
+        handlePointerMove(e, setDragPosition);
+      });
       document.removeEventListener("pointerup", handlePointerUp);
       document.removeEventListener("pointercancel", handlePointerUp);
     };

@@ -21,6 +21,7 @@ const TableauStyles = styled.div<{
   flex-wrap: nowrap;
   justify-content: space-between;
   width: 100%;
+  gap: 4px;
   height: ${(props) => {
     const cardHeight =
       cardSizes[getCardSize(props.$windowWidth, props.$windowHeight)].height;

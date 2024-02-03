@@ -100,7 +100,26 @@ export const BoardContainer = styled.div<{
   padding: 20px;
   box-sizing: border-box;
   width: ${(props) => {
-    return `${cardSizes[props.$cardSize].width * 7 + 130}px`;
+    let buffer;
+
+    switch (props.$cardSize) {
+      case "large":
+        buffer = 170;
+        break;
+      case "medium":
+        buffer = 150;
+        break;
+      case "small":
+        buffer = 120;
+        break;
+      case "tiny":
+        buffer = 110;
+        break;
+      default:
+        buffer = 150;
+    }
+
+    return `${cardSizes[props.$cardSize].width * 7 + buffer}px`;
   }};
   max-width: calc(100vw - 20px);
   height: fit-content;

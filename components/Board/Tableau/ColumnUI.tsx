@@ -30,7 +30,7 @@ const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
 
   return (
     <Spot key={columnData.key} $size={getCardSize(windowWidth, windowHeight)}>
-      <div className="label">K</div>
+      <div className={`label ${questrial.className}`}>K</div>
       {columnData.arrayOfCards.map((card, i) => {
         // final card will have a drop spot
         if (i === columnData.arrayOfCards.length - 1) {

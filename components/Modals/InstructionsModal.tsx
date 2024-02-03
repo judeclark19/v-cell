@@ -74,7 +74,7 @@ const InstructionsModal = observer(() => {
               </p>
               <p>
                 Click and drag cards to rearrange them into sequences of
-                drecreasing value and alternating suits.
+                decreasing value and alternating suits.
               </p>
               <p>
                 Multiple cards can be moved simultaneously if they are part of a
