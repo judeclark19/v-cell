@@ -1,23 +1,12 @@
 # V-Cell
 
-**Link to deployed app: [https://react-solitaire-5be2a31a8c87.herokuapp.com/](https://react-solitaire-5be2a31a8c87.herokuapp.com/)**
+**Link to deployed app: [http://vcell.codecouture.site](http://vcell.codecouture.site/)**
+
+<img width="376" alt="image" src="https://github.com/judeclark19/react-solitaire/assets/69258086/922578c1-1a0c-462e-88c6-cbe21e2bfd1e">
+
 
 ## Todo list
 
-- [x] Basic card design to tell them apart at a glance
-- [x] Make card isActive prop part of state
-- [x] Get them all to render vertically stacked in the stock pile
-- [x] Card front and back
-- [x] Render correct front/back initial state
-- [x] Cycle through stock and waste piles
-- [x] Dragging
-- [x] Restart game
-- [x] Undo
-- [x] Double click to send a card to the foundation
-- [x] Win game/autocomplete
-- [x] Touch events
-- [x] How To Play instructions
-- [ ] Make a favicon out of the varsity V, use it for card back
 - [ ] Flip animation
 
 ### Deprioritized
@@ -25,7 +14,6 @@
 - [ ] Keeping score
 - [ ] Loading state
 - [ ] Different color hover for valid vs invalid move
-- [x] Better dragging animation
 - [ ] Cute wooden border
 
 ## Advanced
