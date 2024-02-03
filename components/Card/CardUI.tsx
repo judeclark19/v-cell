@@ -135,12 +135,14 @@ const CardUI = observer(
           </div>
         </div>
         <div className="card-back">
-          <Image
-            src={cardBackImage}
-            width={240}
-            height={245}
-            alt="V-Cell logo"
-          />
+          <div className="card-back-interior">
+            <Image
+              src={cardBackImage}
+              width={240}
+              height={245}
+              alt="V-Cell logo"
+            />
+          </div>
         </div>
       </CardStyle>
     );

@@ -257,12 +257,9 @@ export const CardStyle = styled.div<{
   .card-back {
     display: ${(props) => (props.$isFaceUp ? "none" : "grid")};
     place-items: center;
-    background-color: var(--red);
-    border: 1px solid red;
-    height: 100%;
+    background-color: white;
     border-radius: 2px;
-    border-color: white;
-    border-width: ${({ $size }) => {
+    padding: ${({ $size }) => {
       switch ($size) {
         case "small":
           return "2px";
@@ -273,10 +270,19 @@ export const CardStyle = styled.div<{
       }
     }};
 
-    img {
-      height: auto;
-      width: 100%;
-      object-fit: cover;
+    height: 100%;
+
+    .card-back-interior {
+      background-color: var(--red);
+      border-radius: 2px;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      img {
+        height: auto;
+        width: 100%;
+        object-fit: cover;
+      }
     }
   }
 `;

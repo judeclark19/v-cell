@@ -24,11 +24,6 @@ const HandStyles = styled.div<{
   width: 100%;
   padding: 0 10px;
   justify-content: space-between;
-  gap: ${(props) => {
-    if (props.$windowWidth >= 720) {
-      return "50px";
-    } else return "10px";
-  }};
 
   ${Spot} {
     border: 2px solid #000080;

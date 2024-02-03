@@ -33,7 +33,8 @@ export const HeaderImage = styled.div`
 export const HowToPlay = styled.div<{
   $isInstructionsModalOpen: boolean;
 }>`
-  margin-bottom: 12px;
+  width: fit-content;
+  margin: 0 auto 12px auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,10 +95,13 @@ export const GameControlButton = styled.button`
 
 export const BoardContainer = styled.div<{
   $isModalOpen: boolean;
+  $cardSize: cardSize;
 }>`
   padding: 20px;
-  width: calc(100vw - 20px);
-  max-width: 1100px;
+  box-sizing: border-box;
+  width: ${(props) => {
+    return `${cardSizes[props.$cardSize].width * 7 + 130}px`;
+  }};
   height: fit-content;
   min-height: 50vh;
   max-height: 80vh;
@@ -112,8 +116,6 @@ export const BoardContainer = styled.div<{
     padding: 10px;
     gap: 10px;
     min-height: fit-content;
-    width: calc(100vw - 20px);
-    max-width: calc(100vw - 10px);
   }
 
   .scroll {

@@ -100,6 +100,7 @@ export class GameState {
     this.history = [];
     this.createDeck();
     this.setIsWinningBoard(false);
+    this.setIsInstructionsModalOpen(false);
     this.canAutoComplete = false;
     this.setIsWinModalOpen(false);
 

@@ -17,6 +17,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   Orientation,
   boardOrientationState,
+  getCardSize,
   windowHeightState,
   windowWidthState
 } from "@/logic/OrientationAndSize";
@@ -50,8 +51,8 @@ const Board = observer(() => {
     boardOrientationState
   );
   const setWinHistory = useSetRecoilState(winHistoryState);
-  const setWindowWidth = useSetRecoilState(windowWidthState);
-  const setWindowHeight = useSetRecoilState(windowHeightState);
+  const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
+  const [windowHeight, setWindowHeight] = useRecoilState(windowHeightState);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
 
   let lastKnownOrientation: Orientation = orientation;
@@ -172,6 +173,7 @@ const Board = observer(() => {
         $isModalOpen={
           gameState.isWinModalOpen || gameState.isInstructionsModalOpen
         }
+        $cardSize={getCardSize(windowWidth, windowHeight)}
         onPointerLeave={(e) => {
           handlePointerUp(e as unknown as PointerEvent);
         }}
