@@ -64,6 +64,10 @@ const Board = observer(() => {
   let lastKnownOrientation: Orientation = orientation;
 
   useEffect(() => {
+    const winHistoryFromStorage = JSON.parse(
+      localStorage.getItem("vCellWinHistory") || "[]"
+    );
+    setWinHistory(winHistoryFromStorage);
     setIsLoading(false);
   }, []);
 

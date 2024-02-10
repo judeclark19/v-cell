@@ -4,7 +4,6 @@
 
 <img width="376" alt="image" src="https://github.com/judeclark19/react-solitaire/assets/69258086/922578c1-1a0c-462e-88c6-cbe21e2bfd1e">
 
-
 ## Todo list
 
 - [ ] Flip animation
@@ -22,3 +21,6 @@
 - [ ] Extra difficulty: foundations can be played from or not for difficulty
 - [ ] Extra difficulty: foundations not used
 - [ ] Lower difficulty: no cards face down
+
+12:23:00 AM: ./components/Board/Board.tsx
+12:23:00 AM: 80:32 Warning: Assignments to the "lastKnownOrientation" variable from inside React Hook useEffect will be lost after each render. To preserve the value over time, store it in a useRef Hook and keep the mutable value in the ".current" property. Otherwise, you can move this variable directly inside useEffect. react-hooks/exhaustive-deps

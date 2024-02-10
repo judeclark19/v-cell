@@ -31,11 +31,6 @@ const LocalStorageServerHelper = observer(() => {
       gameState.dealCards();
     }
 
-    const winHistoryFromStorage = JSON.parse(
-      localStorage.getItem("vCellWinHistory") || "[]"
-    );
-    setWinHistory(winHistoryFromStorage);
-
     const knowsHowToPlay = localStorage.getItem("vCellKnowsHowToPlay");
     console.log(knowsHowToPlay);
     if (!knowsHowToPlay) {
