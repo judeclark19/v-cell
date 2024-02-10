@@ -16,7 +16,7 @@ const LocalStorageServerHelper = observer(() => {
     const winningBoardFromStorage = JSON.parse(
       localStorage.getItem("vCellWinningBoard") || "false"
     );
-    gameState.setIsWinningBoard(winningBoardFromStorage);
+    gameState.setIsWinningBoard(winningBoardFromStorage, true);
 
     const canAutoCompleteFromStorage = JSON.parse(
       localStorage.getItem("vCellAutoComplete") || "false"

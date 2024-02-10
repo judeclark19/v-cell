@@ -131,8 +131,12 @@ export class GameState {
     // }
   }
 
-  setIsWinningBoard(isWinningBoard: boolean) {
-    if (this.winningBoard === false && isWinningBoard === true) {
+  setIsWinningBoard(isWinningBoard: boolean, fromStorage?: boolean) {
+    if (
+      this.winningBoard === false &&
+      isWinningBoard === true &&
+      !fromStorage
+    ) {
       this.winCount++;
     }
     this.winningBoard = isWinningBoard;
