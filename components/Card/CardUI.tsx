@@ -1,6 +1,6 @@
 import { CardStyle, cardSize } from "./CardUI.styles";
 import CardClass from "./CardClass";
-import gameState from "@/logic/GameState";
+import gameState from "@/logic/AppState";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { questrial } from "../Board/Board";

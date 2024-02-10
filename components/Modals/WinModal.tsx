@@ -4,15 +4,15 @@ import {
   GameControlButtons,
   GameTitle
 } from "../Board/Board.styles";
-import gameState from "@/logic/GameState";
+import gameState from "@/logic/AppState";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
-import { winHistoryState } from "@/logic/LocalStorageAtoms";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
 import { luckyGuy, questrial } from "../Board/Board";
 
 const WinModal = observer(() => {
-  const [winHistory, setWinHistory] = useRecoilState(winHistoryState);
+  const winHistory = localStorage.getItem("vCellWinHistory")
+    ? JSON.parse(localStorage.getItem("vCellWinHistory") as string)
+    : [];
   const [isClosing, setIsClosing] = useState(false);
 
   function getFirstWinDate() {
@@ -79,7 +79,6 @@ const WinModal = observer(() => {
               );
               if (!confirm) return;
               localStorage.removeItem("vCellWinHistory");
-              setWinHistory([]);
             }}
           >
             Reset win count

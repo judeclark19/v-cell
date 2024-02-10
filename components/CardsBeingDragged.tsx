@@ -10,7 +10,7 @@ import {
 import styled from "styled-components";
 import CardUI from "./Card/CardUI";
 import CardClass from "./Card/CardClass";
-import gameState from "@/logic/GameState";
+import gameState from "@/logic/AppState";
 
 interface CardsBeingDraggedProps {
   $size: cardSize;

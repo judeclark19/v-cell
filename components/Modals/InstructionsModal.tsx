@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { InstructionsModalStyle, ModalStyle } from "./Modal.styles";
-import gameState from "@/logic/GameState";
+import gameState from "@/logic/AppState";
 import { useState } from "react";
 
 import {

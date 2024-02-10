@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import styled from "styled-components";
 import { Spot } from "../Board.styles";
-import gameState from "@/logic/GameState";
+import gameState from "@/logic/AppState";
 import DropSpot from "../DropSpot/DropSpot";
 import CardUI from "@/components/Card/CardUI";
 import { handKeys } from "@/logic/types";

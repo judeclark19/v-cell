@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import gameState from "./GameState";
+import gameState from "./AppState";
 
 export const handlePointerDown = () => {
   gameState.setIsDragging(false);

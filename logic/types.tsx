@@ -95,3 +95,7 @@ export interface BoardType {
   tableau: Tableau;
   hand: Hand;
 }
+
+export const boardLayouts = {
+  classic: [0, 1, 2, 3, 2, 1, 0]
+};

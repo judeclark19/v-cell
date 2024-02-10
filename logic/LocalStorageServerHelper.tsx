@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import gameState from "./GameState";
+import gameState from "./AppState";
 
 // Since GameState.tsx cannot read localStorage from the client directly, the purpose of this component is to mirror the gameState to the localStorage.
 const LocalStorageServerHelper = observer(() => {

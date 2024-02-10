@@ -8,7 +8,7 @@ import {
 } from "./Board.styles";
 import headerImage from "@/assets/images/v-cell_header1.png";
 import Image from "next/image";
-import gameState from "@/logic/GameState";
+import gameState from "@/logic/AppState";
 import { observer } from "mobx-react-lite";
 import FoundationsUI from "./Foundations/FoundationsUI";
 import TableauUI from "./Tableau/TableauUI";
@@ -24,7 +24,6 @@ import {
 import { cardSize } from "../Card/CardUI.styles";
 import CardsBeingDragged from "../CardsBeingDragged";
 import WinModal from "../Modals/WinModal";
-import { winHistoryState } from "@/logic/LocalStorageAtoms";
 import InstructionsModal from "../Modals/InstructionsModal";
 import { FaInfoCircle } from "react-icons/fa";
 import { Luckiest_Guy, Questrial } from "next/font/google";
@@ -56,7 +55,6 @@ const Board = observer(() => {
   const [orientation, setBoardOrientation] = useRecoilState(
     boardOrientationState
   );
-  const [winHistory, setWinHistory] = useRecoilState(winHistoryState);
   const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
   const [windowHeight, setWindowHeight] = useRecoilState(windowHeightState);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
@@ -64,21 +62,18 @@ const Board = observer(() => {
   let lastKnownOrientation: Orientation = orientation;
 
   useEffect(() => {
-    const winHistoryFromStorage = JSON.parse(
-      localStorage.getItem("vCellWinHistory") || "[]"
-    );
-    setWinHistory(winHistoryFromStorage);
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    console.log("useeffect", gameState.winCount);
+    const winHistory = localStorage.getItem("vCellWinHistory")
+      ? JSON.parse(localStorage.getItem("vCellWinHistory") as string)
+      : [];
     if (gameState.winCount > 0) {
       localStorage.setItem(
         "vCellWinHistory",
         JSON.stringify([...winHistory, new Date()])
       );
-      setWinHistory([...winHistory, new Date()]);
     }
   }, [gameState.winCount]);
 
@@ -114,7 +109,7 @@ const Board = observer(() => {
       document.removeEventListener("pointerup", handlePointerUp);
       document.removeEventListener("pointercancel", handlePointerUp);
     };
-  }, [setWinHistory]);
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;

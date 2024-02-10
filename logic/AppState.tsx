@@ -11,7 +11,8 @@ import {
   foundationKeys,
   handKeys,
   suitsArray,
-  valuesArray
+  valuesArray,
+  boardLayouts
 } from "./types";
 import { makeAutoObservable } from "mobx";
 import Foundations from "../components/Board/Foundations/FoundationsClass";
@@ -19,10 +20,10 @@ import Tableau from "@/components/Board/Tableau/TableauClass";
 import Hand from "@/components/Board/Hand/HandClass";
 
 // TODO: put this as a prop
-const initialFaceDownCards = [0, 1, 2, 3, 2, 1, 0];
-export class GameState {
+// const initialFaceDownCards = [0, 1, 2, 3, 2, 1, 0];
+export class AppState {
   deck: CardClass[] = [];
-
+  layout: number[] = [0, 1, 2, 3, 2, 1, 0];
   currentBoard: BoardType = {
     foundations: new Foundations(),
     tableau: new Tableau(),
@@ -38,7 +39,8 @@ export class GameState {
   isWinModalOpen = false;
   isInstructionsModalOpen = false;
 
-  constructor() {
+  constructor(layout: number[]) {
+    this.layout = layout;
     makeAutoObservable(this);
   }
 
@@ -93,7 +95,7 @@ export class GameState {
         const columnIndex = `column${i + 1}` as columnKey;
 
         // set correct card flipped V
-        if (card && j === initialFaceDownCards[i]) {
+        if (card && j === this.layout[i]) {
           card.setIsFaceUp(false);
         }
 
@@ -732,5 +734,5 @@ export class GameState {
   }
 }
 
-const gameState = new GameState();
+const gameState = new AppState(boardLayouts.classic);
 export default gameState;
