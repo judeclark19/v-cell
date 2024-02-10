@@ -17,11 +17,22 @@ const LocalStorageServerHelper = observer(() => {
       localStorage.getItem("vCellCurrentBoard") || "{}"
     );
 
+    const winningBoardFromStorage = JSON.parse(
+      localStorage.getItem("vCellWinningBoard") || "false"
+    );
+    gameState.setIsWinningBoard(winningBoardFromStorage);
+
+    const canAutoCompleteFromStorage = JSON.parse(
+      localStorage.getItem("vCellAutoComplete") || "false"
+    );
+    gameState.setCanAutoComplete(canAutoCompleteFromStorage);
+
     if (
       moveHistoryFromStorage.length > 0 &&
       "foundations" in currentBoardFromStorage &&
       "tableau" in currentBoardFromStorage &&
-      "hand" in currentBoardFromStorage
+      "hand" in currentBoardFromStorage &&
+      !winningBoardFromStorage
     ) {
       // restore state
       gameState.restoreGameState(currentBoardFromStorage);
@@ -37,16 +48,6 @@ const LocalStorageServerHelper = observer(() => {
       gameState.setIsInstructionsModalOpen(true);
       localStorage.setItem("vCellKnowsHowToPlay", "true");
     }
-
-    const winningBoardFromStorage = JSON.parse(
-      localStorage.getItem("vCellWinningBoard") || "false"
-    );
-    gameState.setIsWinningBoard(winningBoardFromStorage);
-
-    const canAutoCompleteFromStorage = JSON.parse(
-      localStorage.getItem("vCellAutoComplete") || "false"
-    );
-    gameState.setCanAutoComplete(canAutoCompleteFromStorage);
   }, []);
 
   useEffect(() => {
