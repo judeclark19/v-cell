@@ -124,7 +124,6 @@ const Board = observer(() => {
     <>
       {/* <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
        */}
-      {gameState.winCount}
       <LocalStorageServerHelper />
       <HeaderImage>
         <Image
