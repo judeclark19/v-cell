@@ -86,11 +86,7 @@ const LocalStorageServerHelper = observer(() => {
     );
   }, [gameState.canAutoComplete]);
 
-  return (
-    <div>
-      <p>Win Count: {gameState.winCount}</p>
-    </div>
-  );
+  return null;
 });
 
 export default LocalStorageServerHelper;
