@@ -13,7 +13,7 @@ import { observer } from "mobx-react-lite";
 import FoundationsUI from "./Foundations/FoundationsUI";
 import TableauUI from "./Tableau/TableauUI";
 import HandUI from "./Hand/HandUI";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   Orientation,
   boardOrientationState,
@@ -56,7 +56,7 @@ const Board = observer(() => {
   const [orientation, setBoardOrientation] = useRecoilState(
     boardOrientationState
   );
-  const setWinHistory = useSetRecoilState(winHistoryState);
+  const [winHistory, setWinHistory] = useRecoilState(winHistoryState);
   const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
   const [windowHeight, setWindowHeight] = useRecoilState(windowHeightState);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
@@ -70,6 +70,17 @@ const Board = observer(() => {
     setWinHistory(winHistoryFromStorage);
     setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    console.log("useeffect", gameState.winCount);
+    if (gameState.winCount > 0) {
+      localStorage.setItem(
+        "vCellWinHistory",
+        JSON.stringify([...winHistory, new Date()])
+      );
+      setWinHistory([...winHistory, new Date()]);
+    }
+  }, [gameState.winCount]);
 
   useEffect(() => {
     const handleResize = () => {

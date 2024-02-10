@@ -1,13 +1,9 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import gameState from "./GameState";
-import { useRecoilState } from "recoil";
-import { winHistoryState } from "./LocalStorageAtoms";
 
 // Since GameState.tsx cannot read localStorage from the client directly, the purpose of this component is to mirror the gameState to the localStorage.
 const LocalStorageServerHelper = observer(() => {
-  const [winHistory, setWinHistory] = useRecoilState(winHistoryState);
-
   useEffect(() => {
     const moveHistoryFromStorage = JSON.parse(
       localStorage.getItem("vCellMoveHistory") || "[]"
@@ -49,16 +45,6 @@ const LocalStorageServerHelper = observer(() => {
       localStorage.setItem("vCellKnowsHowToPlay", "true");
     }
   }, []);
-
-  useEffect(() => {
-    if (gameState.winCount > 0) {
-      localStorage.setItem(
-        "vCellWinHistory",
-        JSON.stringify([...winHistory, new Date()])
-      );
-      setWinHistory([...winHistory, new Date()]);
-    }
-  }, [gameState.winCount]);
 
   useEffect(() => {
     localStorage.setItem("vCellMoveHistory", JSON.stringify(gameState.history));
