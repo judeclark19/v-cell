@@ -35,6 +35,7 @@ export const ModalStyle = styled.div<{
   z-index: 100;
   display: grid;
   place-items: center;
+  border-radius: 12px;
 
   > div {
     background-color: black;

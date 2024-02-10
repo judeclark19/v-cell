@@ -5,25 +5,15 @@ import {
   GameTitle
 } from "../Board/Board.styles";
 import gameState from "@/logic/GameState";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { winHistoryState } from "@/logic/WinHistory";
+import { winHistoryState } from "@/logic/LocalStorageAtoms";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
 import { luckyGuy, questrial } from "../Board/Board";
 
 const WinModal = observer(() => {
   const [winHistory, setWinHistory] = useRecoilState(winHistoryState);
   const [isClosing, setIsClosing] = useState(false);
-
-  useEffect(() => {
-    if (gameState.winCount > 0) {
-      localStorage.setItem(
-        "vCellWinHistory",
-        JSON.stringify([...winHistory, new Date()])
-      );
-      setWinHistory([...winHistory, new Date()]);
-    }
-  }, [gameState.winCount]);
 
   function getFirstWinDate() {
     const date = new Date(winHistory[0]);

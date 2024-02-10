@@ -33,7 +33,7 @@ const TableauStyles = styled.div<{
 `;
 
 const TableauUI = observer(() => {
-  const tableau = gameState.board.tableau;
+  const tableau = gameState.currentBoard.tableau;
   const windowWidth = useRecoilValue(windowWidthState);
   const windowHeight = useRecoilValue(windowHeightState);
   return (

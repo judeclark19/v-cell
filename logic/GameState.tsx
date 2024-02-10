@@ -23,7 +23,7 @@ const initialFaceDownCards = [0, 1, 2, 3, 2, 1, 0];
 export class GameState {
   deck: CardClass[] = [];
 
-  board: BoardType = {
+  currentBoard: BoardType = {
     foundations: new Foundations(),
     tableau: new Tableau(),
     hand: new Hand()
@@ -71,28 +71,11 @@ export class GameState {
   }
 
   clearBoard() {
-    this.board = {
+    this.currentBoard = {
       foundations: new Foundations(),
       tableau: new Tableau(),
       hand: new Hand()
     };
-  }
-
-  setIsWinningBoard(isWinningBoard: boolean) {
-    if (this.winningBoard === false && isWinningBoard === true) {
-      this.winCount++;
-    }
-    this.winningBoard = isWinningBoard;
-  }
-
-  setIsWinModalOpen(isWinModalOpen: boolean) {
-    // this function doesn't have any side effects yet so it's redundant atm
-    this.isWinModalOpen = isWinModalOpen;
-  }
-
-  setIsInstructionsModalOpen(isInstructionsModalOpen: boolean) {
-    // this function doesn't have any side effects yet so it's redundant atm
-    this.isInstructionsModalOpen = isInstructionsModalOpen;
   }
 
   dealCards() {
@@ -116,19 +99,53 @@ export class GameState {
 
         if (card) {
           card.setLocationOnBoard(columnIndex);
-          this.board.tableau[columnIndex].addCards([card]);
+          this.currentBoard.tableau[columnIndex].addCards([card]);
         }
       }
 
-      this.board.tableau[`column${i + 1}` as columnKey].updateColumnState();
+      this.currentBoard.tableau[
+        `column${i + 1}` as columnKey
+      ].updateColumnState();
     }
 
     // remaining cards go to hand
     this.deck.forEach((card, i) => {
       card.setIsActive(true);
       card.setLocationOnBoard(`handItem${i + 1}`);
-      this.board.hand.addCard(card, `handItem${i + 1}` as handItemKey);
+      this.currentBoard.hand.addCard(card, `handItem${i + 1}` as handItemKey);
     });
+
+    // const card1 = this.deck.pop();
+    // const card2 = this.deck.pop();
+
+    // if (card1 && card2) {
+    //   card1.setIsActive(true);
+    //   card1.setIsFaceUp(true);
+    //   card1.setLocationOnBoard("column1");
+    //   this.board.tableau.column1.addCards([card1]);
+
+    //   card2.setIsActive(true);
+    //   card2.setIsFaceUp(true);
+    //   card2.setLocationOnBoard("column2");
+    //   this.board.tableau.column2.addCards([card2]);
+    // }
+  }
+
+  setIsWinningBoard(isWinningBoard: boolean) {
+    if (this.winningBoard === false && isWinningBoard === true) {
+      this.winCount++;
+    }
+    this.winningBoard = isWinningBoard;
+  }
+
+  setIsWinModalOpen(isWinModalOpen: boolean) {
+    // this function doesn't have any side effects yet so it's redundant atm
+    this.isWinModalOpen = isWinModalOpen;
+  }
+
+  setIsInstructionsModalOpen(isInstructionsModalOpen: boolean) {
+    // this function doesn't have any side effects yet so it's redundant atm
+    this.isInstructionsModalOpen = isInstructionsModalOpen;
   }
 
   setCardsBeingTouched(card: CardClass | null) {
@@ -147,7 +164,7 @@ export class GameState {
 
     // card is in a column
     const entireColumn =
-      this.board.tableau[card.locationOnBoard as columnKey].arrayOfCards;
+      this.currentBoard.tableau[card.locationOnBoard as columnKey].arrayOfCards;
 
     const cardIndex = entireColumn.findIndex((c) => c.id === card.id);
 
@@ -225,8 +242,9 @@ export class GameState {
       return;
     }
     const sourceFoundation =
-      this.board.foundations[card.locationOnBoard as foundationKey];
-    const targetFoundation = this.board.foundations[dropId as foundationKey];
+      this.currentBoard.foundations[card.locationOnBoard as foundationKey];
+    const targetFoundation =
+      this.currentBoard.foundations[dropId as foundationKey];
 
     if (card.value !== "A") {
       // only aces can be moved to empty foundations
@@ -250,8 +268,8 @@ export class GameState {
 
   moveFoundationToColumn(card: CardClass, dropId: columnKey) {
     const sourceFoundation =
-      this.board.foundations[card.locationOnBoard as foundationKey];
-    const destinationColumn = this.board.tableau[dropId];
+      this.currentBoard.foundations[card.locationOnBoard as foundationKey];
+    const destinationColumn = this.currentBoard.tableau[dropId];
 
     if (card.value === "king" && destinationColumn.arrayOfCards.length > 0) {
       // kings can only be moved to empty columns
@@ -302,16 +320,16 @@ export class GameState {
 
   moveFoundationToHand(card: CardClass, dropId: handItemKey) {
     // handItem must be empty
-    if (this.board.hand[dropId]) return;
+    if (this.currentBoard.hand[dropId]) return;
 
     // execute the move
     this.takeSnapshot();
     // remove card from foundation
     const sourceFoundation =
-      this.board.foundations[card.locationOnBoard as foundationKey];
+      this.currentBoard.foundations[card.locationOnBoard as foundationKey];
     sourceFoundation.removeLastCard();
     // add card to hand
-    this.board.hand.addCard(card, dropId);
+    this.currentBoard.hand.addCard(card, dropId);
 
     // this.checkForWin();
   }
@@ -331,7 +349,7 @@ export class GameState {
 
     if (!foundationKey) return;
 
-    const targetFoundation = this.board.foundations[foundationKey];
+    const targetFoundation = this.currentBoard.foundations[foundationKey];
 
     if (card.value !== "A" && targetFoundation.arrayOfCards.length === 0) {
       // only aces can be moved to empty foundations
@@ -351,7 +369,8 @@ export class GameState {
     // execute the move
     this.takeSnapshot();
     // remove card from column
-    const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
+    const sourceColumn =
+      this.currentBoard.tableau[card.locationOnBoard as columnKey];
     sourceColumn.removeLastCard();
     sourceColumn.updateColumnState();
 
@@ -362,8 +381,9 @@ export class GameState {
   }
 
   moveColumnToColumn(card: CardClass, dropId: columnKey) {
-    const targetColumn = this.board.tableau[dropId];
-    const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
+    const targetColumn = this.currentBoard.tableau[dropId];
+    const sourceColumn =
+      this.currentBoard.tableau[card.locationOnBoard as columnKey];
 
     if (card.value !== "king" && targetColumn.arrayOfCards.length === 0) {
       // non-kings can only go in non-empty columns
@@ -415,16 +435,17 @@ export class GameState {
     if (!this.cardIsOnTop(card)) return;
 
     // hand item must be empty
-    if (this.board.hand[dropId]) return;
+    if (this.currentBoard.hand[dropId]) return;
 
     // execute move
     this.takeSnapshot();
     // remove card from column
-    const sourceColumn = this.board.tableau[card.locationOnBoard as columnKey];
+    const sourceColumn =
+      this.currentBoard.tableau[card.locationOnBoard as columnKey];
     sourceColumn.removeLastCard();
     sourceColumn.updateColumnState();
     // add card to hand
-    this.board.hand.addCard(card, dropId);
+    this.currentBoard.hand.addCard(card, dropId);
 
     this.checkForWin();
   }
@@ -440,7 +461,7 @@ export class GameState {
     }
 
     if (!foundationKey) return;
-    const targetFoundation = this.board.foundations[foundationKey];
+    const targetFoundation = this.currentBoard.foundations[foundationKey];
 
     if (card.value !== "A" && targetFoundation.arrayOfCards.length === 0) {
       // only aces can be moved to empty foundations
@@ -461,7 +482,7 @@ export class GameState {
     this.takeSnapshot();
 
     // remove card from hand
-    this.board.hand.removeCard(card.locationOnBoard as handItemKey);
+    this.currentBoard.hand.removeCard(card.locationOnBoard as handItemKey);
     // add card to foundation
     targetFoundation.addCards([card]);
 
@@ -469,7 +490,7 @@ export class GameState {
   }
 
   moveHandToColumn(card: CardClass, dropId: columnKey) {
-    const destinationColumn = this.board.tableau[dropId];
+    const destinationColumn = this.currentBoard.tableau[dropId];
 
     if (card.value === "king" && destinationColumn.arrayOfCards.length > 0) {
       // kings can only go in empty columns
@@ -510,7 +531,7 @@ export class GameState {
     this.takeSnapshot();
 
     // remove card from hand
-    this.board.hand.removeCard(card.locationOnBoard as handItemKey);
+    this.currentBoard.hand.removeCard(card.locationOnBoard as handItemKey);
 
     // add card to column
     destinationColumn.addCards([card]);
@@ -521,15 +542,15 @@ export class GameState {
 
   moveHandToHand(card: CardClass, dropId: handItemKey) {
     // destination hand item must be empty
-    if (this.board.hand[dropId]) return;
+    if (this.currentBoard.hand[dropId]) return;
 
     // execute the move
     this.takeSnapshot();
 
     // remove card from hand
-    this.board.hand.removeCard(card.locationOnBoard as handItemKey);
+    this.currentBoard.hand.removeCard(card.locationOnBoard as handItemKey);
     // add card to hand
-    this.board.hand.addCard(card, dropId);
+    this.currentBoard.hand.addCard(card, dropId);
   }
 
   findTargetFoundation(card: CardClass): foundationKey | undefined {
@@ -538,14 +559,14 @@ export class GameState {
     if (card.value === "A") {
       // find first empty foundation
       foundationKey = foundationKeys.find(
-        (key) => this.board.foundations[key].arrayOfCards.length === 0
+        (key) => this.currentBoard.foundations[key].arrayOfCards.length === 0
       );
     } else {
       // find foundation with matching suit
       foundationKey = foundationKeys.find(
         (key) =>
-          this.board.foundations[key].arrayOfCards.length > 0 &&
-          this.board.foundations[key].suit === card.suit
+          this.currentBoard.foundations[key].arrayOfCards.length > 0 &&
+          this.currentBoard.foundations[key].suit === card.suit
       );
     }
 
@@ -575,7 +596,7 @@ export class GameState {
   }
 
   cardIsOnTop(card: CardClass) {
-    const column = this.board.tableau[card.locationOnBoard as columnKey];
+    const column = this.currentBoard.tableau[card.locationOnBoard as columnKey];
     const cardIndex = column.arrayOfCards.findIndex(
       (c) => c.value === card.value && c.suit === card.suit
     );
@@ -583,72 +604,76 @@ export class GameState {
   }
 
   takeSnapshot() {
-    const boardCopy = _.cloneDeep(this.board);
+    const boardCopy = _.cloneDeep(this.currentBoard);
     this.history.push(boardCopy);
   }
 
+  setHistory(history: BoardType[]) {
+    this.history = history;
+  }
+
   undo() {
-    if (this.history.length > 0) {
-      const stateToRestore = this.history.pop();
-      if (!stateToRestore) return;
+    if (this.history.length <= 0) return;
+    const stateToRestore = this.history.pop();
+    if (!stateToRestore) return;
+    this.restoreGameState(stateToRestore);
+  }
 
-      // foundation
-      foundationKeys.forEach((key) => {
-        // empty the foundation
-        this.board.foundations[key].arrayOfCards = [];
+  restoreGameState(stateToRestore: BoardType) {
+    // foundation
+    foundationKeys.forEach((key) => {
+      // empty the foundation
+      this.currentBoard.foundations[key].arrayOfCards = [];
 
-        // create new cards from state
-        const cards = stateToRestore.foundations[key].arrayOfCards.map(
-          (card) => {
-            const newCard = new CardClass(card.value, card.suit);
-            newCard.setIsActive(card.isActive);
-            newCard.setIsFaceUp(card.isFaceUp);
-            newCard.setLocationOnBoard(card.locationOnBoard);
-            return newCard;
-          }
-        );
-
-        // add cards to foundation
-        if (cards.length > 0) {
-          this.board.foundations[key].addCards(cards);
-        }
+      // create new cards from state
+      const cards = stateToRestore.foundations[key].arrayOfCards.map((card) => {
+        const newCard = new CardClass(card.value, card.suit);
+        newCard.setIsActive(card.isActive);
+        newCard.setIsFaceUp(card.isFaceUp);
+        newCard.setLocationOnBoard(card.locationOnBoard);
+        return newCard;
       });
 
-      // tableau
-      columnKeys.forEach((key) => {
-        // empty the column
-        this.board.tableau[key].arrayOfCards = [];
+      // add cards to foundation
+      if (cards.length > 0) {
+        this.currentBoard.foundations[key].addCards(cards);
+      }
+    });
 
-        // create new cards from state
-        const cards = stateToRestore.tableau[key].arrayOfCards.map((card) => {
-          const newCard = new CardClass(card.value, card.suit);
-          newCard.setIsActive(card.isActive);
-          newCard.setIsFaceUp(card.isFaceUp);
-          newCard.setLocationOnBoard(card.locationOnBoard);
-          return newCard;
-        });
+    // tableau
+    columnKeys.forEach((key) => {
+      // empty the column
+      this.currentBoard.tableau[key].arrayOfCards = [];
 
-        // add cards to column
-        this.board.tableau[key].addCards(cards);
-        this.board.tableau[key].updateColumnState();
+      // create new cards from state
+      const cards = stateToRestore.tableau[key].arrayOfCards.map((card) => {
+        const newCard = new CardClass(card.value, card.suit);
+        newCard.setIsActive(card.isActive);
+        newCard.setIsFaceUp(card.isFaceUp);
+        newCard.setLocationOnBoard(card.locationOnBoard);
+        return newCard;
       });
 
-      // hand
-      handKeys.forEach((key) => {
-        // empty the hand
-        this.board.hand[key] = null;
+      // add cards to column
+      this.currentBoard.tableau[key].addCards(cards);
+      this.currentBoard.tableau[key].updateColumnState();
+    });
 
-        // create new cards from state
-        const card = stateToRestore.hand[key];
-        if (card) {
-          const newCard = new CardClass(card.value, card.suit);
-          newCard.setIsActive(card.isActive);
-          newCard.setIsFaceUp(card.isFaceUp);
-          newCard.setLocationOnBoard(card.locationOnBoard);
-          this.board.hand[key] = newCard;
-        }
-      });
-    }
+    // hand
+    handKeys.forEach((key) => {
+      // empty the hand
+      this.currentBoard.hand[key] = null;
+
+      // create new cards from state
+      const card = stateToRestore.hand[key];
+      if (card) {
+        const newCard = new CardClass(card.value, card.suit);
+        newCard.setIsActive(card.isActive);
+        newCard.setIsFaceUp(card.isFaceUp);
+        newCard.setLocationOnBoard(card.locationOnBoard);
+        this.currentBoard.hand[key] = newCard;
+      }
+    });
   }
 
   checkForWin() {
@@ -656,7 +681,7 @@ export class GameState {
     let allCardsActive = true;
 
     columnKeys.forEach((key) => {
-      this.board.tableau[key].arrayOfCards.forEach((card) => {
+      this.currentBoard.tableau[key].arrayOfCards.forEach((card) => {
         if (!card.isActive) {
           allCardsActive = false;
         }
@@ -665,18 +690,22 @@ export class GameState {
 
     if (allCardsActive) {
       this.setIsWinningBoard(true);
-      this.canAutoComplete = true;
+      this.setCanAutoComplete(true);
     }
+  }
+
+  setCanAutoComplete(canAutoComplete: boolean) {
+    this.canAutoComplete = canAutoComplete;
   }
 
   autoComplete() {
     while (
       foundationKeys.some(
-        (key) => this.board.foundations[key].arrayOfCards.length < 13
+        (key) => this.currentBoard.foundations[key].arrayOfCards.length < 13
       )
     ) {
       columnKeys.forEach((key) => {
-        const column = this.board.tableau[key];
+        const column = this.currentBoard.tableau[key];
         const topCard = column.arrayOfCards[column.arrayOfCards.length - 1];
         if (!topCard) return;
         const foundationKey = this.findTargetFoundation(topCard);
@@ -685,7 +714,7 @@ export class GameState {
         }
       });
       handKeys.forEach((key) => {
-        const cardInHand = this.board.hand[key];
+        const cardInHand = this.currentBoard.hand[key];
         if (!cardInHand) return;
         const foundationKey = this.findTargetFoundation(cardInHand);
         if (foundationKey) {
@@ -694,7 +723,7 @@ export class GameState {
       });
     }
 
-    this.canAutoComplete = false;
+    this.setCanAutoComplete(false);
     this.setIsWinModalOpen(true);
   }
 }

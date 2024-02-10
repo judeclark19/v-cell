@@ -15,7 +15,7 @@ import {
 } from "./FoundationsUI.styles";
 
 const FoundationsUI = observer(() => {
-  const foundations = gameState.board.foundations;
+  const foundations = gameState.currentBoard.foundations;
   const windowWidth = useRecoilValue(windowWidthState);
 
   return (

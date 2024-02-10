@@ -31,7 +31,7 @@ const HandStyles = styled.div<{
 `;
 
 const HandUI = observer(() => {
-  const hand = gameState.board.hand;
+  const hand = gameState.currentBoard.hand;
   const orientation = useRecoilValue(boardOrientationState);
   const windowWidth = useRecoilValue(windowWidthState);
   const windowHeight = useRecoilValue(windowHeightState);

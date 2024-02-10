@@ -24,7 +24,7 @@ import {
 import { cardSize } from "../Card/CardUI.styles";
 import CardsBeingDragged from "../CardsBeingDragged";
 import WinModal from "../Modals/WinModal";
-import { winHistoryState } from "@/logic/WinHistory";
+import { winHistoryState } from "@/logic/LocalStorageAtoms";
 import InstructionsModal from "../Modals/InstructionsModal";
 import { FaInfoCircle } from "react-icons/fa";
 import { Luckiest_Guy, Questrial } from "next/font/google";
@@ -33,6 +33,7 @@ import {
   handlePointerMove,
   handlePointerUp
 } from "@/logic/UIFunctions";
+import LocalStorageServerHelper from "@/logic/LocalStorageServerHelper";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
@@ -63,18 +64,7 @@ const Board = observer(() => {
   let lastKnownOrientation: Orientation = orientation;
 
   useEffect(() => {
-    gameState.dealCards();
-    const winHistoryFromStorage = JSON.parse(
-      localStorage.getItem("vCellWinHistory") || "[]"
-    );
-    setWinHistory(winHistoryFromStorage);
     setIsLoading(false);
-
-    const knowsHowToPlay = localStorage.getItem("vCellKnowsHowToPlay");
-    if (!knowsHowToPlay) {
-      gameState.setIsInstructionsModalOpen(true);
-      localStorage.setItem("vCellKnowsHowToPlay", "true");
-    }
   }, []);
 
   useEffect(() => {
@@ -119,15 +109,28 @@ const Board = observer(() => {
     <>
       {/* <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
        */}
+      <LocalStorageServerHelper />
       <HeaderImage>
         <Image
           src={headerImage}
           width={1700}
           height={400}
           alt="V-Cell header image"
+          priority
         />
       </HeaderImage>
 
+      <HowToPlay
+        className={questrial.className}
+        onClick={() => {
+          if (!gameState.isInstructionsModalOpen) {
+            gameState.setIsInstructionsModalOpen(true);
+          }
+        }}
+        $isInstructionsModalOpen={gameState.isInstructionsModalOpen}
+      >
+        <span>How to play</span> <FaInfoCircle className="info-icon" />
+      </HowToPlay>
       <BoardContainer
         $isModalOpen={
           gameState.isWinModalOpen || gameState.isInstructionsModalOpen
@@ -180,6 +183,7 @@ const Board = observer(() => {
         {process.env.NODE_ENV !== "production" && (
           <button
             onClick={() => {
+              gameState.setIsWinningBoard(true);
               gameState.setIsWinModalOpen(true);
             }}
           >
@@ -187,18 +191,6 @@ const Board = observer(() => {
           </button>
         )}
       </GameControlButtons>
-
-      <HowToPlay
-        className={questrial.className}
-        onClick={() => {
-          if (!gameState.isInstructionsModalOpen) {
-            gameState.setIsInstructionsModalOpen(true);
-          }
-        }}
-        $isInstructionsModalOpen={gameState.isInstructionsModalOpen}
-      >
-        <span>How to play</span> <FaInfoCircle className="info-icon" />
-      </HowToPlay>
     </>
   );
 });

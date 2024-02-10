@@ -19,7 +19,7 @@ export const GameTitle = styled.h1`
 export const HeaderImage = styled.div`
   display: flex;
   justify-content: center;
-  margin: 30px auto;
+  margin: 30px auto 0 auto;
   width: calc(100vw - 20px);
   max-width: 1100px;
   border-radius: 4px;
@@ -34,7 +34,7 @@ export const HowToPlay = styled.div<{
   $isInstructionsModalOpen: boolean;
 }>`
   width: fit-content;
-  margin: 0 auto 12px auto;
+  margin: 0 auto 30px auto;
   display: flex;
   align-items: center;
   justify-content: center;
