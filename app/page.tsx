@@ -75,7 +75,7 @@ export default function Home() {
       </div>
 
       <Footer className={questrial.className}>
-        <div className="top">
+        <div className={`top ${questrial.className}`}>
           <div>
             A 2023-2024&nbsp;
             <strong>

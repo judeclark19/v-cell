@@ -5,34 +5,25 @@ import CardClass from "@/components/Card/CardClass";
 export class Column {
   key: columnKey;
   arrayOfCards: CardClass[] = [];
-  faceDownCardIndex: number;
-  faceDownCardHasBeenUncovered = false;
-  constructor(key: columnKey, faceDownCardIndex: number) {
+  constructor(key: columnKey) {
     makeAutoObservable(this);
     this.key = key;
-    this.faceDownCardIndex = faceDownCardIndex;
   }
 
   addCards(cardStack: CardClass[]) {
-    // update incoming cards location
     cardStack.forEach((card) => {
       card.setLocationOnBoard(this.key);
     });
     this.arrayOfCards = this.arrayOfCards.concat(cardStack);
-    // this.updateColumnState();
   }
 
   removeLastCard() {
-    // splice off and remove last card
     const removedCard = this.arrayOfCards.pop();
-    // this.updateColumnState();
     return removedCard;
   }
 
   removeCards(cardIndex: number) {
-    // splice off and remove cards
     const removedCards = this.arrayOfCards.splice(cardIndex);
-    // this.updateColumnState();
     return removedCards;
   }
 
@@ -42,17 +33,8 @@ export class Column {
       card.setIsActive(false);
     });
 
-    if (this.arrayOfCards.length <= this.faceDownCardIndex + 1) {
-      this.faceDownCardHasBeenUncovered = true;
-    }
-
     // loop backwards through column
     for (let i = this.arrayOfCards.length - 1; i >= 0; i--) {
-      // apply face down card index
-      if (i === this.faceDownCardIndex && !this.faceDownCardHasBeenUncovered) {
-        this.arrayOfCards[i].setIsFaceUp(false);
-      }
-
       // last card in column is active
       if (i === this.arrayOfCards.length - 1) {
         this.arrayOfCards[i].setIsActive(true);
@@ -77,13 +59,13 @@ export class Column {
 }
 
 class Tableau {
-  column1: Column = new Column("column1", 0);
-  column2: Column = new Column("column2", 1);
-  column3: Column = new Column("column3", 2);
-  column4: Column = new Column("column4", 3);
-  column5: Column = new Column("column5", 2);
-  column6: Column = new Column("column6", 1);
-  column7: Column = new Column("column7", 0);
+  column1: Column = new Column("column1");
+  column2: Column = new Column("column2");
+  column3: Column = new Column("column3");
+  column4: Column = new Column("column4");
+  column5: Column = new Column("column5");
+  column6: Column = new Column("column6");
+  column7: Column = new Column("column7");
 
   constructor() {
     makeAutoObservable(this);

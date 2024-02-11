@@ -37,6 +37,12 @@ export const ModalStyle = styled.div<{
   place-items: center;
   border-radius: 12px;
 
+  ${GameTitle} {
+    @media screen and (max-width: 480px) {
+      font-size: 30px;
+    }
+  }
+
   > div {
     background-color: black;
     border-radius: 12px;
@@ -91,12 +97,6 @@ export const ModalStyle = styled.div<{
 `;
 
 export const WinModalStyle = styled.div`
-  ${GameTitle} {
-    @media screen and (max-width: 480px) {
-      font-size: 30px;
-    }
-  }
-
   .win-count {
     font-size: 20px;
     text-align: center;
@@ -179,12 +179,25 @@ export const InstructionsModalStyle = styled.div`
 `;
 
 export const SettingsModalStyle = styled.div`
+  p {
+    color: var(--red);
+    max-width: 250px;
+    text-align: center;
+    margin: 0 auto 1rem auto;
+  }
+
   .layout-select {
     display: flex;
+
     label {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       width: 100%;
+
+      #layout-select {
+        padding: 4px;
+      }
     }
   }
 `;

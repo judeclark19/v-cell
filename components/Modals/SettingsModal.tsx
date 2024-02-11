@@ -30,8 +30,13 @@ const SettingsModal = observer(() => {
           <GameTitle className={luckyGuy.className}>Settings</GameTitle>
         </div>
 
+        <p>
+          <strong>Warning:</strong> changing any of these settings will start a
+          new game!
+        </p>
+
         <div className={`layout-select ${questrial.className}`}>
-          {/* TODO: generate from tyeps list? */}
+          {/* TODO: generate from types list? */}
           <label htmlFor="layout-select">
             <span className="label-text">Layout</span>
             <select
