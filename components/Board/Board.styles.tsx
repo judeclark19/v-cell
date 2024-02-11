@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { cardSize, cardSizes } from "../Card/CardUI.styles";
+import wood from "@/assets/images/wood.jpg";
 
 export const GameTitle = styled.h1`
   width: 100%;
@@ -93,11 +94,21 @@ export const GameControlButton = styled.button`
   }
 `;
 
+export const WoodenBorder = styled.div`
+  background-image: url(${wood.src});
+  background-size: cover;
+  width: fit-content;
+  margin: auto;
+  padding: 10px;
+  border-radius: 4px;
+`;
+
 export const BoardContainer = styled.div<{
   $isModalOpen: boolean;
   $cardSize: cardSize;
 }>`
   padding: 20px;
+  background-color: var(--pokerGreen);
   box-sizing: border-box;
   width: ${(props) => {
     let buffer;

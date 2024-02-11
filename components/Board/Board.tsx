@@ -4,7 +4,8 @@ import {
   GameControlButton,
   GameControlButtons,
   HeaderImage,
-  HowToPlay
+  HowToPlay,
+  WoodenBorder
 } from "./Board.styles";
 import headerImage from "@/assets/images/v-cell_header1.png";
 import Image from "next/image";
@@ -141,27 +142,28 @@ const Board = observer(() => {
       >
         <span>How to play</span> <FaInfoCircle className="info-icon" />
       </HowToPlay>
-      <BoardContainer
-        $isModalOpen={
-          gameState.winModal.isOpen || gameState.instructionsModal.isOpen
-        }
-        $cardSize={getCardSize(windowWidth, windowHeight)}
-        onPointerLeave={(e) => {
-          handlePointerUp(e as unknown as PointerEvent);
-        }}
-      >
-        {gameState.winModal.isOpen && <WinModal />}
-        {gameState.instructionsModal.isOpen && <InstructionsModal />}
-        {gameState.cardsBeingTouched && gameState.isDragging && (
-          <CardsBeingDragged dragPosition={dragPosition} />
-        )}
-        <FoundationsUI />
-        <div className="scroll">
-          <TableauUI />
-        </div>
-        <HandUI />
-      </BoardContainer>
-
+      <WoodenBorder>
+        <BoardContainer
+          $isModalOpen={
+            gameState.winModal.isOpen || gameState.instructionsModal.isOpen
+          }
+          $cardSize={getCardSize(windowWidth, windowHeight)}
+          onPointerLeave={(e) => {
+            handlePointerUp(e as unknown as PointerEvent);
+          }}
+        >
+          {gameState.winModal.isOpen && <WinModal />}
+          {gameState.instructionsModal.isOpen && <InstructionsModal />}
+          {gameState.cardsBeingTouched && gameState.isDragging && (
+            <CardsBeingDragged dragPosition={dragPosition} />
+          )}
+          <FoundationsUI />
+          <div className="scroll">
+            <TableauUI />
+          </div>
+          <HandUI />
+        </BoardContainer>
+      </WoodenBorder>
       <GameControlButtons className={questrial.className}>
         <GameControlButton
           className={`deal-again ${questrial.className}`}
