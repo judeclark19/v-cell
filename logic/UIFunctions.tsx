@@ -49,6 +49,7 @@ export const handlePointerUp = (event: PointerEvent) => {
     return;
   }
 
+  appState.moveEvaluator.setExecute(true);
   appState.moveEvaluator.evaluateMove(appState.cardsBeingTouched[0], dropId);
   appState.setIsDragging(false);
   appState.setCardsBeingTouched(null);

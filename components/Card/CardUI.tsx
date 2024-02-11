@@ -21,7 +21,7 @@ const CardUI = observer(
     spacer?: boolean;
   }) => {
     const [lastTapTimestamp, setLastTapTimestamp] = useState(0);
-
+    const [hoverColor, setHoverColor] = useState("goldAlpha");
     let suitIcon = "";
 
     switch (card.suit) {
@@ -87,6 +87,7 @@ const CardUI = observer(
         $suit={card.suit}
         $value={card.value}
         $zIndex={zIndex}
+        $hoverColor={hoverColor}
         $isBeingDragged={
           appState.isDragging &&
           appState.cardsBeingTouched?.findIndex((c) => c.id === card.id) !==
@@ -116,6 +117,30 @@ const CardUI = observer(
           }
 
           setLastTapTimestamp(Date.now());
+        }}
+        onPointerEnter={() => {
+          appState.moveEvaluator.setExecute(false);
+
+          if (
+            appState.isDragging &&
+            appState.cardsBeingTouched &&
+            appState.cardsBeingTouched[0].locationOnBoard !==
+              card.locationOnBoard
+          ) {
+            const isValidMove = appState.moveEvaluator.evaluateMove(
+              appState.cardsBeingTouched[0],
+              card.locationOnBoard as string
+            );
+
+            if (isValidMove) {
+              setHoverColor("lime");
+            } else {
+              setHoverColor("red");
+            }
+          }
+        }}
+        onPointerLeave={() => {
+          setHoverColor("goldAlpha");
         }}
         onContextMenu={(e) => {
           e.preventDefault();

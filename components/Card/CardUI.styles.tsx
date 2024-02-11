@@ -39,6 +39,7 @@ export const CardStyle = styled.div<{
   $suit: Suit;
   $value: Value;
   $zIndex: number;
+  $hoverColor: string;
   $isBeingDragged: boolean;
   $offset?: number;
   $isActive?: boolean;
@@ -107,8 +108,8 @@ export const CardStyle = styled.div<{
     &:hover {
         filter: drop-shadow(${cardSizes[props.$size].shadowSize}px ${
       cardSizes[props.$size].shadowSize
-    }px 5px rgba(255, 215, 0, 0.8));
-        border: 1px solid var(--gold);
+    }px 5px var(--${props.$hoverColor}));
+        border: 1px solid var(--${props.$hoverColor});
     }
 `}
 

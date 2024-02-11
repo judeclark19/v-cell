@@ -12,13 +12,20 @@ import {
   valuesArray
 } from "./types";
 import { AppState } from "./AppState";
+import { drop } from "lodash";
 
 class MoveEvaluator {
   appState: AppState;
+  execute: boolean;
 
   constructor(appState: AppState) {
     this.appState = appState;
+    this.execute = false;
     makeAutoObservable(this, {}, { autoBind: true });
+  }
+
+  setExecute(value: boolean) {
+    this.execute = value;
   }
 
   cardsAreContrastingSuits(card1: CardClass, card2: CardClass) {
@@ -61,15 +68,15 @@ class MoveEvaluator {
         foundationKeys.includes(dropId as foundationKey) ||
         dropId === "foundations"
       ) {
-        this.moveFoundationToFoundation(card, dropId);
+        return this.moveFoundationToFoundation(card, dropId);
       }
       // to column
       else if (columnKeys.includes(dropId as columnKey)) {
-        this.moveFoundationToColumn(card, dropId as columnKey);
+        return this.moveFoundationToColumn(card, dropId as columnKey);
       }
       // to hand
       else if (handKeys.includes(dropId as handItemKey)) {
-        this.moveFoundationToHand(card, dropId as handItemKey);
+        return this.moveFoundationToHand(card, dropId as handItemKey);
       }
     }
 
@@ -80,15 +87,15 @@ class MoveEvaluator {
         foundationKeys.includes(dropId as foundationKey) ||
         dropId === "foundations"
       ) {
-        this.moveColumnToFoundation(card, dropId);
+        return this.moveColumnToFoundation(card, dropId);
       }
       // to column
       else if (columnKeys.includes(dropId as columnKey)) {
-        this.moveColumnToColumn(card, dropId as columnKey);
+        return this.moveColumnToColumn(card, dropId as columnKey);
       }
       // to hand
       else if (handKeys.includes(dropId as handItemKey)) {
-        this.moveColumnToHand(card, dropId as handItemKey);
+        return this.moveColumnToHand(card, dropId as handItemKey);
       }
     }
     // from hand
@@ -98,25 +105,24 @@ class MoveEvaluator {
         foundationKeys.includes(dropId as foundationKey) ||
         dropId === "foundations"
       ) {
-        this.moveHandToFoundation(card, dropId);
+        return this.moveHandToFoundation(card, dropId);
       }
       // to column
       else if (columnKeys.includes(dropId as columnKey)) {
-        this.moveHandToColumn(card, dropId as columnKey);
+        return this.moveHandToColumn(card, dropId as columnKey);
       }
       // to hand
       else if (handKeys.includes(dropId as handItemKey)) {
-        this.moveHandToHand(card, dropId as handItemKey);
+        return this.moveHandToHand(card, dropId as handItemKey);
       }
     }
   }
 
   moveFoundationToFoundation(card: CardClass, dropId: string) {
     // only possible with aces
-
     if (dropId === "foundations") {
       // unnecessary move
-      return;
+      return false;
     }
     const sourceFoundation =
       this.appState.currentBoard.foundations[
@@ -127,22 +133,25 @@ class MoveEvaluator {
 
     if (card.value !== "A") {
       // only aces can be moved to empty foundations
-      return;
+      return false;
     }
 
     if (targetFoundation.arrayOfCards.length > 0) {
       // only aces can be moved to empty foundations
-      return;
+      return false;
     }
 
-    // execute the move
-    this.appState.takeSnapshot();
-    // remove card from foundation
-    sourceFoundation.removeLastCard();
-    // add card to foundation
-    targetFoundation.addCards([card]);
+    if (this.execute) {
+      // execute the move
+      this.appState.takeSnapshot();
+      // remove card from foundation
+      sourceFoundation.removeLastCard();
+      // add card to foundation
+      targetFoundation.addCards([card]);
 
-    this.appState.checkForWin();
+      this.appState.checkForWin();
+    }
+    return true;
   }
 
   moveFoundationToColumn(card: CardClass, dropId: columnKey) {
@@ -154,12 +163,12 @@ class MoveEvaluator {
 
     if (card.value === "king" && destinationColumn.arrayOfCards.length > 0) {
       // kings can only be moved to empty columns
-      return;
+      return false;
     }
 
     if (card.value !== "king" && destinationColumn.arrayOfCards.length === 0) {
       // non-kings can only be moved to non-empty columns
-      return;
+      return false;
     }
 
     if (
@@ -172,7 +181,7 @@ class MoveEvaluator {
       )
     ) {
       // cards must be contrasting suits
-      return;
+      return false;
     }
 
     if (
@@ -185,36 +194,39 @@ class MoveEvaluator {
       )
     ) {
       // cards must be sequential
-      return;
+      return false;
     }
 
-    // execute the move
-    this.appState.takeSnapshot();
-    // remove card from foundation
-    sourceFoundation.removeLastCard();
-    // add card to column
-    destinationColumn.addCards([card]);
-    destinationColumn.updateColumnState();
+    if (this.execute) {
+      // execute the move
+      this.appState.takeSnapshot();
+      // remove card from foundation
+      sourceFoundation.removeLastCard();
+      // add card to column
+      destinationColumn.addCards([card]);
+      destinationColumn.updateColumnState();
 
-    this.appState.checkForWin();
+      this.appState.checkForWin();
+    }
+    return true;
   }
 
   moveFoundationToHand(card: CardClass, dropId: handItemKey) {
     // handItem must be empty
     if (this.appState.currentBoard.hand[dropId]) return;
 
-    // execute the move
-    this.appState.takeSnapshot();
-    // remove card from foundation
-    const sourceFoundation =
-      this.appState.currentBoard.foundations[
-        card.locationOnBoard as foundationKey
-      ];
-    sourceFoundation.removeLastCard();
-    // add card to hand
-    this.appState.currentBoard.hand.addCard(card, dropId);
-
-    // this.checkForWin();
+    if (this.execute) {
+      // execute the move
+      this.appState.takeSnapshot();
+      // remove card from foundation
+      const sourceFoundation =
+        this.appState.currentBoard.foundations[
+          card.locationOnBoard as foundationKey
+        ];
+      sourceFoundation.removeLastCard();
+      // add card to hand
+      this.appState.currentBoard.hand.addCard(card, dropId);
+    }
   }
 
   moveColumnToFoundation(card: CardClass, dropId: string) {
@@ -230,14 +242,14 @@ class MoveEvaluator {
       foundationKey = dropId as foundationKey;
     }
 
-    if (!foundationKey) return;
+    if (!foundationKey) return false;
 
     const targetFoundation =
       this.appState.currentBoard.foundations[foundationKey];
 
     if (card.value !== "A" && targetFoundation.arrayOfCards.length === 0) {
       // only aces can be moved to empty foundations
-      return;
+      return false;
     }
 
     // cards must be sequential
@@ -248,20 +260,23 @@ class MoveEvaluator {
         card
       )
     )
-      return;
+      return false;
 
-    // execute the move
-    this.appState.takeSnapshot();
-    // remove card from column
-    const sourceColumn =
-      this.appState.currentBoard.tableau[card.locationOnBoard as columnKey];
-    sourceColumn.removeLastCard();
-    sourceColumn.updateColumnState();
+    if (this.execute || dropId === "foundations") {
+      // execute the move
+      this.appState.takeSnapshot();
+      // remove card from column
+      const sourceColumn =
+        this.appState.currentBoard.tableau[card.locationOnBoard as columnKey];
+      sourceColumn.removeLastCard();
+      sourceColumn.updateColumnState();
 
-    // add card to foundation
-    targetFoundation.addCards([card]);
+      // add card to foundation
+      targetFoundation.addCards([card]);
 
-    this.appState.checkForWin();
+      this.appState.checkForWin();
+    }
+    return true;
   }
 
   moveColumnToColumn(card: CardClass, dropId: columnKey) {
@@ -271,12 +286,12 @@ class MoveEvaluator {
 
     if (card.value !== "king" && targetColumn.arrayOfCards.length === 0) {
       // non-kings can only go in non-empty columns
-      return;
+      return false;
     }
 
     if (card.value === "king" && targetColumn.arrayOfCards.length > 0) {
       // kings can only go in empty columns
-      return;
+      return false;
     }
 
     // cards must be contrasting suits
@@ -287,7 +302,7 @@ class MoveEvaluator {
         card
       )
     ) {
-      return;
+      return false;
     }
 
     // cards must be sequential
@@ -298,42 +313,49 @@ class MoveEvaluator {
         targetColumn.arrayOfCards[targetColumn.arrayOfCards.length - 1]
       )
     ) {
-      return;
+      return false;
     }
 
-    // execute move
-    this.appState.takeSnapshot();
-    // remove cards from source column
-    const cardIndex = sourceColumn.arrayOfCards.findIndex(
-      (c) => c.value === card.value && c.suit === card.suit
-    );
-    const removedCards = sourceColumn.removeCards(cardIndex);
-    sourceColumn.updateColumnState();
-    // add cards to target column
-    targetColumn.addCards(removedCards);
-    targetColumn.updateColumnState();
+    if (this.execute) {
+      // execute move
+      this.appState.takeSnapshot();
+      // remove cards from source column
+      const cardIndex = sourceColumn.arrayOfCards.findIndex(
+        (c) => c.value === card.value && c.suit === card.suit
+      );
+      const removedCards = sourceColumn.removeCards(cardIndex);
+      sourceColumn.updateColumnState();
+      // add cards to target column
+      targetColumn.addCards(removedCards);
+      targetColumn.updateColumnState();
 
-    this.appState.checkForWin();
+      this.appState.checkForWin();
+    }
+    return true;
   }
 
   moveColumnToHand(card: CardClass, dropId: handItemKey) {
     // card must not be buried
-    if (!this.cardIsOnTop(card)) return;
+    if (!this.cardIsOnTop(card)) return false;
 
     // hand item must be empty
-    if (this.appState.currentBoard.hand[dropId]) return;
+    if (this.appState.currentBoard.hand[dropId]) return false;
 
-    // execute move
-    this.appState.takeSnapshot();
-    // remove card from column
-    const sourceColumn =
-      this.appState.currentBoard.tableau[card.locationOnBoard as columnKey];
-    sourceColumn.removeLastCard();
-    sourceColumn.updateColumnState();
-    // add card to hand
-    this.appState.currentBoard.hand.addCard(card, dropId);
+    if (this.execute) {
+      // execute move
+      this.appState.takeSnapshot();
+      // remove card from column
+      const sourceColumn =
+        this.appState.currentBoard.tableau[card.locationOnBoard as columnKey];
+      sourceColumn.removeLastCard();
+      sourceColumn.updateColumnState();
+      // add card to hand
+      this.appState.currentBoard.hand.addCard(card, dropId);
 
-    this.appState.checkForWin();
+      this.appState.checkForWin();
+    }
+
+    return true;
   }
 
   moveHandToFoundation(card: CardClass, dropId: string) {
@@ -352,7 +374,7 @@ class MoveEvaluator {
 
     if (card.value !== "A" && targetFoundation.arrayOfCards.length === 0) {
       // only aces can be moved to empty foundations
-      return;
+      return false;
     }
 
     // cards must be sequential
@@ -363,19 +385,22 @@ class MoveEvaluator {
         card
       )
     )
-      return;
+      return false;
 
-    // execute the move
-    this.appState.takeSnapshot();
+    if (this.execute || dropId === "foundations") {
+      // execute the move
+      this.appState.takeSnapshot();
 
-    // remove card from hand
-    this.appState.currentBoard.hand.removeCard(
-      card.locationOnBoard as handItemKey
-    );
-    // add card to foundation
-    targetFoundation.addCards([card]);
+      // remove card from hand
+      this.appState.currentBoard.hand.removeCard(
+        card.locationOnBoard as handItemKey
+      );
+      // add card to foundation
+      targetFoundation.addCards([card]);
 
-    this.appState.checkForWin();
+      this.appState.checkForWin();
+    }
+    return true;
   }
 
   moveHandToColumn(card: CardClass, dropId: columnKey) {
@@ -383,13 +408,13 @@ class MoveEvaluator {
 
     if (card.value === "king" && destinationColumn.arrayOfCards.length > 0) {
       // kings can only go in empty columns
-      return;
+      return false;
     } else if (
       card.value !== "king" &&
       destinationColumn.arrayOfCards.length === 0
     ) {
       // non-kings can only go in non-empty columns
-      return;
+      return false;
     } else if (
       card.value !== "king" &&
       destinationColumn.arrayOfCards.length > 0
@@ -403,7 +428,7 @@ class MoveEvaluator {
           ]
         )
       )
-        return;
+        return false;
       // cards must be contrasting suits
       if (
         !this.cardsAreContrastingSuits(
@@ -413,37 +438,43 @@ class MoveEvaluator {
           card
         )
       )
-        return;
+        return false;
     }
 
-    // execute the move
-    this.appState.takeSnapshot();
+    if (this.execute) {
+      // execute the move
+      this.appState.takeSnapshot();
 
-    // remove card from hand
-    this.appState.currentBoard.hand.removeCard(
-      card.locationOnBoard as handItemKey
-    );
+      // remove card from hand
+      this.appState.currentBoard.hand.removeCard(
+        card.locationOnBoard as handItemKey
+      );
 
-    // add card to column
-    destinationColumn.addCards([card]);
-    destinationColumn.updateColumnState();
+      // add card to column
+      destinationColumn.addCards([card]);
+      destinationColumn.updateColumnState();
 
-    this.appState.checkForWin();
+      this.appState.checkForWin();
+    }
+    return true;
   }
 
   moveHandToHand(card: CardClass, dropId: handItemKey) {
     // destination hand item must be empty
     if (this.appState.currentBoard.hand[dropId]) return;
 
-    // execute the move
-    this.appState.takeSnapshot();
+    if (this.execute) {
+      // execute the move
+      this.appState.takeSnapshot();
 
-    // remove card from hand
-    this.appState.currentBoard.hand.removeCard(
-      card.locationOnBoard as handItemKey
-    );
-    // add card to hand
-    this.appState.currentBoard.hand.addCard(card, dropId);
+      // remove card from hand
+      this.appState.currentBoard.hand.removeCard(
+        card.locationOnBoard as handItemKey
+      );
+      // add card to hand
+      this.appState.currentBoard.hand.addCard(card, dropId);
+    }
+    return true;
   }
 
   findTargetFoundation(card: CardClass): foundationKey | undefined {
