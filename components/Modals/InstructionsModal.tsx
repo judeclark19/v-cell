@@ -23,7 +23,7 @@ const InstructionsModal = observer(() => {
             // .3 seconds same amount of time as keyframe animation
 
             setTimeout(() => {
-              appState.setIsInstructionsModalOpen(false);
+              appState.instructionsModal.close();
               setIsClosing(false);
             }, 300);
           }}
@@ -116,7 +116,7 @@ const InstructionsModal = observer(() => {
               className={questrial.className}
               onClick={() => {
                 if (slideNumber === 3) {
-                  appState.setIsInstructionsModalOpen(false);
+                  appState.instructionsModal.close();
                 } else {
                   setSlideNumber(slideNumber + 1);
                 }
