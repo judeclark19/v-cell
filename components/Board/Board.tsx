@@ -133,25 +133,25 @@ const Board = observer(() => {
       <HowToPlay
         className={questrial.className}
         onClick={() => {
-          if (!gameState.isInstructionsModalOpen) {
-            gameState.setIsInstructionsModalOpen(true);
+          if (!gameState.instructionsModal.isOpen) {
+            gameState.instructionsModal.open();
           }
         }}
-        $isInstructionsModalOpen={gameState.isInstructionsModalOpen}
+        $isInstructionsModalOpen={gameState.instructionsModal.isOpen}
       >
         <span>How to play</span> <FaInfoCircle className="info-icon" />
       </HowToPlay>
       <BoardContainer
         $isModalOpen={
-          gameState.isWinModalOpen || gameState.isInstructionsModalOpen
+          gameState.winModal.isOpen || gameState.instructionsModal.isOpen
         }
         $cardSize={getCardSize(windowWidth, windowHeight)}
         onPointerLeave={(e) => {
           handlePointerUp(e as unknown as PointerEvent);
         }}
       >
-        {gameState.isWinModalOpen && <WinModal />}
-        {gameState.isInstructionsModalOpen && <InstructionsModal />}
+        {gameState.winModal.isOpen && <WinModal />}
+        {gameState.instructionsModal.isOpen && <InstructionsModal />}
         {gameState.cardsBeingTouched && gameState.isDragging && (
           <CardsBeingDragged dragPosition={dragPosition} />
         )}
@@ -194,7 +194,7 @@ const Board = observer(() => {
           <button
             onClick={() => {
               gameState.setIsWinningBoard(true);
-              gameState.setIsWinModalOpen(true);
+              gameState.winModal.open();
             }}
           >
             win

@@ -88,6 +88,10 @@ class Tableau {
   constructor() {
     makeAutoObservable(this);
   }
+
+  getColumn(key: columnKey): Column {
+    return this[key];
+  }
 }
 
 export default Tableau;

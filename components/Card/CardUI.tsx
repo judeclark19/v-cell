@@ -110,7 +110,7 @@ const CardUI = observer(
           const timeSinceLastTap = Date.now() - lastTapTimestamp;
           if (timeSinceLastTap <= 300) {
             if (!card.isActive) return;
-            gameState.evaluateMove(card, "foundations");
+            gameState.moveEvaluator.evaluateMove(card, "foundations");
             gameState.setIsDragging(false);
             gameState.setCardsBeingTouched(null);
           }

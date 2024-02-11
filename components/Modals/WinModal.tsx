@@ -44,7 +44,7 @@ const WinModal = observer(() => {
             // .3 seconds same amount of time as keyframe animation
 
             setTimeout(() => {
-              gameState.setIsWinModalOpen(false);
+              gameState.winModal.open();
               setIsClosing(false);
             }, 300);
           }}

@@ -39,9 +39,8 @@ const LocalStorageServerHelper = observer(() => {
     }
 
     const knowsHowToPlay = localStorage.getItem("vCellKnowsHowToPlay");
-    console.log(knowsHowToPlay);
     if (!knowsHowToPlay) {
-      gameState.setIsInstructionsModalOpen(true);
+      gameState.instructionsModal.open();
       localStorage.setItem("vCellKnowsHowToPlay", "true");
     }
   }, []);
