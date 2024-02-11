@@ -177,3 +177,14 @@ export const InstructionsModalStyle = styled.div`
     }
   }
 `;
+
+export const SettingsModalStyle = styled.div`
+  .layout-select {
+    display: flex;
+    label {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+`;

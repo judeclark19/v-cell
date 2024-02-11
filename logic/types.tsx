@@ -96,6 +96,27 @@ export interface BoardType {
   hand: Hand;
 }
 
+export type boardLayout = "classic" | "faceUp" | "doubleV" | "tripleV";
+
 export const boardLayouts = {
-  classic: [0, 1, 2, 3, 2, 1, 0]
+  classic: [[0], [1], [2], [3], [2], [1], [0]],
+  faceUp: [[], [], [], [], [], [], []],
+  doubleV: [
+    [0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [2, 3],
+    [1, 2],
+    [0, 1]
+  ],
+  tripleV: [
+    [0, 1, 2],
+    [1, 2, 3],
+    [2, 3, 4],
+    [3, 4, 5],
+    [2, 3, 4],
+    [1, 2, 3],
+    [0, 1, 2]
+  ]
 };

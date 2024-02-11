@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import FoundationUI from "./FoundationUI";
 
-import { GameControlButton, Spot } from "../Board.styles";
+import { GameControlButton } from "../Board.styles";
 import { foundationKeys } from "@/logic/types";
 import { useRecoilValue } from "recoil";
 import { windowWidthState } from "@/logic/OrientationAndSize";

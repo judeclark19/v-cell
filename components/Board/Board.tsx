@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   BoardContainer,
+  ControlsBar,
   GameControlButton,
   GameControlButtons,
   HeaderImage,
@@ -26,7 +27,7 @@ import { cardSize } from "../Card/CardUI.styles";
 import CardsBeingDragged from "../CardsBeingDragged";
 import WinModal from "../Modals/WinModal";
 import InstructionsModal from "../Modals/InstructionsModal";
-import { FaInfoCircle } from "react-icons/fa";
+import { FaCog, FaInfoCircle } from "react-icons/fa";
 import { Luckiest_Guy, Questrial } from "next/font/google";
 import {
   handlePointerDown,
@@ -34,6 +35,7 @@ import {
   handlePointerUp
 } from "@/logic/UIFunctions";
 import LocalStorageServerHelper from "@/logic/LocalStorageServerHelper";
+import SettingsModal from "../Modals/SettingsModal";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
@@ -133,17 +135,33 @@ const Board = observer(() => {
         />
       </HeaderImage>
 
-      <HowToPlay
-        className={questrial.className}
-        onClick={() => {
-          if (!appState.instructionsModal.isOpen) {
-            appState.instructionsModal.open();
-          }
-        }}
-        $isInstructionsModalOpen={appState.instructionsModal.isOpen}
-      >
-        <span>How to play</span> <FaInfoCircle className="info-icon" />
-      </HowToPlay>
+      <ControlsBar>
+        <div>{/* left empty for grid */}</div>
+        <HowToPlay
+          className={questrial.className}
+          onClick={() => {
+            if (!appState.instructionsModal.isOpen) {
+              appState.instructionsModal.open();
+              appState.winModal.close();
+            }
+          }}
+          $isInstructionsModalOpen={appState.instructionsModal.isOpen}
+        >
+          <span>How to play</span> <FaInfoCircle className="info-icon" />
+        </HowToPlay>
+        <div className="settings-button">
+          <button
+            aria-label="Settings"
+            onClick={() => {
+              appState.settingsModal.open();
+              appState.instructionsModal.close();
+              appState.winModal.close();
+            }}
+          >
+            <FaCog />
+          </button>
+        </div>
+      </ControlsBar>
       <WoodenBorder>
         <BoardContainer
           $isModalOpen={
@@ -155,6 +173,7 @@ const Board = observer(() => {
           }}
         >
           {appState.winModal.isOpen && <WinModal />}
+          {appState.settingsModal.isOpen && <SettingsModal />}
           {appState.instructionsModal.isOpen && <InstructionsModal />}
           {appState.cardsBeingTouched && appState.isDragging && (
             <CardsBeingDragged dragPosition={dragPosition} />
@@ -199,6 +218,7 @@ const Board = observer(() => {
             onClick={() => {
               appState.setIsWinningBoard(true);
               appState.winModal.open();
+              appState.instructionsModal.close();
             }}
           >
             win

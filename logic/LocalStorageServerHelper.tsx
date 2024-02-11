@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import appState from "./AppState";
+import { boardLayout } from "./types";
 
 // Since GameState.tsx cannot read localStorage from the client directly, the purpose of this component is to mirror the gameState to the localStorage.
 const LocalStorageServerHelper = observer(() => {
@@ -23,6 +24,11 @@ const LocalStorageServerHelper = observer(() => {
     );
     appState.setCanAutoComplete(canAutoCompleteFromStorage);
 
+    const layoutFromStorage = localStorage.getItem("vCellLayout");
+    if (layoutFromStorage) {
+      appState.setLayout(layoutFromStorage as boardLayout);
+    }
+
     if (
       moveHistoryFromStorage.length > 0 &&
       "foundations" in currentBoardFromStorage &&
@@ -41,6 +47,7 @@ const LocalStorageServerHelper = observer(() => {
     const knowsHowToPlay = localStorage.getItem("vCellKnowsHowToPlay");
     if (!knowsHowToPlay) {
       appState.instructionsModal.open();
+      appState.winModal.close();
       localStorage.setItem("vCellKnowsHowToPlay", "true");
     }
   }, []);
@@ -66,6 +73,10 @@ const LocalStorageServerHelper = observer(() => {
       JSON.stringify(appState.canAutoComplete)
     );
   }, [appState.canAutoComplete]);
+
+  useEffect(() => {
+    localStorage.setItem("vCellLayout", appState.layoutName);
+  }, [appState.layoutName]);
 
   return null;
 });

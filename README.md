@@ -10,18 +10,13 @@
 
 ### Deprioritized
 
-- [ ] Keeping score
 - [ ] Loading state
 - [ ] Different color hover for valid vs invalid move
-- [ ] Cute wooden border
 
 ## Advanced
 
 - [ ] Suggest next move
 - [ ] Extra difficulty: foundations can be played from or not for difficulty
-- [ ] Extra difficulty: foundations not used
-- [ ] Lower difficulty: no cards face down
 
-1:05:22 AM: ./components/Board/Board.tsx
-1:05:22 AM: 72:6 Warning: React Hook useEffect has a missing dependency: "setWinHistory". Either include it or remove the dependency array. react-hooks/exhaustive-deps
-1:05:22 AM: 84:32 Warning: Assignments to the "lastKnownOrientation" variable from inside React Hook useEffect will be lost after each render. To preserve the value over time, store it in a useRef Hook and keep the mutable value in the ".current" property. Otherwise, you can move this variable directly inside useEffect.
+11:28:46 PM: 81:6 Warning: React Hook useEffect has an unnecessary dependency: "appState.winCount". Either exclude it or remove the dependency array. Outer scope values like "appState.winCount" aren"t valid dependencies because mutating them doesn"t re-render the component. react-hooks/exhaustive-deps
+11:28:46 PM: 93:32 Warning: Assignments to the "lastKnownOrientation" variable from inside React Hook useEffect will be lost after each render. To preserve the value over time, store it in a useRef Hook and keep the mutable value in the ".current" property. Otherwise, you can move this variable directly inside useEffect. react-hooks/exhaustive-deps

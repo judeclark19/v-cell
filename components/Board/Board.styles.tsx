@@ -31,6 +31,22 @@ export const HeaderImage = styled.div`
   }
 `;
 
+export const ControlsBar = styled.div`
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 20px 1fr 20px;
+  grid-template-rows: 1fr;
+  max-width: 600px;
+  margin: 0 auto;
+
+  .settings-button button {
+    cursor: pointer;
+    padding: 8px 8px 6px 8px;
+    background-color: transparent;
+    border-width: 1px;
+  }
+`;
+
 export const HowToPlay = styled.div<{
   $isInstructionsModalOpen: boolean;
 }>`

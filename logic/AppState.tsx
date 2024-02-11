@@ -11,7 +11,8 @@ import {
   handKeys,
   suitsArray,
   valuesArray,
-  boardLayouts
+  boardLayouts,
+  boardLayout
 } from "./types";
 import { makeAutoObservable } from "mobx";
 import Foundations from "../components/Board/Foundations/FoundationsClass";
@@ -22,7 +23,7 @@ import MoveEvaluator from "./MoveEvaluator";
 
 export class AppState {
   deck: CardClass[] = [];
-  layout: number[] = [0, 1, 2, 3, 2, 1, 0];
+  layoutName: boardLayout;
   currentBoard: BoardType = {
     foundations: new Foundations(),
     tableau: new Tableau(),
@@ -37,10 +38,11 @@ export class AppState {
   winCount = 0;
   winModal = new Modal();
   instructionsModal = new Modal();
+  settingsModal = new Modal();
   moveEvaluator = new MoveEvaluator(this);
 
-  constructor(layout: number[]) {
-    this.layout = layout;
+  constructor(layoutName: boardLayout = "classic") {
+    this.layoutName = layoutName;
     makeAutoObservable(this);
   }
 
@@ -72,6 +74,11 @@ export class AppState {
     }
   }
 
+  setLayout(layoutName: boardLayout) {
+    this.layoutName = layoutName;
+    this.dealCards();
+  }
+
   clearBoard() {
     this.currentBoard = {
       foundations: new Foundations(),
@@ -95,7 +102,10 @@ export class AppState {
         const columnIndex = `column${i + 1}` as columnKey;
 
         // set correct card flipped V
-        if (card && j === this.layout[i]) {
+        if (
+          card &&
+          (boardLayouts[this.layoutName][i] as number[]).includes(j)
+        ) {
           card.setIsFaceUp(false);
         }
 
@@ -295,8 +305,9 @@ export class AppState {
 
     this.setCanAutoComplete(false);
     this.winModal.open();
+    this.instructionsModal.close();
   }
 }
 
-const appState = new AppState(boardLayouts.classic);
+const appState = new AppState();
 export default appState;
