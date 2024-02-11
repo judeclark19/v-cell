@@ -9,28 +9,32 @@ export const cardSizes = {
     width: 100,
     spotPadding: 8,
     top: 2,
-    shadowSize: 5
+    shadowSize: 5,
+    confettiSize: 24
   },
   medium: {
     height: 100,
     width: 75,
     spotPadding: 6,
     top: 1.5,
-    shadowSize: 4
+    shadowSize: 4,
+    confettiSize: 22
   },
   small: {
     height: 60,
     width: 50,
     spotPadding: 4,
     top: 0,
-    shadowSize: 3
+    shadowSize: 3,
+    confettiSize: 18
   },
   tiny: {
     height: 40,
     width: 30,
     spotPadding: 2,
     top: 0,
-    shadowSize: 2
+    shadowSize: 2,
+    confettiSize: 14
   }
 };
 

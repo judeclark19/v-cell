@@ -6,7 +6,7 @@ import FoundationUI from "./FoundationUI";
 import { GameControlButton } from "../Board.styles";
 import { foundationKeys } from "@/logic/types";
 import { useRecoilValue } from "recoil";
-import { windowWidthState } from "@/logic/OrientationAndSize";
+import { getCardSize, windowWidthState } from "@/logic/OrientationAndSize";
 import { questrial } from "../Board";
 import {
   AutocompleteDiv,
@@ -14,11 +14,29 @@ import {
   FoundationsStyle
 } from "./FoundationsUI.styles";
 import JSConfetti from "js-confetti";
+import { cardSizes } from "@/components/Card/CardUI.styles";
 
 const FoundationsUI = observer(() => {
   const foundations = appState.currentBoard.foundations;
   const windowWidth = useRecoilValue(windowWidthState);
+  const windowHeight = useRecoilValue(windowWidthState);
   const confetti = new JSConfetti();
+
+  function throwConfetti() {
+    // custom confetti
+    confetti.addConfetti({
+      emojis: ["🎰", "🃏", "❤️", "♠️", "♣️", "♦️"],
+
+      emojiSize: cardSizes[getCardSize(windowWidth, windowHeight)].confettiSize,
+
+      confettiNumber: 200
+    });
+
+    // plus standard confetti
+    confetti.addConfetti({
+      confettiNumber: 200
+    });
+  }
 
   return (
     <>
@@ -34,11 +52,20 @@ const FoundationsUI = observer(() => {
               disabled={!appState.canAutoComplete}
               onClick={() => {
                 appState.autoComplete();
-                confetti.addConfetti();
+                throwConfetti();
               }}
             >
               Autocomplete
             </GameControlButton>
+          )}
+          {process.env.NODE_ENV !== "production" && (
+            <button
+              onClick={() => {
+                throwConfetti();
+              }}
+            >
+              confetti
+            </button>
           )}
         </AutocompleteDiv>
 
