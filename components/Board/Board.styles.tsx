@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { cardSize, cardSizes } from "../Card/CardUI.styles";
-import wood from "@/assets/images/wood.jpg";
+import wood from "@/assets/images/wood.webp";
 
 export const GameTitle = styled.h1`
   width: 100%;
@@ -99,8 +99,10 @@ export const WoodenBorder = styled.div`
   background-size: cover;
   width: fit-content;
   margin: auto;
-  padding: 10px;
-  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 4px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
 `;
 
 export const BoardContainer = styled.div<{
@@ -115,19 +117,19 @@ export const BoardContainer = styled.div<{
 
     switch (props.$cardSize) {
       case "large":
-        buffer = 170;
+        buffer = 190;
         break;
       case "medium":
-        buffer = 150;
+        buffer = 170;
         break;
       case "small":
-        buffer = 120;
+        buffer = 140;
         break;
       case "tiny":
-        buffer = 110;
+        buffer = 130;
         break;
       default:
-        buffer = 150;
+        buffer = 170;
     }
 
     return `${cardSizes[props.$cardSize].width * 7 + buffer}px`;
@@ -144,7 +146,6 @@ export const BoardContainer = styled.div<{
   position: ${(props) => (props.$isModalOpen ? "relative" : "static")};
 
   @media screen and (max-width: 768px) {
-    padding: 10px;
     gap: 10px;
     min-height: fit-content;
   }
