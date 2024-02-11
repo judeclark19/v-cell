@@ -1,4 +1,4 @@
-import gameState from "@/logic/AppState";
+import appState from "@/logic/AppState";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import FoundationUI from "./FoundationUI";
@@ -13,25 +13,28 @@ import {
   FoundationFlex,
   FoundationsStyle
 } from "./FoundationsUI.styles";
+import JSConfetti from "js-confetti";
 
 const FoundationsUI = observer(() => {
-  const foundations = gameState.currentBoard.foundations;
+  const foundations = appState.currentBoard.foundations;
   const windowWidth = useRecoilValue(windowWidthState);
+  const confetti = new JSConfetti();
 
   return (
     <>
       <FoundationsStyle>
         <AutocompleteDiv>
-          {gameState.canAutoComplete && (
+          {appState.canAutoComplete && (
             <GameControlButton
               style={{
                 backgroundColor: "#33d849",
                 borderColor: "#33d849"
               }}
               className={questrial.className}
-              disabled={!gameState.canAutoComplete}
+              disabled={!appState.canAutoComplete}
               onClick={() => {
-                gameState.autoComplete();
+                appState.autoComplete();
+                confetti.addConfetti();
               }}
             >
               Autocomplete

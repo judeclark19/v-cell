@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { InstructionsModalStyle, ModalStyle } from "./Modal.styles";
-import gameState from "@/logic/AppState";
+import appState from "@/logic/AppState";
 import { useState } from "react";
 
 import {
@@ -23,7 +23,7 @@ const InstructionsModal = observer(() => {
             // .3 seconds same amount of time as keyframe animation
 
             setTimeout(() => {
-              gameState.setIsInstructionsModalOpen(false);
+              appState.setIsInstructionsModalOpen(false);
               setIsClosing(false);
             }, 300);
           }}
@@ -116,7 +116,7 @@ const InstructionsModal = observer(() => {
               className={questrial.className}
               onClick={() => {
                 if (slideNumber === 3) {
-                  gameState.setIsInstructionsModalOpen(false);
+                  appState.setIsInstructionsModalOpen(false);
                 } else {
                   setSlideNumber(slideNumber + 1);
                 }

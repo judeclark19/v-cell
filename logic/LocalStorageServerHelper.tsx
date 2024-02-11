@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import gameState from "./AppState";
+import appState from "./AppState";
 
 // Since GameState.tsx cannot read localStorage from the client directly, the purpose of this component is to mirror the gameState to the localStorage.
 const LocalStorageServerHelper = observer(() => {
@@ -16,12 +16,12 @@ const LocalStorageServerHelper = observer(() => {
     const winningBoardFromStorage = JSON.parse(
       localStorage.getItem("vCellWinningBoard") || "false"
     );
-    gameState.setIsWinningBoard(winningBoardFromStorage, true);
+    appState.setIsWinningBoard(winningBoardFromStorage, true);
 
     const canAutoCompleteFromStorage = JSON.parse(
       localStorage.getItem("vCellAutoComplete") || "false"
     );
-    gameState.setCanAutoComplete(canAutoCompleteFromStorage);
+    appState.setCanAutoComplete(canAutoCompleteFromStorage);
 
     if (
       moveHistoryFromStorage.length > 0 &&
@@ -31,41 +31,41 @@ const LocalStorageServerHelper = observer(() => {
       !winningBoardFromStorage
     ) {
       // restore state
-      gameState.restoreGameState(currentBoardFromStorage);
-      gameState.setHistory(moveHistoryFromStorage);
+      appState.restoreGameState(currentBoardFromStorage);
+      appState.setHistory(moveHistoryFromStorage);
     } else {
       // new game
-      gameState.dealCards();
+      appState.dealCards();
     }
 
     const knowsHowToPlay = localStorage.getItem("vCellKnowsHowToPlay");
     if (!knowsHowToPlay) {
-      gameState.instructionsModal.open();
+      appState.instructionsModal.open();
       localStorage.setItem("vCellKnowsHowToPlay", "true");
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("vCellMoveHistory", JSON.stringify(gameState.history));
+    localStorage.setItem("vCellMoveHistory", JSON.stringify(appState.history));
     localStorage.setItem(
       "vCellCurrentBoard",
-      JSON.stringify(gameState.currentBoard)
+      JSON.stringify(appState.currentBoard)
     );
-  }, [gameState.history.length]);
+  }, [appState.history.length]);
 
   useEffect(() => {
     localStorage.setItem(
       "vCellWinningBoard",
-      JSON.stringify(gameState.winningBoard)
+      JSON.stringify(appState.winningBoard)
     );
-  }, [gameState.winningBoard]);
+  }, [appState.winningBoard]);
 
   useEffect(() => {
     localStorage.setItem(
       "vCellAutoComplete",
-      JSON.stringify(gameState.canAutoComplete)
+      JSON.stringify(appState.canAutoComplete)
     );
-  }, [gameState.canAutoComplete]);
+  }, [appState.canAutoComplete]);
 
   return null;
 });

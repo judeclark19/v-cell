@@ -10,7 +10,7 @@ import {
 import styled from "styled-components";
 import CardUI from "./Card/CardUI";
 import CardClass from "./Card/CardClass";
-import gameState from "@/logic/AppState";
+import appState from "@/logic/AppState";
 
 interface CardsBeingDraggedProps {
   $size: cardSize;
@@ -50,8 +50,8 @@ const CardsBeingDragged = observer(
           getCardOffsetAmount(getCardSize(windowWidth, windowHeight))
         }
       >
-        {gameState.cardsBeingTouched &&
-          gameState.cardsBeingTouched.map((card, index) => {
+        {appState.cardsBeingTouched &&
+          appState.cardsBeingTouched.map((card, index) => {
             const cardClass = new CardClass(card.value, card.suit);
             cardClass.setLocationOnBoard("dragging");
 

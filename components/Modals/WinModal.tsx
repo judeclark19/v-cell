@@ -4,7 +4,7 @@ import {
   GameControlButtons,
   GameTitle
 } from "../Board/Board.styles";
-import gameState from "@/logic/AppState";
+import appState from "@/logic/AppState";
 import { useState } from "react";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
 import { luckyGuy, questrial } from "../Board/Board";
@@ -44,7 +44,7 @@ const WinModal = observer(() => {
             // .3 seconds same amount of time as keyframe animation
 
             setTimeout(() => {
-              gameState.winModal.open();
+              appState.winModal.open();
               setIsClosing(false);
             }, 300);
           }}
@@ -92,7 +92,7 @@ const WinModal = observer(() => {
               borderColor: "#0099cc"
             }}
             onClick={() => {
-              gameState.dealCards();
+              appState.dealCards();
             }}
           >
             Deal again

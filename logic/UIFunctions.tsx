@@ -1,16 +1,16 @@
 import { Dispatch, SetStateAction } from "react";
-import gameState from "./AppState";
+import appState from "./AppState";
 
 export const handlePointerDown = () => {
-  gameState.setIsDragging(false);
+  appState.setIsDragging(false);
 };
 
 export const handlePointerMove = (
   event: PointerEvent,
   setDragPosition: Dispatch<SetStateAction<{ left: number; top: number }>>
 ) => {
-  if (!gameState.cardsBeingTouched) return;
-  gameState.setIsDragging(true); // Get the scroll positions
+  if (!appState.cardsBeingTouched) return;
+  appState.setIsDragging(true); // Get the scroll positions
   const scrollX = window.scrollX || document.documentElement.scrollLeft;
   const scrollY = window.scrollY || document.documentElement.scrollTop;
 
@@ -22,9 +22,9 @@ export const handlePointerMove = (
 };
 
 export const handlePointerUp = (event: PointerEvent) => {
-  if (!gameState.isDragging) {
+  if (!appState.isDragging) {
     // if the card wasn't dragged then the user didn't make a move
-    gameState.setCardsBeingTouched(null);
+    appState.setCardsBeingTouched(null);
     return;
   }
 
@@ -37,19 +37,19 @@ export const handlePointerUp = (event: PointerEvent) => {
     ?.closest("[data-dropid]")
     ?.getAttribute("data-dropid");
 
-  if (!dropId || !gameState.cardsBeingTouched) {
-    gameState.setIsDragging(false);
-    gameState.setCardsBeingTouched(null);
+  if (!dropId || !appState.cardsBeingTouched) {
+    appState.setIsDragging(false);
+    appState.setCardsBeingTouched(null);
     return;
   }
 
-  if (dropId === gameState.cardsBeingTouched[0].locationOnBoard) {
-    gameState.setIsDragging(false);
-    gameState.setCardsBeingTouched(null);
+  if (dropId === appState.cardsBeingTouched[0].locationOnBoard) {
+    appState.setIsDragging(false);
+    appState.setCardsBeingTouched(null);
     return;
   }
 
-  gameState.moveEvaluator.evaluateMove(gameState.cardsBeingTouched[0], dropId);
-  gameState.setIsDragging(false);
-  gameState.setCardsBeingTouched(null);
+  appState.moveEvaluator.evaluateMove(appState.cardsBeingTouched[0], dropId);
+  appState.setIsDragging(false);
+  appState.setCardsBeingTouched(null);
 };

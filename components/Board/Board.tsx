@@ -9,7 +9,7 @@ import {
 } from "./Board.styles";
 import headerImage from "@/assets/images/v-cell_header1.png";
 import Image from "next/image";
-import gameState from "@/logic/AppState";
+import appState from "@/logic/AppState";
 import { observer } from "mobx-react-lite";
 import FoundationsUI from "./Foundations/FoundationsUI";
 import TableauUI from "./Tableau/TableauUI";
@@ -62,6 +62,8 @@ const Board = observer(() => {
 
   let lastKnownOrientation: Orientation = orientation;
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
     setIsLoading(false);
   }, []);
@@ -70,13 +72,13 @@ const Board = observer(() => {
     const winHistory = localStorage.getItem("vCellWinHistory")
       ? JSON.parse(localStorage.getItem("vCellWinHistory") as string)
       : [];
-    if (gameState.winCount > 0) {
+    if (appState.winCount > 0) {
       localStorage.setItem(
         "vCellWinHistory",
         JSON.stringify([...winHistory, new Date()])
       );
     }
-  }, [gameState.winCount]);
+  }, [appState.winCount]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -134,27 +136,27 @@ const Board = observer(() => {
       <HowToPlay
         className={questrial.className}
         onClick={() => {
-          if (!gameState.instructionsModal.isOpen) {
-            gameState.instructionsModal.open();
+          if (!appState.instructionsModal.isOpen) {
+            appState.instructionsModal.open();
           }
         }}
-        $isInstructionsModalOpen={gameState.instructionsModal.isOpen}
+        $isInstructionsModalOpen={appState.instructionsModal.isOpen}
       >
         <span>How to play</span> <FaInfoCircle className="info-icon" />
       </HowToPlay>
       <WoodenBorder>
         <BoardContainer
           $isModalOpen={
-            gameState.winModal.isOpen || gameState.instructionsModal.isOpen
+            appState.winModal.isOpen || appState.instructionsModal.isOpen
           }
           $cardSize={getCardSize(windowWidth, windowHeight)}
           onPointerLeave={(e) => {
             handlePointerUp(e as unknown as PointerEvent);
           }}
         >
-          {gameState.winModal.isOpen && <WinModal />}
-          {gameState.instructionsModal.isOpen && <InstructionsModal />}
-          {gameState.cardsBeingTouched && gameState.isDragging && (
+          {appState.winModal.isOpen && <WinModal />}
+          {appState.instructionsModal.isOpen && <InstructionsModal />}
+          {appState.cardsBeingTouched && appState.isDragging && (
             <CardsBeingDragged dragPosition={dragPosition} />
           )}
           <FoundationsUI />
@@ -172,9 +174,9 @@ const Board = observer(() => {
             borderColor: "#0099cc"
           }}
           onClick={() => {
-            gameState.dealCards();
+            appState.dealCards();
           }}
-          disabled={gameState.winningBoard && gameState.canAutoComplete}
+          disabled={appState.winningBoard && appState.canAutoComplete}
         >
           Deal again
         </GameControlButton>
@@ -184,9 +186,9 @@ const Board = observer(() => {
             borderColor: "var(--red)"
           }}
           className={questrial.className}
-          disabled={gameState.history.length === 0 || gameState.winningBoard}
+          disabled={appState.history.length === 0 || appState.winningBoard}
           onClick={() => {
-            gameState.undo();
+            appState.undo();
           }}
         >
           Undo
@@ -195,8 +197,8 @@ const Board = observer(() => {
         {process.env.NODE_ENV !== "production" && (
           <button
             onClick={() => {
-              gameState.setIsWinningBoard(true);
-              gameState.winModal.open();
+              appState.setIsWinningBoard(true);
+              appState.winModal.open();
             }}
           >
             win

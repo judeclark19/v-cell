@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import ColumnUI from "./ColumnUI";
 import styled from "styled-components";
-import gameState from "@/logic/AppState";
+import appState from "@/logic/AppState";
 import { columnKeys } from "@/logic/types";
 import { getCardOffsetAmount } from "../Board";
 import { cardSizes } from "@/components/Card/CardUI.styles";
@@ -33,7 +33,7 @@ const TableauStyles = styled.div<{
 `;
 
 const TableauUI = observer(() => {
-  const tableau = gameState.currentBoard.tableau;
+  const tableau = appState.currentBoard.tableau;
   const windowWidth = useRecoilValue(windowWidthState);
   const windowHeight = useRecoilValue(windowHeightState);
   return (

@@ -1,6 +1,6 @@
 import { CardStyle, cardSize } from "./CardUI.styles";
 import CardClass from "./CardClass";
-import gameState from "@/logic/AppState";
+import appState from "@/logic/AppState";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { questrial } from "../Board/Board";
@@ -88,8 +88,8 @@ const CardUI = observer(
         $value={card.value}
         $zIndex={zIndex}
         $isBeingDragged={
-          gameState.isDragging &&
-          gameState.cardsBeingTouched?.findIndex((c) => c.id === card.id) !==
+          appState.isDragging &&
+          appState.cardsBeingTouched?.findIndex((c) => c.id === card.id) !==
             -1 &&
           card.locationOnBoard !== "dragging"
         }
@@ -100,7 +100,7 @@ const CardUI = observer(
         onPointerDown={(e) => {
           e.stopPropagation();
           e.preventDefault();
-          gameState.setCardsBeingTouched(
+          appState.setCardsBeingTouched(
             card.isActive && card.isFaceUp ? card : null
           );
         }}
@@ -110,9 +110,9 @@ const CardUI = observer(
           const timeSinceLastTap = Date.now() - lastTapTimestamp;
           if (timeSinceLastTap <= 300) {
             if (!card.isActive) return;
-            gameState.moveEvaluator.evaluateMove(card, "foundations");
-            gameState.setIsDragging(false);
-            gameState.setCardsBeingTouched(null);
+            appState.moveEvaluator.evaluateMove(card, "foundations");
+            appState.setIsDragging(false);
+            appState.setCardsBeingTouched(null);
           }
 
           setLastTapTimestamp(Date.now());

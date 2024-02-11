@@ -298,5 +298,5 @@ export class AppState {
   }
 }
 
-const gameState = new AppState(boardLayouts.classic);
-export default gameState;
+const appState = new AppState(boardLayouts.classic);
+export default appState;
