@@ -2,7 +2,8 @@
 
 **Link to deployed app: [http://vcell.codecouture.site](http://vcell.codecouture.site/)**
 
-<img width="376" alt="image" src="https://github.com/judeclark19/react-solitaire/assets/69258086/922578c1-1a0c-462e-88c6-cbe21e2bfd1e">
+![image](https://github.com/judeclark19/react-solitaire/assets/69258086/6ece0c50-7c48-4cb0-bb75-eb4f6a343a8b)
+
 
 ## Todo list
 
