@@ -11,7 +11,6 @@
 ### Deprioritized
 
 - [ ] Loading state
-- [ ] Different color hover for valid vs invalid move
 
 ## Advanced
 

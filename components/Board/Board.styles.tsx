@@ -37,7 +37,7 @@ export const ControlsBar = styled.div`
   grid-template-columns: 20px 1fr 20px;
   grid-template-rows: 1fr;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0 auto 30px auto;
 
   .settings-button button {
     cursor: pointer;
@@ -51,7 +51,7 @@ export const HowToPlay = styled.div<{
   $isInstructionsModalOpen: boolean;
 }>`
   width: fit-content;
-  margin: 0 auto 30px auto;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: center;
