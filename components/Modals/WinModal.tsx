@@ -5,7 +5,7 @@ import {
   GameTitle
 } from "../Board/Board.styles";
 import appState from "@/logic/AppState";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
 import { luckyGuy, questrial } from "../Board/Board";
 
@@ -14,6 +14,27 @@ const WinModal = observer(() => {
     ? JSON.parse(localStorage.getItem("vCellWinHistory") as string)
     : [];
   const [isClosing, setIsClosing] = useState(false);
+
+  useEffect(() => {
+    // queryselect .modal-shade
+    const modalShade = document.querySelector(".modal-shade");
+    modalShade?.addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) {
+        setIsClosing(true);
+        // .3 seconds same amount of time as keyframe animation
+
+        setTimeout(() => {
+          appState.winModal.close();
+          setIsClosing(false);
+        }, 300);
+      }
+    });
+
+    //cleanup
+    return () => {
+      modalShade?.removeEventListener("click", () => {});
+    };
+  }, []);
 
   function getFirstWinDate() {
     const date = new Date(winHistory[0]);
@@ -36,7 +57,7 @@ const WinModal = observer(() => {
   }
 
   return (
-    <ModalStyle $isClosing={isClosing}>
+    <ModalStyle className="modal-shade" $isClosing={isClosing}>
       <WinModalStyle className={questrial.className}>
         <span
           onClick={() => {
@@ -73,6 +94,7 @@ const WinModal = observer(() => {
         {winHistory.length > 0 && (
           <button
             className={`reset ${questrial.className}`}
+            style={{ color: "white" }}
             onClick={() => {
               const confirm = window.confirm(
                 "Are you sure you want to reset your win count?"

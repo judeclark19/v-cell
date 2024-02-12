@@ -157,6 +157,7 @@ const Board = observer(() => {
               appState.instructionsModal.close();
               appState.winModal.close();
             }}
+            style={{ color: "white" }}
           >
             <FaCog />
           </button>

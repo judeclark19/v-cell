@@ -36,6 +36,7 @@ export class AppState {
   winningBoard = false;
   canAutoComplete = false;
   winCount = 0;
+  manualWins = 0;
   winModal = new Modal();
   instructionsModal = new Modal();
   settingsModal = new Modal();
@@ -270,6 +271,20 @@ export class AppState {
     if (allCardsActive) {
       this.setIsWinningBoard(true);
       this.setCanAutoComplete(true);
+    }
+  }
+
+  checkForManualComplete() {
+    if (
+      this.canAutoComplete &&
+      this.currentBoard.foundations.foundation1.arrayOfCards.length === 13 &&
+      this.currentBoard.foundations.foundation2.arrayOfCards.length === 13 &&
+      this.currentBoard.foundations.foundation3.arrayOfCards.length === 13 &&
+      this.currentBoard.foundations.foundation4.arrayOfCards.length === 13
+    ) {
+      this.manualWins++;
+      this.winModal.open();
+      this.setCanAutoComplete(false);
     }
   }
 

@@ -12,8 +12,6 @@ import {
   valuesArray
 } from "./types";
 import { AppState } from "./AppState";
-import { drop } from "lodash";
-
 class MoveEvaluator {
   appState: AppState;
   execute: boolean;
@@ -275,6 +273,7 @@ class MoveEvaluator {
       targetFoundation.addCards([card]);
 
       this.appState.checkForWin();
+      this.appState.checkForManualComplete();
     }
     return true;
   }
@@ -399,6 +398,7 @@ class MoveEvaluator {
       targetFoundation.addCards([card]);
 
       this.appState.checkForWin();
+      this.appState.checkForManualComplete();
     }
     return true;
   }

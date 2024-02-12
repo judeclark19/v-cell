@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { InstructionsModalStyle, ModalStyle } from "./Modal.styles";
 import appState from "@/logic/AppState";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   GameControlButton,
@@ -14,8 +14,32 @@ const InstructionsModal = observer(() => {
   const [slideNumber, setSlideNumber] = useState(0);
   const [isClosing, setIsClosing] = useState(false);
 
+  useEffect(() => {
+    // queryselect .modal-shade
+    const modalShade = document.querySelector(".modal-shade");
+    modalShade?.addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) {
+        setIsClosing(true);
+        // .3 seconds same amount of time as keyframe animation
+
+        setTimeout(() => {
+          appState.instructionsModal.close();
+          setIsClosing(false);
+        }, 300);
+      }
+    });
+
+    //cleanup
+    return () => {
+      modalShade?.removeEventListener("click", () => {});
+    };
+  }, []);
+
   return (
-    <ModalStyle $isClosing={isClosing} className={questrial.className}>
+    <ModalStyle
+      $isClosing={isClosing}
+      className={`modal-shade ${questrial.className}`}
+    >
       <InstructionsModalStyle>
         <span
           onClick={() => {

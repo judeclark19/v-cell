@@ -26,7 +26,7 @@ const shrinkOut = keyframes`
 export const ModalStyle = styled.div<{
   $isClosing: boolean;
 }>`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -35,7 +35,6 @@ export const ModalStyle = styled.div<{
   z-index: 100;
   display: grid;
   place-items: center;
-  border-radius: 12px;
 
   ${GameTitle} {
     @media screen and (max-width: 480px) {

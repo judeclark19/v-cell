@@ -1,16 +1,35 @@
 import { observer } from "mobx-react-lite";
 import { GameTitle } from "../Board/Board.styles";
 import appState from "@/logic/AppState";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ModalStyle, SettingsModalStyle } from "./Modal.styles";
 import { luckyGuy, questrial } from "../Board/Board";
 import { boardLayout } from "@/logic/types";
 
 const SettingsModal = observer(() => {
   const [isClosing, setIsClosing] = useState(false);
+  useEffect(() => {
+    // queryselect .modal-shade
+    const modalShade = document.querySelector(".modal-shade");
+    modalShade?.addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) {
+        setIsClosing(true);
+        // .3 seconds same amount of time as keyframe animation
 
+        setTimeout(() => {
+          appState.settingsModal.close();
+          setIsClosing(false);
+        }, 300);
+      }
+    });
+
+    //cleanup
+    return () => {
+      modalShade?.removeEventListener("click", () => {});
+    };
+  }, []);
   return (
-    <ModalStyle $isClosing={isClosing}>
+    <ModalStyle className="modal-shade" $isClosing={isClosing}>
       <SettingsModalStyle className={questrial.className}>
         <span
           onClick={() => {
@@ -42,34 +61,15 @@ const SettingsModal = observer(() => {
             <select
               id="layout-select"
               className={questrial.className}
+              value={appState.layoutName}
               onChange={(e) => {
                 appState.setLayout(e.target.value as boardLayout);
               }}
             >
-              <option
-                selected={appState.layoutName === "classic"}
-                value="classic"
-              >
-                Classic
-              </option>
-              <option
-                selected={appState.layoutName === "faceUp"}
-                value="faceUp"
-              >
-                Face Up
-              </option>
-              <option
-                selected={appState.layoutName === "doubleV"}
-                value="doubleV"
-              >
-                Double V
-              </option>
-              <option
-                selected={appState.layoutName === "tripleV"}
-                value="tripleV"
-              >
-                Triple V
-              </option>
+              <option value="classic">Classic</option>
+              <option value="faceUp">Face Up</option>
+              <option value="doubleV">Double V</option>
+              <option value="tripleV">Triple V</option>
             </select>
           </label>
         </div>

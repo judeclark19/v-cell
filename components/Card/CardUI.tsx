@@ -7,6 +7,18 @@ import { questrial } from "../Board/Board";
 import Image from "next/image";
 import cardBackImage from "@/assets/images/V.png";
 
+import heart from "@/assets/images/heart.svg";
+import spade from "@/assets/images/spade.svg";
+import club from "@/assets/images/club.svg";
+import diamond from "@/assets/images/diamond.svg";
+
+import {
+  getCardSize,
+  windowHeightState,
+  windowWidthState
+} from "@/logic/OrientationAndSize";
+import { useRecoilValue } from "recoil";
+
 const CardUI = observer(
   ({
     size,
