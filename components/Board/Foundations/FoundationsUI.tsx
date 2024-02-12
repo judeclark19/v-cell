@@ -51,7 +51,7 @@ const FoundationsUI = observer(() => {
               className={questrial.className}
               disabled={!appState.canAutoComplete}
               onClick={() => {
-                appState.autoComplete();
+appState.moveEvaluator.setExecute(true);                appState.autoComplete();
                 throwConfetti();
               }}
             >
