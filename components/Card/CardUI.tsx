@@ -166,6 +166,7 @@ const CardUI = observer(
               width={240}
               height={245}
               alt="V-Cell logo"
+              priority
             />
           </div>
         </div>
