@@ -159,12 +159,17 @@ export const CardStyle = styled.div<{
       align-items: center;
 
       ${(props) => {
-        if (props.$size === "large" || props.$size === "medium") {
+        if (props.$size === "large") {
           return `
               position: absolute;
-              top: 6px;
-              left: 6px;
+              top: 4px;
+              left: 4px;
 `;
+        } else if (props.$size === "medium") {
+          return `
+              position: absolute;
+              top: 4px;
+              left: 4px;`;
         }
       }}
 
@@ -172,9 +177,8 @@ export const CardStyle = styled.div<{
         font-size: ${(props) => {
           switch (props.$size) {
             case "large":
-              return "24px";
+              return "26px";
             case "medium":
-              return "16px";
             case "small":
               return "18px";
             case "tiny":
