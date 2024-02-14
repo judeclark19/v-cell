@@ -31,54 +31,27 @@ const CardUI = observer(
         icons.push(
           <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />
         );
-      } else if (card.value === "A") {
-        icons.push(
-          <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />,
-          "A"
-        );
-      } else if (card.value === "jack") {
-        icons.push(
-          "J",
-          <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />,
-          "J"
-        );
-      } else if (card.value === "queen") {
-        icons.push(
-          "Q",
-          <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />,
-          "Q"
-        );
-      } else if (card.value === "king") {
-        icons.push(
-          "K",
-          <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />,
-          "K"
-        );
       } else {
-        for (let i = 0; i < parseInt(card.value); i++) {
-          icons.push(
-            <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />
-          );
-        }
+        icons.push(
+          <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />,
+          card.value,
+          <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />
+        );
       }
 
       return icons;
     }
 
     const getCardTitle = () => {
-      if (size !== "small" && size !== "tiny") {
-        return card.value;
-      } else {
-        switch (card.value) {
-          case "jack":
-            return "J";
-          case "queen":
-            return "Q";
-          case "king":
-            return "K";
-          default:
-            return card.value;
-        }
+      switch (card.value) {
+        case "jack":
+          return "J";
+        case "queen":
+          return "Q";
+        case "king":
+          return "K";
+        default:
+          return card.value;
       }
     };
 
@@ -154,7 +127,9 @@ const CardUI = observer(
         <div className="card-front">
           <div className="card-title">
             <h1>{getCardTitle()}</h1>{" "}
-            <SuitIcon suit={card.suit} size={cardSizes[size].titleSuitSize} />
+            {(size === "tiny" || size === "small") && (
+              <SuitIcon suit={card.suit} size={cardSizes[size].titleSuitSize} />
+            )}
           </div>
           <div className="emojis">
             {createIcons().map((icon, i) => (

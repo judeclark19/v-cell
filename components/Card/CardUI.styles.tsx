@@ -22,7 +22,7 @@ export const cardSizes = {
     shadowSize: 4,
     confettiSize: 22,
     titleSuitSize: 14,
-    bodySuitSize: 14
+    bodySuitSize: 18
   },
   small: {
     height: 60,
@@ -129,6 +129,7 @@ export const CardStyle = styled.div<{
     display: ${(props) => (props.$isFaceUp ? "flex" : "none")};
     flex-direction: column;
     height: 100%;
+    position: relative;
     background-color: ${(props) =>
       props.$isActive || props.$locationOnBoard === "dragging"
         ? "white"
@@ -156,6 +157,16 @@ export const CardStyle = styled.div<{
       justify-content: ${(props) =>
         props.$size === "tiny" ? "space-evenly" : "space-between"};
       align-items: center;
+
+      ${(props) => {
+        if (props.$size === "large" || props.$size === "medium") {
+          return `
+              position: absolute;
+              top: 6px;
+              left: 6px;
+`;
+        }
+      }}
 
       h1 {
         font-size: ${(props) => {
@@ -197,27 +208,9 @@ export const CardStyle = styled.div<{
       font-weight: ${(props) => (props.$size === "tiny" ? "bold" : "normal")};
       font-size: ${(props) => {
         if (props.$size === "large") {
-          switch (props.$value) {
-            case "A":
-              return "34px";
-            case "jack":
-            case "queen":
-            case "king":
-              return "24px";
-            default:
-              return "24px";
-          }
+          return "24px";
         } else if (props.$size === "medium") {
-          switch (props.$value) {
-            case "A":
-              return "24px";
-            case "jack":
-            case "queen":
-            case "king":
-              return "18px";
-            default:
-              return "18px";
-          }
+          return "22px";
         } else if (props.$size === "small") {
           return "30px";
         } else if (props.$size === "tiny") {
@@ -225,44 +218,34 @@ export const CardStyle = styled.div<{
         }
       }};
 
-      ${(props) => {
-        if (props.$size == "large" || props.$size == "medium") {
-          switch (props.$value) {
-            case "A":
-            case "jack":
-            case "queen":
-            case "king":
-              return `
-              display: flex;
-              flex-grow: 1;
-                    flex-direction: column;
-                    align-items: center;
-                  justify-content: space-evenly;
-                    `;
-            default:
-              return `
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              margin: auto;
-              
-           flex-wrap: wrap;
-           column-gap: 4px;
-            `;
-          }
-        } else {
-          return `
-          height: 100%;
-          display:grid;
-          place-items: center;
-          
-          span {
-            display: flex;
-            align-items: center;
-          }
-          `;
+      height: 100%;
+      display: grid;
+      place-items: center;
+
+      span {
+        display: flex;
+        align-items: center;
+
+        &:nth-of-type(1) {
+          margin-top: ${(props) => {
+            if (props.$size === "large") {
+              return "-8px";
+            } else if (props.$size === "medium") {
+              return "-4px";
+            } else return "0px";
+          }};
         }
-      }}
+
+        &:nth-of-type(3) {
+          margin-bottom: ${(props) => {
+            if (props.$size === "large") {
+              return "-8px";
+            } else if (props.$size === "medium") {
+              return "-4px";
+            } else return "0px";
+          }};
+        }
+      }
     }
   }
 
