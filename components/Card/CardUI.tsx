@@ -1,4 +1,4 @@
-import { CardStyle, cardSize } from "./CardUI.styles";
+import { CardStyle, cardSize, cardSizes } from "./CardUI.styles";
 import CardClass from "./CardClass";
 import appState from "@/logic/AppState";
 import { useState } from "react";
@@ -6,18 +6,7 @@ import { observer } from "mobx-react-lite";
 import { questrial } from "../Board/Board";
 import Image from "next/image";
 import cardBackImage from "@/assets/images/V.png";
-
-import heart from "@/assets/images/heart.svg";
-import spade from "@/assets/images/spade.svg";
-import club from "@/assets/images/club.svg";
-import diamond from "@/assets/images/diamond.svg";
-
-import {
-  getCardSize,
-  windowHeightState,
-  windowWidthState
-} from "@/logic/OrientationAndSize";
-import { useRecoilValue } from "recoil";
+import SuitIcon from "./SuitIcon";
 
 const CardUI = observer(
   ({
@@ -34,39 +23,42 @@ const CardUI = observer(
   }) => {
     const [lastTapTimestamp, setLastTapTimestamp] = useState(0);
     const [hoverColor, setHoverColor] = useState("goldAlpha");
-    let suitIcon = "";
-
-    switch (card.suit) {
-      case "hearts":
-        suitIcon = "♥️";
-        break;
-      case "spades":
-        suitIcon = "♠️";
-        break;
-      case "clubs":
-        suitIcon = "♣️";
-        break;
-      case "diamonds":
-        suitIcon = "♦️";
-        break;
-    }
 
     function createIcons() {
       const icons = [];
 
       if (size === "small" || size === "tiny") {
-        icons.push(suitIcon);
+        icons.push(
+          <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />
+        );
       } else if (card.value === "A") {
-        icons.push(suitIcon, "A");
+        icons.push(
+          <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />,
+          "A"
+        );
       } else if (card.value === "jack") {
-        icons.push("J", suitIcon, "J");
+        icons.push(
+          "J",
+          <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />,
+          "J"
+        );
       } else if (card.value === "queen") {
-        icons.push("Q", suitIcon, "Q");
+        icons.push(
+          "Q",
+          <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />,
+          "Q"
+        );
       } else if (card.value === "king") {
-        icons.push("K", suitIcon, "K");
+        icons.push(
+          "K",
+          <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />,
+          "K"
+        );
       } else {
         for (let i = 0; i < parseInt(card.value); i++) {
-          icons.push(suitIcon);
+          icons.push(
+            <SuitIcon suit={card.suit} size={cardSizes[size].bodySuitSize} />
+          );
         }
       }
 
@@ -161,13 +153,12 @@ const CardUI = observer(
       >
         <div className="card-front">
           <div className="card-title">
-            <h1>{getCardTitle()}</h1> <span>{suitIcon}</span>
+            <h1>{getCardTitle()}</h1>{" "}
+            <SuitIcon suit={card.suit} size={cardSizes[size].titleSuitSize} />
           </div>
           <div className="emojis">
             {createIcons().map((icon, i) => (
-              <div key={`${icon}${i}`}>
-                <span>{icon}</span>
-              </div>
+              <span key={`${icon}${i}`}>{icon}</span>
             ))}
           </div>
         </div>

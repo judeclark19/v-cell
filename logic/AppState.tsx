@@ -293,6 +293,8 @@ export class AppState {
   }
 
   autoComplete() {
+    this.moveEvaluator.setExecute(true);
+
     while (
       foundationKeys.some(
         (key) => this.currentBoard.foundations[key].arrayOfCards.length < 13

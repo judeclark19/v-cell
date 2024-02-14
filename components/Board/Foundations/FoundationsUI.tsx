@@ -42,7 +42,7 @@ const FoundationsUI = observer(() => {
     <>
       <FoundationsStyle>
         <AutocompleteDiv>
-          {appState.canAutoComplete && (
+          {appState.winningBoard && (
             <GameControlButton
               style={{
                 backgroundColor: "#33d849",
@@ -51,7 +51,7 @@ const FoundationsUI = observer(() => {
               className={questrial.className}
               disabled={!appState.canAutoComplete}
               onClick={() => {
-appState.moveEvaluator.setExecute(true);                appState.autoComplete();
+                appState.autoComplete();
                 throwConfetti();
               }}
             >

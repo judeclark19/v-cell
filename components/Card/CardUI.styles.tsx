@@ -11,7 +11,8 @@ export const cardSizes = {
     top: 2,
     shadowSize: 5,
     confettiSize: 24,
-    titleIconSize: 24
+    titleSuitSize: 20,
+    bodySuitSize: 22
   },
   medium: {
     height: 100,
@@ -20,7 +21,8 @@ export const cardSizes = {
     top: 1.5,
     shadowSize: 4,
     confettiSize: 22,
-    titleIconSize: 16
+    titleSuitSize: 14,
+    bodySuitSize: 14
   },
   small: {
     height: 60,
@@ -29,7 +31,8 @@ export const cardSizes = {
     top: 0,
     shadowSize: 3,
     confettiSize: 18,
-    titleIconSize: 14
+    titleSuitSize: 12,
+    bodySuitSize: 20
   },
   tiny: {
     height: 40,
@@ -38,7 +41,8 @@ export const cardSizes = {
     top: 0,
     shadowSize: 2,
     confettiSize: 14,
-    titleIconSize: 10
+    titleSuitSize: 12,
+    bodySuitSize: 14
   }
 };
 
@@ -159,6 +163,7 @@ export const CardStyle = styled.div<{
             case "large":
               return "24px";
             case "medium":
+              return "16px";
             case "small":
               return "18px";
             case "tiny":
@@ -189,8 +194,6 @@ export const CardStyle = styled.div<{
     .emojis {
       pointer-events: none;
       user-select: none;
-
-      flex-grow: 1;
       font-weight: ${(props) => (props.$size === "tiny" ? "bold" : "normal")};
       font-size: ${(props) => {
         if (props.$size === "large") {
@@ -231,35 +234,35 @@ export const CardStyle = styled.div<{
             case "king":
               return `
               display: flex;
+              flex-grow: 1;
                     flex-direction: column;
                     align-items: center;
                   justify-content: space-evenly;
                     `;
             default:
               return `
-              display: grid;
-                 grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: repeat(3, 1fr);
-
-                    div {
-                        display: grid;
-
-                     span {
-                        justify-self: center;
-                        }
-                    }
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin: auto;
+              
+           flex-wrap: wrap;
+           column-gap: 4px;
             `;
           }
         } else {
           return `
+          height: 100%;
           display:grid;
-          place-items: center;`;
+          place-items: center;
+          
+          span {
+            display: flex;
+            align-items: center;
+          }
+          `;
         }
       }}
-
-      span {
-        height: 100%;
-      }
     }
   }
 
