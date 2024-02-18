@@ -195,11 +195,17 @@ export class AppState {
 
   undo() {
     if (this.history.length <= 0) return;
-    if (this.moveEvaluator.undosAllowed - this.moveEvaluator.undosUsed <= 0)
+    if (
+      this.moveEvaluator.undosAllowed !== Infinity &&
+      this.moveEvaluator.undosAllowed - this.moveEvaluator.undosUsed <= 0
+    )
       return;
     const stateToRestore = this.history.pop();
     if (!stateToRestore) return;
-    this.moveEvaluator.setUndosUsed(this.moveEvaluator.undosUsed + 1);
+
+    if (this.moveEvaluator.undosAllowed !== Infinity) {
+      this.moveEvaluator.setUndosUsed(this.moveEvaluator.undosUsed + 1);
+    }
     this.restoreGameState(stateToRestore);
   }
 

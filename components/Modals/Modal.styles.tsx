@@ -59,6 +59,7 @@ export const ModalStyle = styled.div<{
     flex-direction: column;
     box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.2);
     position: relative;
+    margin: 10px;
 
     @media screen and (max-width: 768px) {
       padding: 20px;
@@ -180,7 +181,8 @@ export const SettingsModalStyle = styled.div`
 
     p {
       color: var(--red);
-      max-width: 300px;
+      width: 300px;
+      max-width: 100%;
       text-align: center;
       margin: 1rem auto;
     }

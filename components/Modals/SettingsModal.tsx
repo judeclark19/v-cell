@@ -84,7 +84,11 @@ const SettingsModal = observer(() => {
             <div className="undo-select">
               {/* undo settings */}
               <label htmlFor="undo-select">
-                <span className="label-text">Number of undos allowed</span>
+                <span className="label-text">
+                  Number of undos allowed
+                  <br />
+                  (per game)
+                </span>
                 <select
                   id="undo-select"
                   className={questrial.className}
