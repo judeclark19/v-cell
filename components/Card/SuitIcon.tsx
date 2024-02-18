@@ -10,16 +10,16 @@ export default function SuitIcon({ suit, size }: { suit: Suit; size: number }) {
   return (
     <>
       {suit === "hearts" && (
-        <Image src={heart} alt="heart" width={size} height={size} />
+        <Image src={heart} alt="heart" width={size} height={size} priority />
       )}
       {suit === "spades" && (
-        <Image src={spade} alt="heart" width={size} height={size} />
+        <Image src={spade} alt="heart" width={size} height={size} priority />
       )}
       {suit === "clubs" && (
-        <Image src={club} alt="heart" width={size} height={size} />
+        <Image src={club} alt="heart" width={size} height={size} priority />
       )}
       {suit === "diamonds" && (
-        <Image src={diamond} alt="heart" width={size} height={size} />
+        <Image src={diamond} alt="heart" width={size} height={size} priority />
       )}
     </>
   );

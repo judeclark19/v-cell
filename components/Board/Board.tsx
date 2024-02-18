@@ -157,7 +157,6 @@ const Board = observer(() => {
               appState.instructionsModal.close();
               appState.winModal.close();
             }}
-            style={{ color: "white" }}
           >
             <FaCog />
           </button>
@@ -188,7 +187,7 @@ const Board = observer(() => {
       </WoodenBorder>
       <GameControlButtons className={questrial.className}>
         <GameControlButton
-          className={`deal-again ${questrial.className}`}
+          className={questrial.className}
           style={{
             backgroundColor: "#0099cc",
             borderColor: "#0099cc"
@@ -206,12 +205,19 @@ const Board = observer(() => {
             borderColor: "var(--red)"
           }}
           className={questrial.className}
-          disabled={appState.history.length === 0 || appState.winningBoard}
+          disabled={appState.moveEvaluator.getIsUndoButtonDisabled()}
           onClick={() => {
             appState.undo();
           }}
         >
-          Undo
+          Undo{" "}
+          {appState.moveEvaluator.undosAllowed > 0 &&
+          appState.moveEvaluator.undosAllowed !== Infinity
+            ? `(${
+                appState.moveEvaluator.undosAllowed -
+                appState.moveEvaluator.undosUsed
+              })`
+            : ""}
         </GameControlButton>
 
         {process.env.NODE_ENV !== "production" && (

@@ -43,6 +43,23 @@ export const valuesArray: Value[] = [
   "king"
 ];
 
+export function undoTypes(value: number) {
+  switch (value) {
+    case 0:
+      return true;
+    case 1:
+      return true;
+    case 3:
+      return true;
+    case 5:
+      return true;
+    case Infinity:
+      return true;
+    default:
+      return false;
+  }
+}
+
 export type foundationKey =
   | "foundation1"
   | "foundation2"

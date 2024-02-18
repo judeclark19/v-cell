@@ -90,7 +90,6 @@ export const ModalStyle = styled.div<{
   }
 
   ${GameControlButtons} {
-    margin-top: 12px;
     margin-bottom: 0;
   }
 `;
@@ -101,7 +100,7 @@ export const WinModalStyle = styled.div`
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 12px;
 
     @media screen and (max-width: 768px) {
       font-size: 16px;
@@ -122,29 +121,6 @@ export const WinModalStyle = styled.div`
         font-size: 20px;
       }
     }
-
-    .since {
-      font-size: 14px;
-      color: gray;
-      font-style: italic;
-
-      span {
-        color: var(--gold);
-      }
-
-      @media screen and (max-width: 768px) {
-        font-size: 12px;
-      }
-      @media screen and (max-width: 480px) {
-        font-size: 10px;
-      }
-    }
-  }
-  .reset {
-    margin: 10px auto;
-    background-color: var(--red);
-    padding: 8px;
-    width: fit-content;
   }
 `;
 
@@ -174,29 +150,64 @@ export const InstructionsModalStyle = styled.div`
         color: var(--gold);
       }
     }
+
+    span.gold {
+      color: var(--gold);
+    }
   }
 `;
 
 export const SettingsModalStyle = styled.div`
-  p {
-    color: var(--red);
-    max-width: 250px;
-    text-align: center;
-    margin: 0 auto 1rem auto;
-  }
+  .settings-section {
+    background-color: #222;
+    padding: 1rem;
+    border-radius: 8px;
 
-  .layout-select {
-    display: flex;
+    h2 {
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid white;
+    }
 
-    label {
+    .dropdowns {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
+      flex-direction: column;
+      gap: 1rem;
 
-      #layout-select {
-        padding: 4px;
+      @media screen and (max-width: 480px) {
+        gap: 0.5rem;
       }
     }
+
+    p {
+      color: var(--red);
+      max-width: 300px;
+      text-align: center;
+      margin: 1rem auto;
+    }
+
+    .undo-select,
+    .layout-select {
+      display: flex;
+
+      label {
+        display: flex;
+        gap: 30px;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        #undo-select,
+        #layout-select {
+          padding: 4px;
+        }
+      }
+    }
+  }
+
+  .reset {
+    margin: 30px auto 10px auto;
+    background-color: var(--red);
+    border-color: var(--red);
+    width: 100%;
   }
 `;

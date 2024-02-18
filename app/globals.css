@@ -34,4 +34,14 @@ body {
 
 button {
   border-radius: 4px;
+  cursor: pointer;
+  background-color: #0099cc;
+  border-color: #0099cc;
+  color: white;
+  padding: 0.5rem 1rem;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

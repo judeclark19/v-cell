@@ -41,6 +41,19 @@ const LocalStorageServerHelper = observer(() => {
       appState.setLayout(layoutFromStorage as boardLayout);
     }
 
+    const undosAllowedFromStorage =
+      localStorage.getItem("vCellUndosAllowed") || "Infinity";
+    const undosAllowed =
+      undosAllowedFromStorage === "Infinity"
+        ? Infinity
+        : parseFloat(undosAllowedFromStorage);
+
+    const undosUsedFromStorage = localStorage.getItem("vCellUndosUsed") || "0";
+    const undosUsed = parseInt(undosUsedFromStorage);
+
+    appState.moveEvaluator.setUndosAllowed(undosAllowed);
+    appState.moveEvaluator.setUndosUsed(undosUsed);
+
     if (
       moveHistoryFromStorage.length > 0 &&
       "foundations" in currentBoardFromStorage &&
@@ -51,6 +64,8 @@ const LocalStorageServerHelper = observer(() => {
       // restore state
       appState.restoreGameState(currentBoardFromStorage);
       appState.setHistory(moveHistoryFromStorage);
+      appState.moveEvaluator.setUndosAllowed(undosAllowed);
+      appState.moveEvaluator.setUndosUsed(undosUsed);
     } else {
       // new game
       appState.dealCards();
@@ -91,7 +106,20 @@ const LocalStorageServerHelper = observer(() => {
   }, [appState.layoutName]);
 
   useEffect(() => {
-    console.log("manual wins", appState.manualWins);
+    localStorage.setItem(
+      "vCellUndosAllowed",
+      appState.moveEvaluator.undosAllowed.toString()
+    );
+  }, [appState.moveEvaluator.undosAllowed]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "vCellUndosUsed",
+      appState.moveEvaluator.undosUsed.toString()
+    );
+  }, [appState.moveEvaluator.undosUsed]);
+
+  useEffect(() => {
     if (appState.manualWins > 0) {
       // custom confetti
       confetti.addConfetti({

@@ -40,10 +40,9 @@ export const ControlsBar = styled.div`
   margin: 0 auto 30px auto;
 
   .settings-button button {
-    cursor: pointer;
     padding: 8px 8px 6px 8px;
     background-color: transparent;
-    border-width: 1px;
+    border: 2px outset #1b3427;
   }
 `;
 
@@ -93,16 +92,8 @@ export const GameControlButtons = styled.div`
 `;
 
 export const GameControlButton = styled.button`
-  cursor: pointer;
-  color: white;
-
   font-size: 18px;
   padding: 10px;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 
   @media screen and (max-width: 992px) {
     font-size: 14px;

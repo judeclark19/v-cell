@@ -80,11 +80,15 @@ const InstructionsModal = observer(() => {
             <GameTitle className={luckyGuy.className}>Foundations</GameTitle>
             <div className="slide">
               <p>
-                The main objective of the game is to get all of the cards
-                stacked in sequence in the foundations, starting with Aces and
-                continuing all the way through Kings.
+                The main objective of the game is to{" "}
+                <span className="gold">get all of the cards stacked</span> in
+                sequence in the foundations, starting with Aces and continuing
+                all the way through Kings.
               </p>
-              <p>There are four Foundations, one for each suit.</p>
+              <p>
+                <span className="gold">There are four (4) Foundations</span>,
+                one for each suit.
+              </p>
             </div>
           </>
         )}
@@ -93,12 +97,12 @@ const InstructionsModal = observer(() => {
             <GameTitle className={luckyGuy.className}>Tableau</GameTitle>
             <div className="slide">
               <p>
-                The Tableau consists of seven columns with seven cards each,
-                randomly shuffled at the beginning of each game.
+                The Tableau consists of seven (7) columns with seven (7) cards
+                each, randomly shuffled at the beginning of each game.
               </p>
               <p>
-                Click and drag cards to rearrange them into sequences of
-                decreasing value and alternating suits.
+                <span className="gold">Click and drag cards</span> to rearrange
+                them into sequences of decreasing value and alternating suits.
               </p>
               <p>
                 Multiple cards can be moved simultaneously if they are part of a
@@ -113,8 +117,8 @@ const InstructionsModal = observer(() => {
             <GameTitle className={luckyGuy.className}>Free Cells</GameTitle>
             <div className="slide">
               <p>
-                You have five free cells, three of which are randomly populated
-                when the game starts.
+                You have <span className="gold">five (5) free cells</span>,
+                three of which are randomly populated when the game starts.
               </p>
               <p>
                 The free cells can contain any where from 0 to 5 cards at any

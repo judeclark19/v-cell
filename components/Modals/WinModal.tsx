@@ -36,26 +36,6 @@ const WinModal = observer(() => {
     };
   }, []);
 
-  function getFirstWinDate() {
-    const date = new Date(winHistory[0]);
-
-    const optionsDate: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    };
-    const optionsTime: Intl.DateTimeFormatOptions = {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true
-    };
-    const formattedDate = date.toLocaleDateString("en-US", optionsDate);
-    const formattedTime = date.toLocaleTimeString("en-US", optionsTime);
-
-    const combinedDateTime = `${formattedDate} at ${formattedTime}`;
-    return combinedDateTime;
-  }
-
   return (
     <ModalStyle className="modal-shade" $isClosing={isClosing}>
       <WinModalStyle className={questrial.className}>
@@ -80,35 +60,14 @@ const WinModal = observer(() => {
           <p className="win-count-number">{winHistory.length}</p>
           <p>
             <span>
-              {winHistory.length === 1 ? "game" : "games"} of V-Cell on&nbsp;
+              {winHistory.length === 1 ? "game" : "games"} of V-Cell&nbsp;
             </span>
-            <span>this device</span>
+            <span>on this device.</span>
           </p>
-          {winHistory.length > 0 && (
-            <p className="since">
-              since <span>{getFirstWinDate()}</span>
-            </p>
-          )}
         </div>
-
-        {winHistory.length > 0 && (
-          <button
-            className={`reset ${questrial.className}`}
-            style={{ color: "white" }}
-            onClick={() => {
-              const confirm = window.confirm(
-                "Are you sure you want to reset your win count?"
-              );
-              if (!confirm) return;
-              localStorage.removeItem("vCellWinHistory");
-            }}
-          >
-            Reset win count
-          </button>
-        )}
         <GameControlButtons>
           <GameControlButton
-            className={`deal-again ${questrial.className}`}
+            className={questrial.className}
             style={{
               backgroundColor: "#0099cc",
               borderColor: "#0099cc"

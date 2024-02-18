@@ -1,7 +1,6 @@
 import CardClass from "@/components/Card/CardClass";
 import { makeAutoObservable } from "mobx";
 import {
-  BoardType,
   columnKey,
   columnKeys,
   contrastingSuits,
@@ -9,21 +8,44 @@ import {
   foundationKeys,
   handItemKey,
   handKeys,
+  undoTypes,
   valuesArray
 } from "./types";
 import { AppState } from "./AppState";
 class MoveEvaluator {
   appState: AppState;
   execute: boolean;
+  undosAllowed: number;
+  undosUsed: number;
 
   constructor(appState: AppState) {
     this.appState = appState;
     this.execute = false;
+    this.undosAllowed = Infinity;
+    this.undosUsed = 0;
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
   setExecute(value: boolean) {
     this.execute = value;
+  }
+
+  setUndosAllowed(value: number) {
+    if (undoTypes(value)) this.undosAllowed = value;
+  }
+
+  setUndosUsed(value: number) {
+    this.undosUsed = value;
+  }
+
+  getIsUndoButtonDisabled() {
+    if (this.appState.history.length === 0) return true;
+
+    if (this.appState.winningBoard) return true;
+
+    if (this.undosAllowed === Infinity) return false;
+
+    if (this.undosUsed >= this.undosAllowed) return true;
   }
 
   cardsAreContrastingSuits(card1: CardClass, card2: CardClass) {
