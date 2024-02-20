@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import FoundationUI from "./FoundationUI";
 
-import { GameControlButton } from "../Board.styles";
 import { foundationKeys } from "@/logic/types";
 import { useRecoilValue } from "recoil";
 import { cardSizeState } from "@/logic/OrientationAndSize";
@@ -24,7 +23,7 @@ const FoundationsUI = observer(() => {
       <FoundationsStyle>
         <AutocompleteDiv>
           {appState.winningBoard && (
-            <GameControlButton
+            <button
               style={{
                 backgroundColor: "#33d849",
                 borderColor: "#33d849"
@@ -37,7 +36,7 @@ const FoundationsUI = observer(() => {
               }}
             >
               Autocomplete
-            </GameControlButton>
+            </button>
           )}
           {process.env.NODE_ENV !== "production" && (
             <button

@@ -3,11 +3,7 @@ import { InstructionsModalStyle, ModalStyle } from "./Modal.styles";
 import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 
-import {
-  GameControlButton,
-  GameControlButtons,
-  GameTitle
-} from "../Board/Board.styles";
+import { GameControlButtons, GameTitle } from "../Board/Board.styles";
 import { luckyGuy, questrial } from "../Board/Board";
 
 const InstructionsModal = observer(() => {
@@ -131,7 +127,7 @@ const InstructionsModal = observer(() => {
 
         <GameControlButtons>
           <div>
-            <GameControlButton
+            <button
               className={questrial.className}
               onClick={() => {
                 setSlideNumber(slideNumber - 1);
@@ -139,8 +135,8 @@ const InstructionsModal = observer(() => {
               disabled={slideNumber === 0}
             >
               Back
-            </GameControlButton>
-            <GameControlButton
+            </button>
+            <button
               className={questrial.className}
               onClick={() => {
                 if (slideNumber === 3) {
@@ -151,7 +147,7 @@ const InstructionsModal = observer(() => {
               }}
             >
               {slideNumber === 3 ? "Close" : "Next"}
-            </GameControlButton>
+            </button>
           </div>
         </GameControlButtons>
       </InstructionsModalStyle>
