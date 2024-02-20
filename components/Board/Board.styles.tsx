@@ -144,7 +144,6 @@ export const BoardContainer = styled.div<{
   max-width: calc(100vw - 20px);
   height: fit-content;
   min-height: 50vh;
-  max-height: 80vh;
   gap: 30px;
   margin: auto;
   display: flex;

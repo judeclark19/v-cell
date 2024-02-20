@@ -201,6 +201,7 @@ export const SettingsModalStyle = styled.div`
         #undo-select,
         #layout-select {
           padding: 4px;
+          font-size: 16px;
         }
       }
     }

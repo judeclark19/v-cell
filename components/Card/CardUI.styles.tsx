@@ -10,7 +10,7 @@ export const cardSizes = {
     spotPadding: 8,
     top: 2,
     shadowSize: 5,
-    confettiSize: 24,
+    confettiSize: 70,
     titleSuitSize: 20,
     bodySuitSize: 22
   },
@@ -20,7 +20,7 @@ export const cardSizes = {
     spotPadding: 6,
     top: 1.5,
     shadowSize: 4,
-    confettiSize: 22,
+    confettiSize: 60,
     titleSuitSize: 14,
     bodySuitSize: 18
   },
@@ -30,7 +30,7 @@ export const cardSizes = {
     spotPadding: 4,
     top: 0,
     shadowSize: 3,
-    confettiSize: 18,
+    confettiSize: 40,
     titleSuitSize: 12,
     bodySuitSize: 20
   },
@@ -40,7 +40,7 @@ export const cardSizes = {
     spotPadding: 2,
     top: 0,
     shadowSize: 2,
-    confettiSize: 14,
+    confettiSize: 30,
     titleSuitSize: 12,
     bodySuitSize: 14
   }
@@ -108,21 +108,21 @@ export const CardStyle = styled.div<{
 
   transition: left 0.2s ease-in-out;
 
-  filter: ${(props) => {
-    return `drop-shadow(${cardSizes[props.$size].shadowSize}px ${
+  box-shadow: ${(props) => {
+    return `${cardSizes[props.$size].shadowSize}px ${
       cardSizes[props.$size].shadowSize
-    }px 5px rgba(0, 0, 0, 0.5))`;
+    }px 5px rgba(0, 0, 0, 0.5)`;
   }};
 
   ${(props) =>
     props.$isActive &&
     `
     &:hover {
-        filter: drop-shadow(${cardSizes[props.$size].shadowSize}px ${
+    box-shadow: ${cardSizes[props.$size].shadowSize}px ${
       cardSizes[props.$size].shadowSize
-    }px 5px var(--${props.$hoverColor}));
-        border: 1px solid var(--${props.$hoverColor});
-    }
+    }px 5px var(--${props.$hoverColor});
+    border: 1px solid var(--${props.$hoverColor});
+}
 `}
 
   .card-front {
@@ -209,7 +209,7 @@ export const CardStyle = styled.div<{
     .emojis {
       pointer-events: none;
       user-select: none;
-      font-weight: ${(props) => (props.$size === "tiny" ? "bold" : "normal")};
+      font-weight: 700;
       font-size: ${(props) => {
         if (props.$size === "large") {
           return "24px";

@@ -17,11 +17,11 @@ export const AutocompleteDiv = styled.div`
 `;
 
 export const FoundationFlex = styled.div<{
-  $windowWidth: number;
+  $windowHeight: number;
 }>`
   display: flex;
   gap: ${(props) => {
-    if (props.$windowWidth >= 1000) {
+    if (props.$windowHeight >= 1200) {
       return "50px";
     } else return "10px";
   }};

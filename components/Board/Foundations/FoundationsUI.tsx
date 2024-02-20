@@ -69,7 +69,7 @@ const FoundationsUI = observer(() => {
           )}
         </AutocompleteDiv>
 
-        <FoundationFlex $windowWidth={windowWidth}>
+        <FoundationFlex $windowHeight={windowHeight}>
           {foundationKeys.map((key) => {
             return <FoundationUI key={key} foundationData={foundations[key]} />;
           })}
