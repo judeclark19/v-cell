@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Spot } from "../Board.styles";
+import { cardSizeType } from "@/components/Card/CardUI.styles";
 
 export const FoundationsStyle = styled.div`
   display: flex;
@@ -17,11 +18,11 @@ export const AutocompleteDiv = styled.div`
 `;
 
 export const FoundationFlex = styled.div<{
-  $windowHeight: number;
+  $cardSize: cardSizeType;
 }>`
   display: flex;
   gap: ${(props) => {
-    if (props.$windowHeight >= 1200) {
+    if (props.$cardSize === "large" || props.$cardSize === "medium") {
       return "50px";
     } else return "10px";
   }};

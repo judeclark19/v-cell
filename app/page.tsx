@@ -2,6 +2,7 @@
 import { RecoilRoot } from "recoil";
 import Board, { questrial } from "@/components/Board/Board";
 import styled from "styled-components";
+import TapAnimation from "@/components/TapAnimation";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -69,6 +70,7 @@ export default function Home() {
   return (
     <PageWrapper>
       <div className="flex-grow">
+        <TapAnimation />
         <RecoilRoot>
           <Board />
         </RecoilRoot>
@@ -95,7 +97,7 @@ export default function Home() {
             </strong>
           </div>
         </div>
-        <div className="bottom">Last updated Feb 18, 2024</div>
+        <div className="bottom">Last updated Feb 19, 2024</div>
       </Footer>
     </PageWrapper>
   );

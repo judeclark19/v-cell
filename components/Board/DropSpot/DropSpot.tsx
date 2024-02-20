@@ -1,12 +1,12 @@
 import React from "react";
-import { cardSize, cardSizes } from "@/components/Card/CardUI.styles";
+import { cardSizeType, cardSizes } from "@/components/Card/CardUI.styles";
 
 export default function DropSpot({
   size,
   dropId,
   children
 }: {
-  size: cardSize;
+  size: cardSizeType;
   dropId: string;
   children: React.ReactNode;
 }) {

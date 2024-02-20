@@ -19,11 +19,9 @@ import { useRecoilState } from "recoil";
 import {
   Orientation,
   boardOrientationState,
-  getCardSize,
-  windowHeightState,
-  windowWidthState
+  cardSizeState,
+  calculateCardSize
 } from "@/logic/OrientationAndSize";
-import { cardSize } from "../Card/CardUI.styles";
 import CardsBeingDragged from "../CardsBeingDragged";
 import WinModal from "../Modals/WinModal";
 import InstructionsModal from "../Modals/InstructionsModal";
@@ -40,26 +38,12 @@ import SettingsModal from "../Modals/SettingsModal";
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
 
-export const getCardOffsetAmount = (size: cardSize) => {
-  switch (size) {
-    case "large":
-      return 32;
-    case "medium":
-      return 25;
-    case "small":
-      return 20;
-    case "tiny":
-      return 14;
-  }
-};
-
 const Board = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [orientation, setBoardOrientation] = useRecoilState(
     boardOrientationState
   );
-  const [windowWidth, setWindowWidth] = useRecoilState(windowWidthState);
-  const [windowHeight, setWindowHeight] = useRecoilState(windowHeightState);
+  const [cardSize, setCardSize] = useRecoilState(cardSizeState);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
 
   let lastKnownOrientation: Orientation = orientation;
@@ -84,8 +68,7 @@ const Board = observer(() => {
 
   useEffect(() => {
     const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-      setWindowHeight(window.innerHeight);
+      setCardSize(calculateCardSize(window.innerWidth, window.innerHeight));
 
       let newOrientation: Orientation =
         window.innerWidth <= 980 ? "portrait" : "landscape";
@@ -167,7 +150,7 @@ const Board = observer(() => {
           $isModalOpen={
             appState.winModal.isOpen || appState.instructionsModal.isOpen
           }
-          $cardSize={getCardSize(windowWidth, windowHeight)}
+          $cardSize={cardSize}
           onPointerLeave={(e) => {
             handlePointerUp(e as unknown as PointerEvent);
           }}

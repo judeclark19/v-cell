@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Suit, Value } from "@/logic/types";
 
-export type cardSize = "large" | "medium" | "small" | "tiny";
+export type cardSizeType = "large" | "medium" | "small" | "tiny";
 
 export const cardSizes = {
   large: {
@@ -9,6 +9,7 @@ export const cardSizes = {
     width: 100,
     spotPadding: 8,
     top: 2,
+    offset: 32,
     shadowSize: 5,
     confettiSize: 70,
     titleSuitSize: 20,
@@ -19,6 +20,7 @@ export const cardSizes = {
     width: 75,
     spotPadding: 6,
     top: 1.5,
+    offset: 25,
     shadowSize: 4,
     confettiSize: 60,
     titleSuitSize: 14,
@@ -29,8 +31,9 @@ export const cardSizes = {
     width: 50,
     spotPadding: 4,
     top: 0,
+    offset: 20,
     shadowSize: 3,
-    confettiSize: 40,
+    confettiSize: 30,
     titleSuitSize: 12,
     bodySuitSize: 20
   },
@@ -39,6 +42,7 @@ export const cardSizes = {
     width: 30,
     spotPadding: 2,
     top: 0,
+    offset: 14,
     shadowSize: 2,
     confettiSize: 30,
     titleSuitSize: 12,
@@ -47,7 +51,7 @@ export const cardSizes = {
 };
 
 export const CardStyle = styled.div<{
-  $size: cardSize;
+  $size: cardSizeType;
   $suit: Suit;
   $value: Value;
   $zIndex: number;

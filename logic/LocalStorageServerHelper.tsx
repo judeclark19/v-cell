@@ -2,20 +2,13 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import appState from "./AppState";
 import { boardLayout } from "./types";
-import JSConfetti from "js-confetti";
-import { cardSizes } from "@/components/Card/CardUI.styles";
-import {
-  getCardSize,
-  windowHeightState,
-  windowWidthState
-} from "./OrientationAndSize";
+import { cardSizeState } from "./OrientationAndSize";
 import { useRecoilValue } from "recoil";
+import { throwConfetti } from "./UIFunctions";
 
 // Since GameState.tsx cannot read localStorage from the client directly, the purpose of this component is to mirror the gameState to the localStorage.
 const LocalStorageServerHelper = observer(() => {
-  const windowWidth = useRecoilValue(windowWidthState);
-  const windowHeight = useRecoilValue(windowHeightState);
-  const confetti = new JSConfetti();
+  const cardSize = useRecoilValue(cardSizeState);
 
   useEffect(() => {
     const moveHistoryFromStorage = JSON.parse(
@@ -121,20 +114,7 @@ const LocalStorageServerHelper = observer(() => {
 
   useEffect(() => {
     if (appState.manualWins > 0) {
-      // custom confetti
-      confetti.addConfetti({
-        emojis: ["🎰", "🃏", "❤️", "♠️", "♣️", "♦️"],
-
-        emojiSize:
-          cardSizes[getCardSize(windowWidth, windowHeight)].confettiSize,
-
-        confettiNumber: 200
-      });
-
-      // plus standard confetti
-      confetti.addConfetti({
-        confettiNumber: 200
-      });
+      throwConfetti(cardSize);
     }
   }, [appState.manualWins]);
 

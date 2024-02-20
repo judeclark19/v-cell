@@ -6,37 +6,18 @@ import FoundationUI from "./FoundationUI";
 import { GameControlButton } from "../Board.styles";
 import { foundationKeys } from "@/logic/types";
 import { useRecoilValue } from "recoil";
-import { getCardSize, windowWidthState } from "@/logic/OrientationAndSize";
+import { cardSizeState } from "@/logic/OrientationAndSize";
 import { questrial } from "../Board";
 import {
   AutocompleteDiv,
   FoundationFlex,
   FoundationsStyle
 } from "./FoundationsUI.styles";
-import JSConfetti from "js-confetti";
-import { cardSizes } from "@/components/Card/CardUI.styles";
+import { throwConfetti } from "@/logic/UIFunctions";
 
 const FoundationsUI = observer(() => {
   const foundations = appState.currentBoard.foundations;
-  const windowWidth = useRecoilValue(windowWidthState);
-  const windowHeight = useRecoilValue(windowWidthState);
-  const confetti = new JSConfetti();
-
-  function throwConfetti() {
-    // custom confetti
-    confetti.addConfetti({
-      emojis: ["🎰", "🃏", "❤️", "♠️", "♣️", "♦️"],
-
-      emojiSize: cardSizes[getCardSize(windowWidth, windowHeight)].confettiSize,
-
-      confettiNumber: 200
-    });
-
-    // plus standard confetti
-    confetti.addConfetti({
-      confettiNumber: 200
-    });
-  }
+  const cardSize = useRecoilValue(cardSizeState);
 
   return (
     <>
@@ -52,7 +33,7 @@ const FoundationsUI = observer(() => {
               disabled={!appState.canAutoComplete}
               onClick={() => {
                 appState.autoComplete();
-                throwConfetti();
+                throwConfetti(cardSize);
               }}
             >
               Autocomplete
@@ -61,7 +42,7 @@ const FoundationsUI = observer(() => {
           {process.env.NODE_ENV !== "production" && (
             <button
               onClick={() => {
-                throwConfetti();
+                throwConfetti(cardSize);
               }}
             >
               confetti
@@ -69,7 +50,7 @@ const FoundationsUI = observer(() => {
           )}
         </AutocompleteDiv>
 
-        <FoundationFlex $windowHeight={windowHeight}>
+        <FoundationFlex $cardSize={cardSize}>
           {foundationKeys.map((key) => {
             return <FoundationUI key={key} foundationData={foundations[key]} />;
           })}

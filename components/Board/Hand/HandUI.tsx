@@ -7,18 +7,9 @@ import DropSpot from "../DropSpot/DropSpot";
 import CardUI from "@/components/Card/CardUI";
 import { handKeys } from "@/logic/types";
 import { useRecoilValue } from "recoil";
-import {
-  Orientation,
-  boardOrientationState,
-  getCardSize,
-  windowHeightState,
-  windowWidthState
-} from "@/logic/OrientationAndSize";
+import { cardSizeState } from "@/logic/OrientationAndSize";
 
-const HandStyles = styled.div<{
-  $orientation: Orientation;
-  $windowWidth: number;
-}>`
+const HandStyles = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -32,28 +23,16 @@ const HandStyles = styled.div<{
 
 const HandUI = observer(() => {
   const hand = appState.currentBoard.hand;
-  const orientation = useRecoilValue(boardOrientationState);
-  const windowWidth = useRecoilValue(windowWidthState);
-  const windowHeight = useRecoilValue(windowHeightState);
+  const cardSize = useRecoilValue(cardSizeState);
 
   return (
-    <HandStyles $orientation={orientation} $windowWidth={windowWidth}>
+    <HandStyles>
       {handKeys.map((key) => {
         const card = hand[key];
         return (
-          <DropSpot
-            size={getCardSize(windowWidth, windowHeight)}
-            key={key}
-            dropId={key}
-          >
-            <Spot $size={getCardSize(windowWidth, windowHeight)}>
-              {card && (
-                <CardUI
-                  size={getCardSize(windowWidth, windowHeight)}
-                  card={card}
-                  zIndex={1}
-                />
-              )}
+          <DropSpot size={cardSize} key={key} dropId={key}>
+            <Spot $size={cardSize}>
+              {card && <CardUI size={cardSize} card={card} zIndex={1} />}
             </Spot>
           </DropSpot>
         );

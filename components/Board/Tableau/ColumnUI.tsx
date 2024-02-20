@@ -3,25 +3,18 @@ import { Column } from "./TableauClass";
 import DropSpot from "../DropSpot/DropSpot";
 import { Spot } from "../Board.styles";
 import CardUI from "@/components/Card/CardUI";
-import { getCardOffsetAmount, questrial } from "../Board";
+import { questrial } from "../Board";
 import { useRecoilValue } from "recoil";
-import {
-  getCardSize,
-  windowHeightState,
-  windowWidthState
-} from "@/logic/OrientationAndSize";
+import { cardSizeState } from "@/logic/OrientationAndSize";
+import { cardSizes } from "@/components/Card/CardUI.styles";
 
 const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
-  const windowWidth = useRecoilValue(windowWidthState);
-  const windowHeight = useRecoilValue(windowHeightState);
+  const cardSize = useRecoilValue(cardSizeState);
 
   if (columnData.arrayOfCards.length === 0) {
     return (
-      <DropSpot
-        size={getCardSize(windowWidth, windowHeight)}
-        dropId={columnData.key}
-      >
-        <Spot $size={getCardSize(windowWidth, windowHeight)}>
+      <DropSpot size={cardSize} dropId={columnData.key}>
+        <Spot $size={cardSize}>
           <div className={`label ${questrial.className}`}>K</div>
         </Spot>
       </DropSpot>
@@ -29,25 +22,22 @@ const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
   }
 
   return (
-    <Spot key={columnData.key} $size={getCardSize(windowWidth, windowHeight)}>
+    <Spot key={columnData.key} $size={cardSize}>
       <div className={`label ${questrial.className}`}>K</div>
       {columnData.arrayOfCards.map((card, i) => {
         // final card will have a drop spot
         if (i === columnData.arrayOfCards.length - 1) {
           return (
             <DropSpot
-              size={getCardSize(windowWidth, windowHeight)}
+              size={cardSize}
               key={`${card.value}_of_${card.suit}`}
               dropId={columnData.key}
             >
               <CardUI
-                size={getCardSize(windowWidth, windowHeight)}
+                size={cardSize}
                 card={card}
                 zIndex={i + 1}
-                offset={
-                  i *
-                  getCardOffsetAmount(getCardSize(windowWidth, windowHeight))
-                }
+                offset={i * cardSizes[cardSize].offset}
                 spacer
               />
             </DropSpot>
@@ -55,13 +45,11 @@ const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
         } else
           return (
             <CardUI
-              size={getCardSize(windowWidth, windowHeight)}
+              size={cardSize}
               key={`${card.value}_of_${card.suit}`}
               card={card}
               zIndex={i + 1}
-              offset={
-                i * getCardOffsetAmount(getCardSize(windowWidth, windowHeight))
-              }
+              offset={i * cardSizes[cardSize].offset}
             />
           );
       })}

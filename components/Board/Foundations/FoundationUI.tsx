@@ -5,29 +5,24 @@ import DropSpot from "../DropSpot/DropSpot";
 import CardUI from "@/components/Card/CardUI";
 import { Spot } from "../Board.styles";
 import { useRecoilValue } from "recoil";
-import {
-  getCardSize,
-  windowHeightState,
-  windowWidthState
-} from "@/logic/OrientationAndSize";
+import { cardSizeState } from "@/logic/OrientationAndSize";
 import { questrial } from "../Board";
 
 const FoundationUI = observer(
   ({ foundationData }: { foundationData: Foundation }) => {
-    const windowWidth = useRecoilValue(windowWidthState);
-    const windowHeight = useRecoilValue(windowHeightState);
+    const cardSize = useRecoilValue(cardSizeState);
 
     return (
       <DropSpot
-        size={getCardSize(windowWidth, windowHeight)}
+        size={cardSize}
         key={foundationData.key}
         dropId={foundationData.key}
       >
-        <Spot $size={getCardSize(windowWidth, windowHeight)}>
+        <Spot $size={cardSize}>
           <div className={`label ${questrial.className}`}>A</div>
           {foundationData.arrayOfCards.map((card, i) => (
             <CardUI
-              size={getCardSize(windowWidth, windowHeight)}
+              size={cardSize}
               key={`${card.value}_of_${card.suit}`}
               card={card}
               zIndex={i + 1}

@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import appState from "./AppState";
+import JSConfetti from "js-confetti";
+import { cardSizeType, cardSizes } from "@/components/Card/CardUI.styles";
 
 export const handlePointerDown = () => {
   appState.setIsDragging(false);
@@ -54,3 +56,18 @@ export const handlePointerUp = (event: PointerEvent) => {
   appState.setIsDragging(false);
   appState.setCardsBeingTouched(null);
 };
+
+export function throwConfetti(cardSize: cardSizeType) {
+  const confetti = new JSConfetti();
+  // custom confetti
+  confetti.addConfetti({
+    emojis: ["🎰", "🃏", "❤️", "♠️", "♣️", "♦️"],
+    emojiSize: cardSizes[cardSize].confettiSize,
+    confettiNumber: 200
+  });
+
+  // plus standard confetti
+  confetti.addConfetti({
+    confettiNumber: 200
+  });
+}

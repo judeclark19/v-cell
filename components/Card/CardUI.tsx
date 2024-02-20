@@ -1,4 +1,4 @@
-import { CardStyle, cardSize, cardSizes } from "./CardUI.styles";
+import { CardStyle, cardSizeType, cardSizes } from "./CardUI.styles";
 import CardClass from "./CardClass";
 import appState from "@/logic/AppState";
 import { useState } from "react";
@@ -15,7 +15,7 @@ const CardUI = observer(
     zIndex,
     offset
   }: {
-    size: cardSize;
+    size: cardSizeType;
     card: CardClass;
     zIndex: number;
     offset?: number;
