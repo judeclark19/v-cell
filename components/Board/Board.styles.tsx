@@ -91,16 +91,6 @@ export const GameControlButtons = styled.div`
   }
 `;
 
-export const GameControlButton = styled.button`
-  font-size: 18px;
-  padding: 10px;
-
-  @media screen and (max-width: 992px) {
-    font-size: 14px;
-    padding: 5px;
-  }
-`;
-
 export const WoodenBorder = styled.div`
   background-image: url(${wood.src});
   background-size: cover;

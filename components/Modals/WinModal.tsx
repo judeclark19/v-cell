@@ -1,9 +1,5 @@
 import { observer } from "mobx-react-lite";
-import {
-  GameControlButton,
-  GameControlButtons,
-  GameTitle
-} from "../Board/Board.styles";
+import { GameControlButtons, GameTitle } from "../Board/Board.styles";
 import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
@@ -66,7 +62,7 @@ const WinModal = observer(() => {
           </p>
         </div>
         <GameControlButtons>
-          <GameControlButton
+          <button
             className={questrial.className}
             style={{
               backgroundColor: "#0099cc",
@@ -77,7 +73,7 @@ const WinModal = observer(() => {
             }}
           >
             Deal again
-          </GameControlButton>
+          </button>
         </GameControlButtons>
       </WinModalStyle>
     </ModalStyle>

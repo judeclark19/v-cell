@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   BoardContainer,
   ControlsBar,
-  GameControlButton,
   GameControlButtons,
   HeaderImage,
   HowToPlay,
@@ -169,7 +168,7 @@ const Board = observer(() => {
         </BoardContainer>
       </WoodenBorder>
       <GameControlButtons className={questrial.className}>
-        <GameControlButton
+        <button
           className={questrial.className}
           style={{
             backgroundColor: "#0099cc",
@@ -181,8 +180,8 @@ const Board = observer(() => {
           disabled={appState.winningBoard && appState.canAutoComplete}
         >
           Deal again
-        </GameControlButton>
-        <GameControlButton
+        </button>
+        <button
           style={{
             backgroundColor: "var(--red)",
             borderColor: "var(--red)"
@@ -201,7 +200,7 @@ const Board = observer(() => {
                 appState.moveEvaluator.undosUsed
               })`
             : ""}
-        </GameControlButton>
+        </button>
 
         {process.env.NODE_ENV !== "production" && (
           <button

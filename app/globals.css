@@ -39,6 +39,14 @@ button {
   border-color: #0099cc;
   color: white;
   padding: 0.5rem 1rem;
+  font-size: 18px;
+}
+
+@media screen and (max-width: 992px) {
+  button {
+    font-size: 14px;
+    padding: 5px;
+  }
 }
 
 button:disabled {
