@@ -6,6 +6,7 @@ const Tap = styled.i<{
   $left: number;
   $top: number;
 }>`
+  pointer-events: none;
   position: absolute;
   left: ${(props) => `${props.$left}px`};
   top: ${(props) => `${props.$top}px`};
