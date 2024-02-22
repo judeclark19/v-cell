@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest"
 };
 
+// https://favicon.io/favicon-converter/
+
 export default function RootLayout({
   children
 }: {

@@ -33,7 +33,7 @@ export const cardSizes = {
     top: 0,
     offset: 20,
     shadowSize: 3,
-    confettiSize: 30,
+    confettiSize: 40,
     titleSuitSize: 12,
     bodySuitSize: 20
   },
@@ -44,7 +44,7 @@ export const cardSizes = {
     top: 0,
     offset: 14,
     shadowSize: 2,
-    confettiSize: 30,
+    confettiSize: 70,
     titleSuitSize: 12,
     bodySuitSize: 14
   }

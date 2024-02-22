@@ -159,6 +159,8 @@ export const InstructionsModalStyle = styled.div`
 `;
 
 export const SettingsModalStyle = styled.div`
+  max-width: calc(100vw - 20px);
+
   .settings-section {
     background-color: #222;
     padding: 1rem;

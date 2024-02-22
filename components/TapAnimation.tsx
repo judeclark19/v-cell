@@ -19,12 +19,6 @@ const Tap = styled.i<{
   transform: scale(0);
   z-index: 9999;
 
-  @media screen and (max-width: 600px) {
-    height: 44px;
-    width: 44px;
-    margin: -22px;
-  }
-
   ${(props) =>
     props.$active &&
     `

@@ -91,13 +91,11 @@ export default function Home() {
             Built by
             <strong>
               &nbsp;
-              <a href="https://github.com/judeclark19/react-solitaire">
-                Jude Clark
-              </a>
+              <a href="https://github.com/judeclark19/v-cell">Jude Clark</a>
             </strong>
           </div>
         </div>
-        <div className="bottom">Last updated Feb 20, 2024</div>
+        <div className="bottom">Last updated Feb 22, 2024</div>
       </Footer>
     </PageWrapper>
   );

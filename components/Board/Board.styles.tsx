@@ -106,6 +106,7 @@ export const BoardContainer = styled.div<{
   $isModalOpen: boolean;
   $cardSize: cardSizeType;
 }>`
+  user-select: none;
   padding: 20px;
   background-color: var(--pokerGreen);
   box-sizing: border-box;
