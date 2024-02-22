@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   BoardContainer,
   ControlsBar,
@@ -14,13 +14,13 @@ import { observer } from "mobx-react-lite";
 import FoundationsUI from "./Foundations/FoundationsUI";
 import TableauUI from "./Tableau/TableauUI";
 import HandUI from "./Hand/HandUI";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
-  Orientation,
-  boardOrientationState,
   cardSizeState,
-  calculateCardSize
-} from "@/logic/OrientationAndSize";
+  calculateCardSize,
+  timeElapsedState,
+  timerIsRunningState
+} from "@/logic/RecoilAtoms";
 import CardsBeingDragged from "../CardsBeingDragged";
 import WinModal from "../Modals/WinModal";
 import InstructionsModal from "../Modals/InstructionsModal";
@@ -33,21 +33,28 @@ import {
 } from "@/logic/UIFunctions";
 import LocalStorageServerHelper from "@/logic/LocalStorageServerHelper";
 import SettingsModal from "../Modals/SettingsModal";
+import Timer from "./Timer";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
 
 const Board = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
-  const [orientation, setBoardOrientation] = useRecoilState(
-    boardOrientationState
-  );
   const [cardSize, setCardSize] = useRecoilState(cardSizeState);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
+  const [timeElapsed, setTimeElapsed] = useRecoilState(timeElapsedState);
+  const setTimerIsRunning = useSetRecoilState(timerIsRunningState);
 
-  let lastKnownOrientation: Orientation = orientation;
+  const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {}, []);
+  function resetTimer() {
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = null;
+    }
+    setTimerIsRunning(false);
+    setTimeElapsed(0);
+  }
 
   useEffect(() => {
     setIsLoading(false);
@@ -58,9 +65,15 @@ const Board = observer(() => {
       ? JSON.parse(localStorage.getItem("vCellWinHistory") as string)
       : [];
     if (appState.winCount > 0) {
+      const newWinObject = {
+        date: new Date(),
+        layout: appState.layoutName,
+        timeElapsed: timeElapsed
+      };
+
       localStorage.setItem(
         "vCellWinHistory",
-        JSON.stringify([...winHistory, new Date()])
+        JSON.stringify([...winHistory, newWinObject])
       );
     }
   }, [appState.winCount]);
@@ -68,14 +81,6 @@ const Board = observer(() => {
   useEffect(() => {
     const handleResize = () => {
       setCardSize(calculateCardSize(window.innerWidth, window.innerHeight));
-
-      let newOrientation: Orientation =
-        window.innerWidth <= 980 ? "portrait" : "landscape";
-
-      if (newOrientation !== lastKnownOrientation) {
-        setBoardOrientation(newOrientation);
-        lastKnownOrientation = newOrientation;
-      }
     };
 
     document.addEventListener("pointermove", (e) => {
@@ -106,7 +111,7 @@ const Board = observer(() => {
     <>
       {/* <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
        */}
-      <LocalStorageServerHelper />
+      <LocalStorageServerHelper timerIntervalRef={timerIntervalRef} />
       <HeaderImage>
         <Image
           src={headerImage}
@@ -145,6 +150,7 @@ const Board = observer(() => {
         </div>
       </ControlsBar>
       <WoodenBorder>
+        <Timer timerIntervalRef={timerIntervalRef} resetTimer={resetTimer} />
         <BoardContainer
           $isModalOpen={
             appState.winModal.isOpen || appState.instructionsModal.isOpen
@@ -175,6 +181,7 @@ const Board = observer(() => {
             borderColor: "#0099cc"
           }}
           onClick={() => {
+            resetTimer();
             appState.dealCards();
           }}
           disabled={appState.winningBoard && appState.canAutoComplete}

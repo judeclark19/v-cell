@@ -1,13 +1,6 @@
 import { cardSizeType } from "@/components/Card/CardUI.styles";
 import { atom } from "recoil";
 
-export type Orientation = "landscape" | "portrait";
-
-export const boardOrientationState = atom<Orientation>({
-  key: "boardOrientation",
-  default: "landscape"
-});
-
 export const cardSizeState = atom<cardSizeType>({
   key: "cardSize",
   default: "tiny"
@@ -22,3 +15,13 @@ export const calculateCardSize = (
   else if (windowHeight < 1200 || windowWidth < 1200) return "medium";
   else return "large";
 };
+
+export const timeElapsedState = atom<number>({
+  key: "timeElapsed",
+  default: 0
+});
+
+export const timerIsRunningState = atom<boolean>({
+  key: "timerIsRunning",
+  default: false
+});

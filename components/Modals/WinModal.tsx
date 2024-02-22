@@ -4,15 +4,18 @@ import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
 import { luckyGuy, questrial } from "../Board/Board";
+import { formatTime } from "@/logic/UIFunctions";
+import { useRecoilValue } from "recoil";
+import { timeElapsedState } from "@/logic/RecoilAtoms";
 
 const WinModal = observer(() => {
   const winHistory = localStorage.getItem("vCellWinHistory")
     ? JSON.parse(localStorage.getItem("vCellWinHistory") as string)
     : [];
   const [isClosing, setIsClosing] = useState(false);
+  const timeElapsed = useRecoilValue(timeElapsedState);
 
   useEffect(() => {
-    // queryselect .modal-shade
     const modalShade = document.querySelector(".modal-shade");
     modalShade?.addEventListener("click", (e) => {
       if (e.target === e.currentTarget) {
@@ -50,9 +53,10 @@ const WinModal = observer(() => {
           X
         </span>
         <GameTitle className={luckyGuy.className}>You Win!</GameTitle>
+        <p className="time-elapsed">Time elapsed: {formatTime(timeElapsed)}</p>
 
         <div className="win-count">
-          <p>You have won</p>
+          <p className="gold">You have won</p>
           <p className="win-count-number">{winHistory.length}</p>
           <p>
             <span>

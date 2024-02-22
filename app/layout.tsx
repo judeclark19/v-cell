@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Questrial } from "next/font/google";
 
 import "./globals.css";
 
-const questrial = Questrial({ weight: "400", subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "V-Cell",
+  title: {
+    default: "V-Cell",
+    template: "V-Cell | %s"
+  },
   description: "Game concept by Jim Fox - Web app by Jude Clark",
   icons: {
     icon: ["/favicon.ico"],
@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={questrial.className}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

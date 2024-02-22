@@ -96,6 +96,20 @@ export const ModalStyle = styled.div<{
 `;
 
 export const WinModalStyle = styled.div`
+  .time-elapsed {
+    font-size: 16px;
+    text-align: center;
+    color: var(--gold);
+    margin-bottom: 20px;
+
+    @media screen and (max-width: 768px) {
+      font-size: 14px;
+    }
+    @media screen and (max-width: 480px) {
+      font-size: 12px;
+    }
+  }
+
   .win-count {
     font-size: 20px;
     text-align: center;

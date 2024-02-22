@@ -5,7 +5,7 @@ import FoundationUI from "./FoundationUI";
 
 import { foundationKeys } from "@/logic/types";
 import { useRecoilValue } from "recoil";
-import { cardSizeState } from "@/logic/OrientationAndSize";
+import { cardSizeState } from "@/logic/RecoilAtoms";
 import { questrial } from "../Board";
 import {
   AutocompleteDiv,

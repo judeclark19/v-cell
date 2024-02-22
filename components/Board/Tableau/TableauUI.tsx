@@ -6,7 +6,7 @@ import appState from "@/logic/AppState";
 import { columnKeys } from "@/logic/types";
 import { cardSizes } from "@/components/Card/CardUI.styles";
 import { useRecoilValue } from "recoil";
-import { cardSizeState } from "@/logic/OrientationAndSize";
+import { cardSizeState } from "@/logic/RecoilAtoms";
 
 const TableauStyles = styled.div<{
   $offset: number;

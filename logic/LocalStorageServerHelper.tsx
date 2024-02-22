@@ -2,123 +2,159 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import appState from "./AppState";
 import { boardLayout } from "./types";
-import { cardSizeState } from "./OrientationAndSize";
-import { useRecoilValue } from "recoil";
+import {
+  cardSizeState,
+  timeElapsedState,
+  timerIsRunningState
+} from "./RecoilAtoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { throwConfetti } from "./UIFunctions";
 
 // Since GameState.tsx cannot read localStorage from the client directly, the purpose of this component is to mirror the gameState to the localStorage.
-const LocalStorageServerHelper = observer(() => {
-  const cardSize = useRecoilValue(cardSizeState);
+const LocalStorageServerHelper = observer(
+  ({
+    timerIntervalRef
+  }: {
+    timerIntervalRef: React.MutableRefObject<NodeJS.Timeout | null>;
+  }) => {
+    const cardSize = useRecoilValue(cardSizeState);
+    const setTimerIsRunning = useSetRecoilState(timerIsRunningState);
+    const setTimeElapsed = useSetRecoilState(timeElapsedState);
 
-  useEffect(() => {
-    const moveHistoryFromStorage = JSON.parse(
-      localStorage.getItem("vCellMoveHistory") || "[]"
-    );
+    useEffect(() => {
+      if (localStorage.getItem("vCellTimeElapsed")) {
+        setTimeElapsed(
+          parseInt(localStorage.getItem("vCellTimeElapsed") as string)
+        );
+      }
 
-    const currentBoardFromStorage = JSON.parse(
-      localStorage.getItem("vCellCurrentBoard") || "{}"
-    );
+      const moveHistoryFromStorage = JSON.parse(
+        localStorage.getItem("vCellMoveHistory") || "[]"
+      );
 
-    const winningBoardFromStorage = JSON.parse(
-      localStorage.getItem("vCellWinningBoard") || "false"
-    );
-    appState.setIsWinningBoard(winningBoardFromStorage, true);
+      const currentBoardFromStorage = JSON.parse(
+        localStorage.getItem("vCellCurrentBoard") || "{}"
+      );
 
-    const canAutoCompleteFromStorage = JSON.parse(
-      localStorage.getItem("vCellAutoComplete") || "false"
-    );
-    appState.setCanAutoComplete(canAutoCompleteFromStorage);
+      const winningBoardFromStorage = JSON.parse(
+        localStorage.getItem("vCellWinningBoard") || "false"
+      );
+      appState.setIsWinningBoard(winningBoardFromStorage, true);
 
-    const layoutFromStorage = localStorage.getItem("vCellLayout");
-    if (layoutFromStorage) {
-      appState.setLayout(layoutFromStorage as boardLayout);
-    }
+      const canAutoCompleteFromStorage = JSON.parse(
+        localStorage.getItem("vCellAutoComplete") || "false"
+      );
+      appState.setCanAutoComplete(canAutoCompleteFromStorage);
 
-    const undosAllowedFromStorage =
-      localStorage.getItem("vCellUndosAllowed") || "Infinity";
-    const undosAllowed =
-      undosAllowedFromStorage === "Infinity"
-        ? Infinity
-        : parseFloat(undosAllowedFromStorage);
+      const layoutFromStorage = localStorage.getItem("vCellLayout");
+      if (layoutFromStorage) {
+        appState.setLayout(layoutFromStorage as boardLayout);
+      }
 
-    const undosUsedFromStorage = localStorage.getItem("vCellUndosUsed") || "0";
-    const undosUsed = parseInt(undosUsedFromStorage);
+      const undosAllowedFromStorage =
+        localStorage.getItem("vCellUndosAllowed") || "Infinity";
+      const undosAllowed =
+        undosAllowedFromStorage === "Infinity"
+          ? Infinity
+          : parseFloat(undosAllowedFromStorage);
 
-    appState.moveEvaluator.setUndosAllowed(undosAllowed);
-    appState.moveEvaluator.setUndosUsed(undosUsed);
+      const undosUsedFromStorage =
+        localStorage.getItem("vCellUndosUsed") || "0";
+      const undosUsed = parseInt(undosUsedFromStorage);
 
-    if (
-      moveHistoryFromStorage.length > 0 &&
-      "foundations" in currentBoardFromStorage &&
-      "tableau" in currentBoardFromStorage &&
-      "hand" in currentBoardFromStorage &&
-      !winningBoardFromStorage
-    ) {
-      // restore state
-      appState.restoreGameState(currentBoardFromStorage);
-      appState.setHistory(moveHistoryFromStorage);
       appState.moveEvaluator.setUndosAllowed(undosAllowed);
       appState.moveEvaluator.setUndosUsed(undosUsed);
-    } else {
-      // new game
-      appState.dealCards();
-    }
 
-    const knowsHowToPlay = localStorage.getItem("vCellKnowsHowToPlay");
-    if (!knowsHowToPlay) {
-      appState.instructionsModal.open();
-      appState.winModal.close();
-      localStorage.setItem("vCellKnowsHowToPlay", "true");
-    }
-  }, []);
+      if (
+        moveHistoryFromStorage.length > 0 &&
+        "foundations" in currentBoardFromStorage &&
+        "tableau" in currentBoardFromStorage &&
+        "hand" in currentBoardFromStorage &&
+        !winningBoardFromStorage
+      ) {
+        // restore state
+        appState.restoreGameState(currentBoardFromStorage);
+        appState.setHistory(moveHistoryFromStorage);
+        appState.moveEvaluator.setUndosAllowed(undosAllowed);
+        appState.moveEvaluator.setUndosUsed(undosUsed);
+      } else {
+        // new game
+        appState.dealCards();
+      }
 
-  useEffect(() => {
-    localStorage.setItem("vCellMoveHistory", JSON.stringify(appState.history));
-    localStorage.setItem(
-      "vCellCurrentBoard",
-      JSON.stringify(appState.currentBoard)
-    );
-  }, [appState.history.length]);
+      const knowsHowToPlay = localStorage.getItem("vCellKnowsHowToPlay");
+      if (!knowsHowToPlay) {
+        appState.instructionsModal.open();
+        appState.winModal.close();
+        localStorage.setItem("vCellKnowsHowToPlay", "true");
+      }
 
-  useEffect(() => {
-    localStorage.setItem(
-      "vCellWinningBoard",
-      JSON.stringify(appState.winningBoard)
-    );
-  }, [appState.winningBoard]);
+      return () => {
+        if (timerIntervalRef.current) {
+          clearInterval(timerIntervalRef.current);
+          timerIntervalRef.current = null; // Reset the interval reference
+        }
+      };
+    }, []);
 
-  useEffect(() => {
-    localStorage.setItem(
-      "vCellAutoComplete",
-      JSON.stringify(appState.canAutoComplete)
-    );
-  }, [appState.canAutoComplete]);
+    useEffect(() => {
+      localStorage.setItem(
+        "vCellMoveHistory",
+        JSON.stringify(appState.history)
+      );
+      localStorage.setItem(
+        "vCellCurrentBoard",
+        JSON.stringify(appState.currentBoard)
+      );
+    }, [appState.history.length]);
 
-  useEffect(() => {
-    localStorage.setItem("vCellLayout", appState.layoutName);
-  }, [appState.layoutName]);
+    useEffect(() => {
+      localStorage.setItem(
+        "vCellWinningBoard",
+        JSON.stringify(appState.winningBoard)
+      );
+      if (appState.winningBoard) {
+        if (timerIntervalRef.current) {
+          clearInterval(timerIntervalRef.current);
+          timerIntervalRef.current = null;
+        }
+        setTimerIsRunning(false);
+      }
+    }, [appState.winningBoard]);
 
-  useEffect(() => {
-    localStorage.setItem(
-      "vCellUndosAllowed",
-      appState.moveEvaluator.undosAllowed.toString()
-    );
-  }, [appState.moveEvaluator.undosAllowed]);
+    useEffect(() => {
+      localStorage.setItem(
+        "vCellAutoComplete",
+        JSON.stringify(appState.canAutoComplete)
+      );
+    }, [appState.canAutoComplete]);
 
-  useEffect(() => {
-    localStorage.setItem(
-      "vCellUndosUsed",
-      appState.moveEvaluator.undosUsed.toString()
-    );
-  }, [appState.moveEvaluator.undosUsed]);
+    useEffect(() => {
+      localStorage.setItem("vCellLayout", appState.layoutName);
+    }, [appState.layoutName]);
 
-  useEffect(() => {
-    if (appState.manualWins > 0) {
-      throwConfetti(cardSize);
-    }
-  }, [appState.manualWins]);
+    useEffect(() => {
+      localStorage.setItem(
+        "vCellUndosAllowed",
+        appState.moveEvaluator.undosAllowed.toString()
+      );
+    }, [appState.moveEvaluator.undosAllowed]);
 
-  return null;
-});
+    useEffect(() => {
+      localStorage.setItem(
+        "vCellUndosUsed",
+        appState.moveEvaluator.undosUsed.toString()
+      );
+    }, [appState.moveEvaluator.undosUsed]);
+
+    useEffect(() => {
+      if (appState.manualWins > 0) {
+        throwConfetti(cardSize);
+      }
+    }, [appState.manualWins]);
+
+    return null;
+  }
+);
 
 export default LocalStorageServerHelper;

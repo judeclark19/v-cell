@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { cardSizeType, cardSizes } from "./Card/CardUI.styles";
 import { useRecoilValue } from "recoil";
-import { cardSizeState } from "@/logic/OrientationAndSize";
+import { cardSizeState } from "@/logic/RecoilAtoms";
 import styled from "styled-components";
 import CardUI from "./Card/CardUI";
 import CardClass from "./Card/CardClass";

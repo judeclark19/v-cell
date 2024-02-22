@@ -5,7 +5,7 @@ import { Spot } from "../Board.styles";
 import CardUI from "@/components/Card/CardUI";
 import { questrial } from "../Board";
 import { useRecoilValue } from "recoil";
-import { cardSizeState } from "@/logic/OrientationAndSize";
+import { cardSizeState } from "@/logic/RecoilAtoms";
 import { cardSizes } from "@/components/Card/CardUI.styles";
 
 const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
