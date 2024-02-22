@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import appState from "./AppState";
 import { boardLayout } from "./types";
 import {
@@ -9,7 +9,6 @@ import {
 } from "./RecoilAtoms";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { throwConfetti } from "./UIFunctions";
-import { toJS } from "mobx";
 
 // Since GameState.tsx cannot read localStorage from the client directly, the purpose of this component is to mirror the gameState to the localStorage.
 const LocalStorageServerHelper = observer(
@@ -151,6 +150,43 @@ const LocalStorageServerHelper = observer(
         throwConfetti(cardSize);
       }
     }, [appState.manualWins]);
+
+    useEffect(() => {
+      // Stop timer when a modal is open
+      const freshlyFetchedLocalStorage = JSON.parse(
+        localStorage.getItem("vCellMoveHistory") || "[]"
+      );
+
+      if (
+        (appState.winModal.isOpen ||
+          appState.instructionsModal.isOpen ||
+          appState.settingsModal.isOpen) &&
+        timerIntervalRef.current
+      ) {
+        clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+        setTimerIsRunning(false);
+      } else if (
+        !appState.winModal.isOpen &&
+        !appState.instructionsModal.isOpen &&
+        !appState.settingsModal.isOpen &&
+        !appState.winningBoard &&
+        freshlyFetchedLocalStorage.length > 0
+      ) {
+        setTimerIsRunning(true);
+        timerIntervalRef.current = setInterval(() => {
+          setTimeElapsed((prev) => {
+            const newTimeElapsed = prev + 10;
+            localStorage.setItem("vCellTimeElapsed", newTimeElapsed.toString());
+            return newTimeElapsed;
+          });
+        }, 10);
+      }
+    }, [
+      appState.winModal.isOpen,
+      appState.instructionsModal.isOpen,
+      appState.settingsModal.isOpen
+    ]);
 
     return null;
   }
