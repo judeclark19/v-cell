@@ -9,6 +9,7 @@ import {
 } from "./RecoilAtoms";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { throwConfetti } from "./UIFunctions";
+import { toJS } from "mobx";
 
 // Since GameState.tsx cannot read localStorage from the client directly, the purpose of this component is to mirror the gameState to the localStorage.
 const LocalStorageServerHelper = observer(
@@ -113,11 +114,9 @@ const LocalStorageServerHelper = observer(
         "vCellWinningBoard",
         JSON.stringify(appState.winningBoard)
       );
-      if (appState.winningBoard) {
-        if (timerIntervalRef.current) {
-          clearInterval(timerIntervalRef.current);
-          timerIntervalRef.current = null;
-        }
+      if (appState.winningBoard && timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
         setTimerIsRunning(false);
       }
     }, [appState.winningBoard]);

@@ -215,6 +215,10 @@ export class AppState {
       // empty the foundation
       this.currentBoard.foundations[key].arrayOfCards = [];
 
+      // set foundation suit
+      this.currentBoard.foundations[key].suit =
+        stateToRestore.foundations[key].suit;
+
       // create new cards from state
       const cards = stateToRestore.foundations[key].arrayOfCards.map((card) => {
         const newCard = new CardClass(card.value, card.suit);

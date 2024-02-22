@@ -81,6 +81,25 @@ const SettingsModal = observer(() => {
             start a new game!
           </p>
           <div className="dropdowns">
+            <div className="layout-select">
+              {/* TODO: generate from types list? */}
+              <label htmlFor="layout-select">
+                <span className="label-text">Layout</span>
+                <select
+                  id="layout-select"
+                  className={questrial.className}
+                  value={appState.layoutName}
+                  onChange={(e) => {
+                    appState.setLayout(e.target.value as boardLayout);
+                  }}
+                >
+                  <option value="classic">Classic</option>
+                  <option value="faceUp">Face Up</option>
+                  <option value="doubleV">Double V</option>
+                  <option value="tripleV">Triple V</option>
+                </select>
+              </label>
+            </div>
             <div className="undo-select">
               {/* undo settings */}
               <label htmlFor="undo-select">
@@ -104,26 +123,6 @@ const SettingsModal = observer(() => {
                   <option value="1">1</option>
                   <option value="3">3</option>
                   <option value="5">5</option>
-                </select>
-              </label>
-            </div>
-
-            <div className="layout-select">
-              {/* TODO: generate from types list? */}
-              <label htmlFor="layout-select">
-                <span className="label-text">Layout</span>
-                <select
-                  id="layout-select"
-                  className={questrial.className}
-                  value={appState.layoutName}
-                  onChange={(e) => {
-                    appState.setLayout(e.target.value as boardLayout);
-                  }}
-                >
-                  <option value="classic">Classic</option>
-                  <option value="faceUp">Face Up</option>
-                  <option value="doubleV">Double V</option>
-                  <option value="tripleV">Triple V</option>
                 </select>
               </label>
             </div>

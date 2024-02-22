@@ -24,6 +24,9 @@ export class Foundation {
 
   removeLastCard() {
     const removedCard = this.arrayOfCards.pop();
+    if (this.arrayOfCards.length === 0) {
+      this.suit = "";
+    }
     return removedCard;
   }
 }

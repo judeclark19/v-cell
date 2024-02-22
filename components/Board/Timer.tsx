@@ -36,7 +36,11 @@ export default function Timer({
     );
 
     // CONTROLLING THE TIMER
-    if (appState.history.length > 0 && !timerIsRunning) {
+    if (
+      appState.history.length > 0 &&
+      !appState.winningBoard &&
+      !timerIsRunning
+    ) {
       // continue game
       setTimerIsRunning(true);
       timerIntervalRef.current = setInterval(() => {
