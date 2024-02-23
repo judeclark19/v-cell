@@ -22,6 +22,7 @@ const LocalStorageServerHelper = observer(
     const setTimeElapsed = useSetRecoilState(timeElapsedState);
 
     useEffect(() => {
+      // upon application load, get saved game state from localStorage
       if (localStorage.getItem("vCellTimeElapsed")) {
         setTimeElapsed(
           parseInt(localStorage.getItem("vCellTimeElapsed") as string)
@@ -30,10 +31,6 @@ const LocalStorageServerHelper = observer(
 
       const moveHistoryFromStorage = JSON.parse(
         localStorage.getItem("vCellMoveHistory") || "[]"
-      );
-
-      const currentBoardFromStorage = JSON.parse(
-        localStorage.getItem("vCellCurrentBoard") || "{}"
       );
 
       const winningBoardFromStorage = JSON.parse(
@@ -62,9 +59,11 @@ const LocalStorageServerHelper = observer(
         localStorage.getItem("vCellUndosUsed") || "0";
       const undosUsed = parseInt(undosUsedFromStorage);
 
-      appState.moveEvaluator.setUndosAllowed(undosAllowed);
-      appState.moveEvaluator.setUndosUsed(undosUsed);
+      const currentBoardFromStorage = JSON.parse(
+        localStorage.getItem("vCellCurrentBoard") || "{}"
+      );
 
+      // Restore state or start new game
       if (
         moveHistoryFromStorage.length > 0 &&
         "foundations" in currentBoardFromStorage &&
@@ -73,6 +72,8 @@ const LocalStorageServerHelper = observer(
         !winningBoardFromStorage
       ) {
         // restore state
+        appState.moveEvaluator.setUndosAllowed(undosAllowed);
+        appState.moveEvaluator.setUndosUsed(undosUsed);
         appState.restoreGameState(currentBoardFromStorage);
         appState.setHistory(moveHistoryFromStorage);
         appState.moveEvaluator.setUndosAllowed(undosAllowed);
@@ -92,7 +93,7 @@ const LocalStorageServerHelper = observer(
       return () => {
         if (timerIntervalRef.current) {
           clearInterval(timerIntervalRef.current);
-          timerIntervalRef.current = null; // Reset the interval reference
+          timerIntervalRef.current = null;
         }
       };
     }, []);
