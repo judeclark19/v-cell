@@ -25,7 +25,7 @@ import CardsBeingDragged from "../CardsBeingDragged";
 import WinModal from "../Modals/WinModal";
 import InstructionsModal from "../Modals/InstructionsModal";
 import { FaCog, FaInfoCircle } from "react-icons/fa";
-import { Luckiest_Guy, Questrial } from "next/font/google";
+import { Luckiest_Guy, Questrial, Poppins } from "next/font/google";
 import {
   handlePointerDown,
   handlePointerMove,
@@ -39,6 +39,10 @@ import PauseModal from "../Modals/PauseModal";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
+export const poppins = Poppins({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"]
+});
 
 const Board = observer(() => {
   const [isLoading, setIsLoading] = useState(true);

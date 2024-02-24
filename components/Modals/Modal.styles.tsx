@@ -140,6 +140,8 @@ export const WinModalStyle = styled.div`
 `;
 
 export const InstructionsModalStyle = styled.div`
+  line-height: 20px;
+
   .slide {
     box-sizing: border-box;
     width: 500px;
@@ -163,11 +165,13 @@ export const InstructionsModalStyle = styled.div`
 
       li span {
         color: var(--gold);
+        font-weight: 500;
       }
     }
 
     span.gold {
       color: var(--gold);
+      font-weight: 500;
     }
   }
 `;

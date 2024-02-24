@@ -3,7 +3,7 @@ import { GameTitle } from "../Board/Board.styles";
 import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 import { ModalStyle, SettingsModalStyle } from "./Modal.styles";
-import { luckyGuy, questrial } from "../Board/Board";
+import { luckyGuy, poppins, questrial } from "../Board/Board";
 import { boardLayout } from "@/logic/types";
 
 const SettingsModal = observer(() => {
@@ -76,7 +76,12 @@ const SettingsModal = observer(() => {
         {/* I am envisioning the sections becoming accordions later */}
         <div className="settings-section">
           <h2>Game Rules</h2>
-          <p>
+          <p
+            className={poppins.className}
+            style={{
+              lineHeight: "20px"
+            }}
+          >
             <strong>Warning:</strong> changing any of the settings below will
             start a new game!
           </p>

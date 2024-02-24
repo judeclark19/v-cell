@@ -4,7 +4,7 @@ import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 
 import { GameControlButtons, GameTitle } from "../Board/Board.styles";
-import { luckyGuy, questrial } from "../Board/Board";
+import { luckyGuy, poppins } from "../Board/Board";
 
 const InstructionsModal = observer(() => {
   const [slideNumber, setSlideNumber] = useState(0);
@@ -34,7 +34,7 @@ const InstructionsModal = observer(() => {
   return (
     <ModalStyle
       $isClosing={isClosing}
-      className={`modal-shade ${questrial.className}`}
+      className={`modal-shade ${poppins.className}`}
     >
       <InstructionsModalStyle>
         <span
@@ -128,7 +128,7 @@ const InstructionsModal = observer(() => {
         <GameControlButtons>
           <div>
             <button
-              className={questrial.className}
+              className={poppins.className}
               onClick={() => {
                 setSlideNumber(slideNumber - 1);
               }}
@@ -137,7 +137,7 @@ const InstructionsModal = observer(() => {
               Back
             </button>
             <button
-              className={questrial.className}
+              className={poppins.className}
               onClick={() => {
                 if (slideNumber === 3) {
                   setIsClosing(true);
