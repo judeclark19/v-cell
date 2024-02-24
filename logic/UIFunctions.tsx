@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import appState from "./AppState";
-import JSConfetti from "js-confetti";
+// import JSConfetti from "js-confetti";
+import confetti from "canvas-confetti";
 import { cardSizeType, cardSizes } from "@/components/Card/CardUI.styles";
 
 export const handlePointerDown = () => {
@@ -58,18 +59,57 @@ export const handlePointerUp = (event: PointerEvent) => {
 };
 
 export function throwConfetti(cardSize: cardSizeType) {
-  const confetti = new JSConfetti();
-  // custom confetti
-  confetti.addConfetti({
-    emojis: ["🎰", "🃏", "❤️", "♠️", "♣️", "♦️"],
-    emojiSize: cardSizes[cardSize].confettiSize,
-    confettiNumber: 200
-  });
+  const duration = 3 * 1000;
+  const animationEnd = Date.now() + duration;
+  const scalar = 3;
+  const slotMachine = confetti.shapeFromText({ text: "🎰", scalar });
+  const joker = confetti.shapeFromText({ text: "🃏", scalar });
+  const hearts = confetti.shapeFromText({ text: "❤️", scalar });
+  const spades = confetti.shapeFromText({ text: "♠️", scalar });
+  const clubs = confetti.shapeFromText({ text: "♣️", scalar });
+  const diamonds = confetti.shapeFromText({ text: "♦️", scalar });
 
-  // plus standard confetti
-  confetti.addConfetti({
-    confettiNumber: 200
-  });
+  const defaults = {
+    startVelocity: 30,
+    spread: 360,
+    ticks: 60,
+    zIndex: 0,
+    particleCount: 200,
+    shapes: [
+      "circle",
+      "square",
+      "triangle",
+      slotMachine,
+      joker,
+      hearts,
+      spades,
+      clubs,
+      diamonds
+    ]
+  };
+  function randomInRange(min: number, max: number) {
+    return Math.random() * (max - min) + min;
+  }
+
+  let interval: number;
+
+  interval = setInterval(function () {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    // since particles fall down, start a bit higher than random
+    confetti({
+      ...defaults,
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+    });
+    confetti({
+      ...defaults,
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+    });
+  }, 250) as unknown as number;
 }
 
 export function formatTime(milliseconds: number) {
