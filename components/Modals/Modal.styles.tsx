@@ -60,6 +60,9 @@ export const ModalStyle = styled.div<{
     box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.2);
     position: relative;
     margin: 10px;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
 
     @media screen and (max-width: 768px) {
       padding: 20px;
@@ -96,10 +99,6 @@ export const ModalStyle = styled.div<{
 `;
 
 export const WinModalStyle = styled.div`
-  max-width: calc(100vw - 20px);
-  max-height: calc(100vh - 20px);
-  overflow-y: auto;
-
   .time-elapsed {
     font-size: 16px;
     text-align: center;
@@ -145,9 +144,6 @@ export const WinModalStyle = styled.div`
 
 export const InstructionsModalStyle = styled.div`
   line-height: 20px;
-  max-width: calc(100vw - 20px);
-  max-height: calc(100vh - 20px);
-  overflow-y: auto;
 
   .slide {
     box-sizing: border-box;
@@ -184,10 +180,6 @@ export const InstructionsModalStyle = styled.div`
 `;
 
 export const SettingsModalStyle = styled.div`
-  max-width: calc(100vw - 20px);
-  max-height: calc(100vh - 20px);
-  overflow-y: auto;
-
   .settings-section {
     background-color: #222;
     padding: 1rem;
