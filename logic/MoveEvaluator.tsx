@@ -282,6 +282,9 @@ class MoveEvaluator {
     )
       return false;
 
+    // cards must be the same suit
+    if (card.value !== "A" && targetFoundation.suit !== card.suit) return false;
+
     if (this.execute || dropId === "foundations") {
       // execute the move
       this.appState.takeSnapshot();
@@ -407,6 +410,9 @@ class MoveEvaluator {
       )
     )
       return false;
+
+    // cards must be the same suit
+    if (card.value !== "A" && targetFoundation.suit !== card.suit) return false;
 
     if (this.execute || dropId === "foundations") {
       // execute the move
