@@ -1,8 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import appState from "./AppState";
-// import JSConfetti from "js-confetti";
-import confetti from "canvas-confetti";
-import { cardSizeType, cardSizes } from "@/components/Card/CardUI.styles";
+import confetti, { Shape } from "canvas-confetti";
+import { cardSizeType } from "@/components/Card/CardUI.styles";
 
 export const handlePointerDown = () => {
   appState.setIsDragging(false);
@@ -76,9 +75,10 @@ export function throwConfetti(cardSize: cardSizeType) {
     zIndex: 0,
     particleCount: 200,
     shapes: [
-      "circle",
-      "square",
-      "triangle",
+      "circle" as Shape,
+      "square" as Shape,
+      "triangle" as Shape,
+      "star" as Shape,
       slotMachine,
       joker,
       hearts,
