@@ -9,9 +9,11 @@ import { FaPause } from "react-icons/fa";
 import { ModalName } from "@/logic/types";
 
 const TimerStyle = styled.div<{
+  $timerIsVisible: boolean;
   $timerIsRunning: boolean;
 }>`
-  display: flex;
+  display: ${(props) => (props.$timerIsVisible ? "flex" : "none")};
+
   gap: 10px;
   justify-content: end;
   align-items: center;
@@ -31,9 +33,11 @@ const TimerStyle = styled.div<{
 `;
 
 export default function Timer({
+  timerIsVisible,
   timerIntervalRef,
   resetTimer
 }: {
+  timerIsVisible: boolean;
   timerIntervalRef: React.MutableRefObject<NodeJS.Timeout | null>;
   resetTimer: () => void;
 }) {
@@ -73,6 +77,7 @@ export default function Timer({
 
   return (
     <TimerStyle
+      $timerIsVisible={timerIsVisible}
       className={questrial.className}
       $timerIsRunning={timerIsRunning}
     >

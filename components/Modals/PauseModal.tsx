@@ -44,7 +44,7 @@ const PauseModal = observer(() => {
         >
           X
         </span>
-        <GameTitle className={luckyGuy.className}>Game is paused</GameTitle>
+        <GameTitle className={luckyGuy.className}>Paused</GameTitle>
         <button
           className={questrial.className}
           onClick={() => {

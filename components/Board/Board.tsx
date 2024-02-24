@@ -47,7 +47,7 @@ export const poppins = Poppins({
 const Board = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
-  const [isTimerVisible, setIsTimerVisible] = useState(true);
+  const [timerIsVisible, setTimerIsVisible] = useState(true);
   const [cardSize, setCardSize] = useRecoilState(cardSizeState);
   const [timeElapsed, setTimeElapsed] = useRecoilState(timeElapsedState);
   const setTimerIsRunning = useSetRecoilState(timerIsRunningState);
@@ -69,7 +69,7 @@ const Board = observer(() => {
     const isTimerVisibleFromStorage = JSON.parse(
       localStorage.getItem("vCellIsTimerVisible") || "true"
     );
-    setIsTimerVisible(isTimerVisibleFromStorage);
+    setTimerIsVisible(isTimerVisibleFromStorage);
   }, []);
 
   useEffect(() => {
@@ -165,9 +165,12 @@ const Board = observer(() => {
         </div>
       </ControlsBar>
       <WoodenBorder>
-        {isTimerVisible && (
-          <Timer timerIntervalRef={timerIntervalRef} resetTimer={resetTimer} />
-        )}
+        <Timer
+          timerIsVisible={timerIsVisible}
+          timerIntervalRef={timerIntervalRef}
+          resetTimer={resetTimer}
+        />
+
         <BoardContainer
           $isModalOpen={
             // some modal is open
@@ -181,8 +184,8 @@ const Board = observer(() => {
           {appState.modals.win.isOpen && <WinModal />}
           {appState.modals.settings.isOpen && (
             <SettingsModal
-              isTimerVisible={isTimerVisible}
-              setIsTimerVisible={setIsTimerVisible}
+              isTimerVisible={timerIsVisible}
+              setIsTimerVisible={setTimerIsVisible}
             />
           )}
           {appState.modals.instructions.isOpen && <InstructionsModal />}

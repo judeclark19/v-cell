@@ -141,7 +141,7 @@ const SettingsModal = observer(
             </div>
           </div>
           <br />
-          {/* <div className="settings-section">
+          <div className="settings-section">
             <h2
               style={{
                 marginBottom: "1rem"
@@ -176,7 +176,7 @@ const SettingsModal = observer(
                 Show
               </div>
             </div>
-          </div> */}
+          </div>
 
           <button
             className={`reset ${questrial.className}`}
