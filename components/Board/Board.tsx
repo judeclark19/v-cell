@@ -35,6 +35,7 @@ import LocalStorageServerHelper from "@/logic/LocalStorageServerHelper";
 import SettingsModal from "../Modals/SettingsModal";
 import Timer from "./Timer";
 import { ModalName } from "@/logic/types";
+import PauseModal from "../Modals/PauseModal";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
@@ -168,6 +169,7 @@ const Board = observer(() => {
           {appState.modals.win.isOpen && <WinModal />}
           {appState.modals.settings.isOpen && <SettingsModal />}
           {appState.modals.instructions.isOpen && <InstructionsModal />}
+          {appState.modals.pause.isOpen && <PauseModal />}
           {appState.cardsBeingTouched && appState.isDragging && (
             <CardsBeingDragged dragPosition={dragPosition} />
           )}

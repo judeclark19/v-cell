@@ -5,20 +5,29 @@ import { timeElapsedState, timerIsRunningState } from "@/logic/RecoilAtoms";
 import appState from "@/logic/AppState";
 import { useEffect } from "react";
 import { formatTime } from "@/logic/UIFunctions";
+import { FaPause } from "react-icons/fa";
+import { ModalName } from "@/logic/types";
 
 const TimerStyle = styled.div<{
   $timerIsRunning: boolean;
 }>`
-  border: 2px solid white;
   display: flex;
   gap: 10px;
   justify-content: end;
   align-items: center;
   font-size: 18px;
   padding: 4px 12px;
-  opacity: ${(props) => (props.$timerIsRunning ? "1" : "0.5")};
   text-shadow: ${(props) =>
     props.$timerIsRunning ? "0 0 5px var(--goldAlpha)" : "none"};
+
+  span {
+    opacity: ${(props) => (props.$timerIsRunning ? "1" : "0.5")};
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 export default function Timer({
@@ -67,8 +76,20 @@ export default function Timer({
       className={questrial.className}
       $timerIsRunning={timerIsRunning}
     >
-      {formatTime(timeElapsed)}
-      <button>pause</button>
+      <span>{formatTime(timeElapsed)}</span>
+
+      <button
+        disabled={!timerIsRunning}
+        onClick={() => {
+          for (let modal in appState.modals) {
+            if (modal === "pause") {
+              appState.modals[modal as ModalName].open();
+            } else appState.modals[modal as ModalName].close();
+          }
+        }}
+      >
+        <FaPause />
+      </button>
     </TimerStyle>
   );
 }

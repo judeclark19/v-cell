@@ -138,4 +138,4 @@ export const boardLayouts = {
   ]
 };
 
-export type ModalName = "win" | "instructions" | "settings";
+export type ModalName = "win" | "instructions" | "settings" | "pause";

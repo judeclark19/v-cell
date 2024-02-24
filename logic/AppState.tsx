@@ -41,7 +41,8 @@ export class AppState {
   modals = {
     win: new Modal(),
     instructions: new Modal(),
-    settings: new Modal()
+    settings: new Modal(),
+    pause: new Modal()
   };
   moveEvaluator = new MoveEvaluator(this);
 
@@ -313,7 +314,11 @@ export class AppState {
       this.currentBoard.foundations.foundation4.arrayOfCards.length === 13
     ) {
       this.manualWins++;
-      this.modals.win.open();
+      for (let modal in this.modals) {
+        if (modal === "win") {
+          this.modals[modal as ModalName].open();
+        } else this.modals[modal as ModalName].close();
+      }
       this.setCanAutoComplete(false);
     }
   }
