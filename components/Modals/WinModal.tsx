@@ -23,7 +23,7 @@ const WinModal = observer(() => {
         // .3 seconds same amount of time as keyframe animation
 
         setTimeout(() => {
-          appState.winModal.close();
+          appState.modals.win.close();
           setIsClosing(false);
         }, 300);
       }
@@ -44,7 +44,7 @@ const WinModal = observer(() => {
             // .3 seconds same amount of time as keyframe animation
 
             setTimeout(() => {
-              appState.winModal.close();
+              appState.modals.win.close();
               setIsClosing(false);
             }, 300);
           }}

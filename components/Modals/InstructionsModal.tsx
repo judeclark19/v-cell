@@ -19,7 +19,7 @@ const InstructionsModal = observer(() => {
         // .3 seconds same amount of time as keyframe animation
 
         setTimeout(() => {
-          appState.instructionsModal.close();
+          appState.modals.instructions.close();
           setIsClosing(false);
         }, 300);
       }
@@ -43,7 +43,7 @@ const InstructionsModal = observer(() => {
             // .3 seconds same amount of time as keyframe animation
 
             setTimeout(() => {
-              appState.instructionsModal.close();
+              appState.modals.instructions.close();
               setIsClosing(false);
             }, 300);
           }}
@@ -140,7 +140,11 @@ const InstructionsModal = observer(() => {
               className={questrial.className}
               onClick={() => {
                 if (slideNumber === 3) {
-                  appState.instructionsModal.close();
+                  setIsClosing(true);
+                  setTimeout(() => {
+                    appState.modals.instructions.close();
+                    setIsClosing(false);
+                  }, 300);
                 } else {
                   setSlideNumber(slideNumber + 1);
                 }

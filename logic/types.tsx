@@ -137,3 +137,5 @@ export const boardLayouts = {
     [0, 1, 2]
   ]
 };
+
+export type ModalName = "win" | "instructions" | "settings";

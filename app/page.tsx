@@ -95,7 +95,7 @@ export default function Home() {
             </strong>
           </div>
         </div>
-        <div className="bottom">Last updated Feb 22, 2024</div>
+        <div className="bottom">Last updated Feb 24, 2024</div>
       </Footer>
     </PageWrapper>
   );

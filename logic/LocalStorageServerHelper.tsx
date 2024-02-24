@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import appState from "./AppState";
-import { boardLayout } from "./types";
+import { ModalName, boardLayout } from "./types";
 import {
   cardSizeState,
   timeElapsedState,
@@ -85,8 +85,13 @@ const LocalStorageServerHelper = observer(
 
       const knowsHowToPlay = localStorage.getItem("vCellKnowsHowToPlay");
       if (!knowsHowToPlay) {
-        appState.instructionsModal.open();
-        appState.winModal.close();
+        for (let modal in appState.modals) {
+          if (modal === "instructions") {
+            appState.modals[modal].open();
+          } else {
+            appState.modals[modal as ModalName].close();
+          }
+        }
         localStorage.setItem("vCellKnowsHowToPlay", "true");
       }
 
@@ -158,19 +163,12 @@ const LocalStorageServerHelper = observer(
         localStorage.getItem("vCellMoveHistory") || "[]"
       );
 
-      if (
-        (appState.winModal.isOpen ||
-          appState.instructionsModal.isOpen ||
-          appState.settingsModal.isOpen) &&
-        timerIntervalRef.current
-      ) {
+      if (appState.anyModalIsOpen() && timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
         timerIntervalRef.current = null;
         setTimerIsRunning(false);
       } else if (
-        !appState.winModal.isOpen &&
-        !appState.instructionsModal.isOpen &&
-        !appState.settingsModal.isOpen &&
+        !appState.anyModalIsOpen() &&
         !appState.winningBoard &&
         freshlyFetchedLocalStorage.length > 0
       ) {
@@ -184,9 +182,9 @@ const LocalStorageServerHelper = observer(
         }, 10);
       }
     }, [
-      appState.winModal.isOpen,
-      appState.instructionsModal.isOpen,
-      appState.settingsModal.isOpen
+      appState.modals.win.isOpen,
+      appState.modals.instructions.isOpen,
+      appState.modals.settings.isOpen
     ]);
 
     return null;

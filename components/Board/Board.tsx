@@ -34,6 +34,7 @@ import {
 import LocalStorageServerHelper from "@/logic/LocalStorageServerHelper";
 import SettingsModal from "../Modals/SettingsModal";
 import Timer from "./Timer";
+import { ModalName } from "@/logic/types";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
@@ -127,12 +128,13 @@ const Board = observer(() => {
         <HowToPlay
           className={questrial.className}
           onClick={() => {
-            if (!appState.instructionsModal.isOpen) {
-              appState.instructionsModal.open();
-              appState.winModal.close();
+            for (let modal in appState.modals) {
+              if (modal === "instructions") {
+                appState.modals[modal as ModalName].open();
+              } else appState.modals[modal as ModalName].close();
             }
           }}
-          $isInstructionsModalOpen={appState.instructionsModal.isOpen}
+          $isInstructionsModalOpen={appState.modals.instructions.isOpen}
         >
           <span>How to play</span> <FaInfoCircle className="info-icon" />
         </HowToPlay>
@@ -140,9 +142,11 @@ const Board = observer(() => {
           <button
             aria-label="Settings"
             onClick={() => {
-              appState.settingsModal.open();
-              appState.instructionsModal.close();
-              appState.winModal.close();
+              for (let modal in appState.modals) {
+                if (modal === "settings") {
+                  appState.modals[modal as ModalName].open();
+                } else appState.modals[modal as ModalName].close();
+              }
             }}
           >
             <FaCog />
@@ -153,16 +157,17 @@ const Board = observer(() => {
         <Timer timerIntervalRef={timerIntervalRef} resetTimer={resetTimer} />
         <BoardContainer
           $isModalOpen={
-            appState.winModal.isOpen || appState.instructionsModal.isOpen
+            // some modal is open
+            appState.anyModalIsOpen()
           }
           $cardSize={cardSize}
           onPointerLeave={(e) => {
             handlePointerUp(e as unknown as PointerEvent);
           }}
         >
-          {appState.winModal.isOpen && <WinModal />}
-          {appState.settingsModal.isOpen && <SettingsModal />}
-          {appState.instructionsModal.isOpen && <InstructionsModal />}
+          {appState.modals.win.isOpen && <WinModal />}
+          {appState.modals.settings.isOpen && <SettingsModal />}
+          {appState.modals.instructions.isOpen && <InstructionsModal />}
           {appState.cardsBeingTouched && appState.isDragging && (
             <CardsBeingDragged dragPosition={dragPosition} />
           )}
@@ -213,8 +218,11 @@ const Board = observer(() => {
           <button
             onClick={() => {
               appState.setIsWinningBoard(true);
-              appState.winModal.open();
-              appState.instructionsModal.close();
+              for (let modal in appState.modals) {
+                if (modal === "win") {
+                  appState.modals[modal as ModalName].open();
+                } else appState.modals[modal as ModalName].close();
+              }
             }}
           >
             win

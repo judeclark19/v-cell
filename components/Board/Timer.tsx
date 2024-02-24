@@ -9,7 +9,9 @@ import { formatTime } from "@/logic/UIFunctions";
 const TimerStyle = styled.div<{
   $timerIsRunning: boolean;
 }>`
+  border: 2px solid white;
   display: flex;
+  gap: 10px;
   justify-content: end;
   align-items: center;
   font-size: 18px;
@@ -66,6 +68,7 @@ export default function Timer({
       $timerIsRunning={timerIsRunning}
     >
       {formatTime(timeElapsed)}
+      <button>pause</button>
     </TimerStyle>
   );
 }

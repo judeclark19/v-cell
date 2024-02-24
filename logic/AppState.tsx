@@ -12,7 +12,8 @@ import {
   suitsArray,
   valuesArray,
   boardLayouts,
-  boardLayout
+  boardLayout,
+  ModalName
 } from "./types";
 import { makeAutoObservable } from "mobx";
 import Foundations from "../components/Board/Foundations/FoundationsClass";
@@ -37,14 +38,28 @@ export class AppState {
   canAutoComplete = false;
   winCount = 0;
   manualWins = 0;
-  winModal = new Modal();
-  instructionsModal = new Modal();
-  settingsModal = new Modal();
+  modals = {
+    win: new Modal(),
+    instructions: new Modal(),
+    settings: new Modal()
+  };
   moveEvaluator = new MoveEvaluator(this);
 
   constructor(layoutName: boardLayout = "classic") {
     this.layoutName = layoutName;
     makeAutoObservable(this);
+  }
+
+  anyModalIsOpen() {
+    let answer = false;
+
+    for (let modal in this.modals) {
+      if (this.modals[modal as ModalName].isOpen) {
+        answer = true;
+      }
+    }
+
+    return answer;
   }
 
   createDeck() {
@@ -93,10 +108,11 @@ export class AppState {
     this.history = [];
     this.createDeck();
     this.setIsWinningBoard(false);
-    this.instructionsModal.close();
     this.canAutoComplete = false;
     this.moveEvaluator.setUndosUsed(0);
-    this.winModal.close();
+    for (let modal in this.modals) {
+      this.modals[modal as ModalName].close();
+    }
 
     for (let i = 0; i < 7; i++) {
       for (let j = 0; j < 7; j++) {
@@ -297,7 +313,7 @@ export class AppState {
       this.currentBoard.foundations.foundation4.arrayOfCards.length === 13
     ) {
       this.manualWins++;
-      this.winModal.open();
+      this.modals.win.open();
       this.setCanAutoComplete(false);
     }
   }
@@ -335,8 +351,11 @@ export class AppState {
     }
 
     this.setCanAutoComplete(false);
-    this.winModal.open();
-    this.instructionsModal.close();
+    for (let modal in this.modals) {
+      if (modal === "win") {
+        this.modals[modal as ModalName].open();
+      } else this.modals[modal as ModalName].close();
+    }
   }
 }
 

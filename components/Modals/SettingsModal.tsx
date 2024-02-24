@@ -20,7 +20,7 @@ const SettingsModal = observer(() => {
         // .3 seconds same amount of time as keyframe animation
 
         setTimeout(() => {
-          appState.settingsModal.close();
+          appState.modals.settings.close();
           setIsClosing(false);
         }, 300);
       }
@@ -61,7 +61,7 @@ const SettingsModal = observer(() => {
             // .3 seconds same amount of time as keyframe animation
 
             setTimeout(() => {
-              appState.settingsModal.close();
+              appState.modals.settings.close();
               setIsClosing(false);
             }, 300);
           }}
@@ -151,7 +151,7 @@ const SettingsModal = observer(() => {
             setIsClosing(true);
             // .3 seconds same amount of time as keyframe animation
             setTimeout(() => {
-              appState.settingsModal.close();
+              appState.modals.settings.close();
               setIsClosing(false);
             }, 300);
           }}
