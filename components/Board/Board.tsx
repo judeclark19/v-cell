@@ -236,20 +236,21 @@ const Board = observer(() => {
             : ""}
         </button>
 
-        {process.env.NODE_ENV !== "production" && (
-          <button
-            onClick={() => {
-              appState.setIsWinningBoard(true);
-              for (let modal in appState.modals) {
-                if (modal === "win") {
-                  appState.modals[modal as ModalName].open();
-                } else appState.modals[modal as ModalName].close();
-              }
-            }}
-          >
-            win
-          </button>
-        )}
+        {process.env.NODE_ENV !== "production" ||
+          (process.env.NETLIFY_DEV === "true" && (
+            <button
+              onClick={() => {
+                appState.setIsWinningBoard(true);
+                for (let modal in appState.modals) {
+                  if (modal === "win") {
+                    appState.modals[modal as ModalName].open();
+                  } else appState.modals[modal as ModalName].close();
+                }
+              }}
+            >
+              win
+            </button>
+          ))}
       </GameControlButtons>
     </>
   );

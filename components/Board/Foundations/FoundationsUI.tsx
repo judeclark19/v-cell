@@ -38,15 +38,16 @@ const FoundationsUI = observer(() => {
               Autocomplete
             </button>
           )}
-          {process.env.NODE_ENV !== "production" && (
-            <button
-              onClick={() => {
-                throwConfetti(cardSize);
-              }}
-            >
-              confetti
-            </button>
-          )}
+          {process.env.NODE_ENV !== "production" ||
+            (process.env.NETLIFY_DEV === "true" && (
+              <button
+                onClick={() => {
+                  throwConfetti(cardSize);
+                }}
+              >
+                confetti
+              </button>
+            ))}
         </AutocompleteDiv>
 
         <FoundationFlex $cardSize={cardSize}>
