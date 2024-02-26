@@ -21,10 +21,12 @@ import Tableau from "@/components/Board/Tableau/TableauClass";
 import Hand from "@/components/Board/Hand/HandClass";
 import Modal from "./Modals";
 import MoveEvaluator from "./MoveEvaluator";
+import Timer from "./Timer";
 
 export class AppState {
   deck: CardClass[] = [];
   layoutName: boardLayout;
+  timer = new Timer();
   currentBoard: BoardType = {
     foundations: new Foundations(),
     tableau: new Tableau(),
@@ -109,6 +111,8 @@ export class AppState {
     this.history = [];
     this.createDeck();
     this.setIsWinningBoard(false);
+    this.timer.setTimeElapsed(0);
+    this.timer.clearInterval();
     this.canAutoComplete = false;
     this.moveEvaluator.setUndosUsed(0);
     for (let modal in this.modals) {
@@ -170,6 +174,10 @@ export class AppState {
     ) {
       this.winCount++;
     }
+
+    if (isWinningBoard) {
+      this.timer.clearInterval();
+    }
     this.winningBoard = isWinningBoard;
   }
 
@@ -202,8 +210,15 @@ export class AppState {
   }
 
   takeSnapshot() {
+    const prevLength = this.history.length;
     const boardCopy = _.cloneDeep(this.currentBoard);
     this.history.push(boardCopy);
+    const newLength = this.history.length;
+
+    if (prevLength === 0 && newLength === 1) {
+      // first move
+      this.timer.startInterval();
+    }
   }
 
   setHistory(history: BoardType[]) {

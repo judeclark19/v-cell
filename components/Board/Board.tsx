@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BoardContainer,
   ControlsBar,
@@ -14,13 +14,8 @@ import { observer } from "mobx-react-lite";
 import FoundationsUI from "./Foundations/FoundationsUI";
 import TableauUI from "./Tableau/TableauUI";
 import HandUI from "./Hand/HandUI";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  cardSizeState,
-  calculateCardSize,
-  timeElapsedState,
-  timerIsRunningState
-} from "@/logic/RecoilAtoms";
+import { useRecoilState } from "recoil";
+import { cardSizeState, calculateCardSize } from "@/logic/RecoilAtoms";
 import CardsBeingDragged from "../CardsBeingDragged";
 import WinModal from "../Modals/WinModal";
 import InstructionsModal from "../Modals/InstructionsModal";
@@ -33,7 +28,7 @@ import {
 } from "@/logic/UIFunctions";
 import LocalStorageServerHelper from "@/logic/LocalStorageServerHelper";
 import SettingsModal from "../Modals/SettingsModal";
-import Timer from "./Timer";
+import TimerUI from "./TimerUI";
 import { ModalName } from "@/logic/types";
 import PauseModal from "../Modals/PauseModal";
 
@@ -47,29 +42,10 @@ export const poppins = Poppins({
 const Board = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
-  const [timerIsVisible, setTimerIsVisible] = useState(true);
   const [cardSize, setCardSize] = useRecoilState(cardSizeState);
-  const [timeElapsed, setTimeElapsed] = useRecoilState(timeElapsedState);
-  const setTimerIsRunning = useSetRecoilState(timerIsRunningState);
-
-  const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  function resetTimer() {
-    if (timerIntervalRef.current) {
-      clearInterval(timerIntervalRef.current);
-      timerIntervalRef.current = null;
-    }
-    setTimerIsRunning(false);
-    setTimeElapsed(0);
-  }
 
   useEffect(() => {
     setIsLoading(false);
-
-    const isTimerVisibleFromStorage = JSON.parse(
-      localStorage.getItem("vCellIsTimerVisible") || "true"
-    );
-    setTimerIsVisible(isTimerVisibleFromStorage);
   }, []);
 
   useEffect(() => {
@@ -80,7 +56,7 @@ const Board = observer(() => {
       const newWinObject = {
         date: new Date(),
         layout: appState.layoutName,
-        timeElapsed: timeElapsed
+        timeElapsed: appState.timer.timeElapsed
       };
 
       localStorage.setItem(
@@ -123,7 +99,7 @@ const Board = observer(() => {
     <>
       {/* <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
        */}
-      <LocalStorageServerHelper timerIntervalRef={timerIntervalRef} />
+      <LocalStorageServerHelper />
       <HeaderImage>
         <Image
           src={headerImage}
@@ -165,11 +141,7 @@ const Board = observer(() => {
         </div>
       </ControlsBar>
       <WoodenBorder>
-        <Timer
-          timerIsVisible={timerIsVisible}
-          timerIntervalRef={timerIntervalRef}
-          resetTimer={resetTimer}
-        />
+        <TimerUI />
 
         <BoardContainer
           $isModalOpen={
@@ -182,12 +154,7 @@ const Board = observer(() => {
           }}
         >
           {appState.modals.win.isOpen && <WinModal />}
-          {appState.modals.settings.isOpen && (
-            <SettingsModal
-              isTimerVisible={timerIsVisible}
-              setIsTimerVisible={setTimerIsVisible}
-            />
-          )}
+          {appState.modals.settings.isOpen && <SettingsModal />}
           {appState.modals.instructions.isOpen && <InstructionsModal />}
           {appState.modals.pause.isOpen && <PauseModal />}
           {appState.cardsBeingTouched && appState.isDragging && (
@@ -208,7 +175,6 @@ const Board = observer(() => {
             borderColor: "#0099cc"
           }}
           onClick={() => {
-            resetTimer();
             appState.dealCards();
           }}
           disabled={appState.winningBoard && appState.canAutoComplete}
