@@ -306,3 +306,16 @@ export const SettingsModalStyle = styled.div`
     }
   }
 `;
+
+export const PauseModalStyle = styled.div`
+  > div {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+
+    .gold {
+      color: var(--gold);
+      font-weight: 500;
+    }
+  }
+`;

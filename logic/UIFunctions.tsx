@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import appState from "./AppState";
 import JSConfetti from "js-confetti";
 import { cardSizeType, cardSizes } from "@/components/Card/CardUI.styles";
+import { boardLayout } from "./types";
 
 export const handlePointerDown = () => {
   appState.setIsDragging(false);
@@ -81,4 +82,17 @@ export function formatTime(milliseconds: number) {
   const formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 
   return formattedTime;
+}
+
+export function getBoardLayoutDisplayName(layout: boardLayout) {
+  switch (layout) {
+    case "classic":
+      return "Classic V-Cell";
+    case "faceUp":
+      return "Face Up";
+    case "doubleV":
+      return "Double V";
+    case "tripleV":
+      return "Triple V";
+  }
 }
