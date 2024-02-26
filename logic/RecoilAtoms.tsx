@@ -15,13 +15,3 @@ export const calculateCardSize = (
   else if (windowHeight < 1200 || windowWidth < 1200) return "medium";
   else return "large";
 };
-
-export const timeElapsedState = atom<number>({
-  key: "timeElapsed",
-  default: 0
-});
-
-export const timerIsRunningState = atom<boolean>({
-  key: "timerIsRunning",
-  default: false
-});
