@@ -103,6 +103,9 @@ const LocalStorageServerHelper = observer(() => {
       "vCellWinningBoard",
       JSON.stringify(appState.winningBoard)
     );
+    if (appState.winningBoard) {
+      appState.timer.clearInterval();
+    }
   }, [appState.winningBoard]);
 
   useEffect(() => {
@@ -154,7 +157,11 @@ const LocalStorageServerHelper = observer(() => {
   useEffect(() => {
     if (appState.anyModalIsOpen()) {
       appState.timer.clearInterval();
-    } else if (!appState.anyModalIsOpen() && appState.history.length > 0) {
+    } else if (
+      !appState.anyModalIsOpen() &&
+      appState.history.length > 0 &&
+      !appState.winningBoard
+    ) {
       appState.timer.startInterval();
     }
   }, [
