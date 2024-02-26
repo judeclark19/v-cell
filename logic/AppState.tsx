@@ -174,6 +174,10 @@ export class AppState {
     ) {
       this.winCount++;
     }
+
+    if (isWinningBoard) {
+      this.timer.clearInterval();
+    }
     this.winningBoard = isWinningBoard;
   }
 

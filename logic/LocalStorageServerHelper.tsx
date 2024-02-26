@@ -103,9 +103,6 @@ const LocalStorageServerHelper = observer(() => {
       "vCellWinningBoard",
       JSON.stringify(appState.winningBoard)
     );
-    if (appState.winningBoard) {
-      appState.timer.clearInterval();
-    }
   }, [appState.winningBoard]);
 
   useEffect(() => {
