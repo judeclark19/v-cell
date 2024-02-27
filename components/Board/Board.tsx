@@ -3,12 +3,9 @@ import {
   BoardContainer,
   ControlsBar,
   GameControlButtons,
-  HeaderImage,
   HowToPlay,
   WoodenBorder
 } from "./Board.styles";
-import headerImage from "@/assets/images/v-cell_header1.png";
-import Image from "next/image";
 import appState from "@/logic/AppState";
 import { observer } from "mobx-react-lite";
 import FoundationsUI from "./Foundations/FoundationsUI";
@@ -40,13 +37,8 @@ export const poppins = Poppins({
 });
 
 const Board = observer(() => {
-  const [isLoading, setIsLoading] = useState(true);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
   const [cardSize, setCardSize] = useRecoilState(cardSizeState);
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
 
   useEffect(() => {
     const winHistory = localStorage.getItem("vCellWinHistory")
@@ -91,25 +83,9 @@ const Board = observer(() => {
     };
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
-      {/* <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
-       */}
       <LocalStorageServerHelper />
-      <HeaderImage>
-        <Image
-          src={headerImage}
-          width={1700}
-          height={400}
-          alt="V-Cell header image"
-          priority
-        />
-      </HeaderImage>
-
       <ControlsBar>
         <div>{/* left empty for grid */}</div>
         <HowToPlay
