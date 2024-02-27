@@ -1,49 +1,13 @@
 "use client";
 
+import LoginForm from "@/components/Auth/LoginForm";
+import SignupForm from "@/components/Auth/SignupForm";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 
 export default function AuthComponent() {
+  // const router = useRouter();
   const { data: session } = useSession();
-  const [signUpForm, setSignUpForm] = useState({
-    username: "",
-    password: ""
-  });
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      const res = await fetch("/api/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username: signUpForm.username,
-          password: signUpForm.password
-        })
-      });
-
-      const data = await res.json();
-      console.log("DATA!!!!", data);
-
-      if (data.error) {
-        // Handle any errors, such as displaying them to the user
-        console.error("Signup error:", data.error);
-        alert(data.error); // Example: replace with a more user-friendly method
-      } else {
-        // Handle successful signup, such as redirecting or clearing the form
-        console.log("Signup successful:", data);
-        // Example redirection after successful signup
-        // window.location.href = '/login'; // Or use a router if you're in a SPA
-      }
-    } catch (error) {
-      // Handle any unexpected errors during the fetch request
-      console.error("Signup failed:", error);
-      alert("Signup failed. Please try again."); // Example: replace with a more user-friendly method
-    }
-  };
 
   return (
     <div>
@@ -55,34 +19,8 @@ export default function AuthComponent() {
       ) : (
         <>
           <p>You are not signed in</p>
-          <button onClick={() => signIn()}>Sign in</button>
-
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              id="username"
-              value={signUpForm.username}
-              onChange={(e) =>
-                setSignUpForm({ ...signUpForm, username: e.target.value })
-              }
-              required
-            />
-
-            <div>
-              <label htmlFor="password">Password:</label>
-              <input
-                type="password"
-                id="password"
-                value={signUpForm.password}
-                onChange={(e) =>
-                  setSignUpForm({ ...signUpForm, password: e.target.value })
-                }
-                required
-              />
-            </div>
-            <button type="submit">Sign Up</button>
-          </form>
+          <SignupForm />
+          <LoginForm />
         </>
       )}
     </div>

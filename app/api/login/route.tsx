@@ -6,7 +6,6 @@ import bcrypt from "bcrypt";
 export async function POST(request: NextRequest) {
   // request body
   const body = await request.json();
-  console.log("console log body", body);
 
   // connect to database
   const client = await clientPromise;
@@ -16,29 +15,23 @@ export async function POST(request: NextRequest) {
   const user = await collection.findOne({
     username: body.username
   });
-  if (user) {
+
+  if (!user) {
     return NextResponse.json(
-      { error: "Username already exists" },
+      { error: "Login credentials incorrect" },
+      { status: 400 }
+    );
+  } else if (await bcrypt.compare(body.password, user.password)) {
+    return NextResponse.json(
+      { success: "Login successful" },
+      {
+        status: 200
+      }
+    );
+  } else {
+    return NextResponse.json(
+      { error: "Login credentials incorrect" },
       { status: 400 }
     );
   }
-
-  const hashedPassword = await bcrypt.hash(body.password, 10);
-
-  // insert new user
-  const result = await collection.insertOne({
-    username: body.username,
-    password: hashedPassword
-  });
-
-  if (!result) {
-    return NextResponse.json({ error: "User not added" }, { status: 500 });
-  }
-
-  return NextResponse.json(
-    { success: "User added" },
-    {
-      status: 200
-    }
-  );
 }
