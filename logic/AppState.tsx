@@ -44,7 +44,8 @@ export class AppState {
     win: new Modal(),
     instructions: new Modal(),
     settings: new Modal(),
-    pause: new Modal()
+    pause: new Modal(),
+    highScores: new Modal()
   };
   moveEvaluator = new MoveEvaluator(this);
 

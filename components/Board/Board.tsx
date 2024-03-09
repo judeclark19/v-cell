@@ -17,9 +17,14 @@ import HandUI from "./Hand/HandUI";
 import { useRecoilState } from "recoil";
 import { cardSizeState, calculateCardSize } from "@/logic/RecoilAtoms";
 import CardsBeingDragged from "../CardsBeingDragged";
-import WinModal from "../Modals/WinModal";
-import InstructionsModal from "../Modals/InstructionsModal";
-import { FaCog, FaInfoCircle } from "react-icons/fa";
+import {
+  HighScoresModal,
+  InstructionsModal,
+  PauseModal,
+  SettingsModal,
+  WinModal
+} from "../Modals";
+import { FaCog, FaInfoCircle, FaTrophy } from "react-icons/fa";
 import { Luckiest_Guy, Questrial, Poppins } from "next/font/google";
 import {
   handlePointerDown,
@@ -27,10 +32,8 @@ import {
   handlePointerUp
 } from "@/logic/UIFunctions";
 import LocalStorageServerHelper from "@/logic/LocalStorageServerHelper";
-import SettingsModal from "../Modals/SettingsModal";
 import TimerUI from "./TimerUI";
 import { ModalName } from "@/logic/types";
-import PauseModal from "../Modals/PauseModal";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
@@ -111,7 +114,6 @@ const Board = observer(() => {
       </HeaderImage>
 
       <ControlsBar>
-        <div>{/* left empty for grid */}</div>
         <HowToPlay
           className={questrial.className}
           onClick={() => {
@@ -125,7 +127,19 @@ const Board = observer(() => {
         >
           <span>How to play</span> <FaInfoCircle className="info-icon" />
         </HowToPlay>
-        <div className="settings-button">
+        <div className="hs-and-settings">
+          <button
+            aria-label="High Scores"
+            onClick={() => {
+              for (let modal in appState.modals) {
+                if (modal === "highScores") {
+                  appState.modals[modal as ModalName].open();
+                } else appState.modals[modal as ModalName].close();
+              }
+            }}
+          >
+            <FaTrophy />
+          </button>
           <button
             aria-label="Settings"
             onClick={() => {
@@ -157,6 +171,7 @@ const Board = observer(() => {
           {appState.modals.settings.isOpen && <SettingsModal />}
           {appState.modals.instructions.isOpen && <InstructionsModal />}
           {appState.modals.pause.isOpen && <PauseModal />}
+          {appState.modals.highScores.isOpen && <HighScoresModal />}
           {appState.cardsBeingTouched && appState.isDragging && (
             <CardsBeingDragged dragPosition={dragPosition} />
           )}

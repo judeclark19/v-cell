@@ -72,6 +72,7 @@ const WinModal = observer(() => {
               borderColor: "#0099cc"
             }}
             onClick={() => {
+              appState.modals.win.close();
               appState.dealCards();
             }}
           >

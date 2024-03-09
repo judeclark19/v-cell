@@ -33,30 +33,30 @@ export const HeaderImage = styled.div`
 
 export const ControlsBar = styled.div`
   padding: 0 20px;
-  display: grid;
-  grid-template-columns: 20px 1fr 20px;
-  grid-template-rows: 1fr;
+  display: flex;
+  justify-content: space-between;
   max-width: 600px;
   margin: 0 auto 30px auto;
 
-  .settings-button button {
-    padding: 8px 8px 6px 8px;
-    background-color: transparent;
-    border: 2px outset #1b3427;
+  .hs-and-settings {
+    display: flex;
+    gap: 1rem;
+
+    button {
+      padding: 8px 8px 6px 8px;
+      background-color: transparent;
+      border: 2px outset #1b3427;
+    }
   }
 `;
 
 export const HowToPlay = styled.div<{
   $isInstructionsModalOpen: boolean;
 }>`
-  width: fit-content;
-  margin: auto;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
   opacity: ${(props) => (props.$isInstructionsModalOpen ? "0.5" : "1")};
-
   ${(props) => (props.$isInstructionsModalOpen ? "pointer-events: none;" : "")}
 
   &:hover {

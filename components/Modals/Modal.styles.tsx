@@ -319,3 +319,25 @@ export const PauseModalStyle = styled.div`
     }
   }
 `;
+
+export const HighScoresModalStyle = styled.div`
+  table {
+    border-collapse: collapse;
+    th {
+      padding: 8px;
+      text-align: left;
+    }
+
+    tr {
+      border-bottom: 1px solid white;
+
+      &:nth-child(even) {
+        background-color: #1b1b1b;
+      }
+    }
+
+    td {
+      padding: 8px;
+    }
+  }
+`;

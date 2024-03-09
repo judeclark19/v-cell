@@ -5,6 +5,7 @@ import { ModalStyle, PauseModalStyle } from "./Modal.styles";
 import { luckyGuy, poppins, questrial } from "../Board/Board";
 import { GameTitle } from "../Board/Board.styles";
 import { formatTime, getBoardLayoutDisplayName } from "@/logic/UIFunctions";
+
 const PauseModal = observer(() => {
   const [isClosing, setIsClosing] = useState(false);
 
@@ -38,7 +39,6 @@ const PauseModal = observer(() => {
         (win: any) => win.timeElapsed && win.layout === appState.layoutName
       )
       .sort((a: any, b: any) => a.timeElapsed - b.timeElapsed);
-    console.log(sortedWinHistory[0]);
     return sortedWinHistory[0];
   }
 
@@ -62,19 +62,6 @@ const PauseModal = observer(() => {
           X
         </span>
         <GameTitle className={luckyGuy.className}>Paused</GameTitle>
-        {getBestTime() && (
-          <div className={poppins.className}>
-            <p>
-              Your fastest {getBoardLayoutDisplayName(appState.layoutName)}{" "}
-              game:
-            </p>
-
-            <p className="gold">
-              {formatTime(getBestTime().timeElapsed)} on{" "}
-              {new Date(getBestTime().date).toLocaleDateString()}
-            </p>
-          </div>
-        )}
 
         <button
           className={questrial.className}

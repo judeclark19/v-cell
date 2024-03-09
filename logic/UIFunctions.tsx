@@ -87,7 +87,7 @@ export function formatTime(milliseconds: number) {
 export function getBoardLayoutDisplayName(layout: boardLayout) {
   switch (layout) {
     case "classic":
-      return "Classic V-Cell";
+      return "Classic";
     case "faceUp":
       return "Face Up";
     case "doubleV":
