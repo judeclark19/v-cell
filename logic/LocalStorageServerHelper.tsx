@@ -165,7 +165,8 @@ const LocalStorageServerHelper = observer(() => {
     appState.modals.win.isOpen,
     appState.modals.pause.isOpen,
     appState.modals.instructions.isOpen,
-    appState.modals.settings.isOpen
+    appState.modals.settings.isOpen,
+    appState.modals.highScores.isOpen
   ]);
 
   return null;
