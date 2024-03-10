@@ -49,6 +49,7 @@ const LocalStorageServerHelper = observer(() => {
 
     const undosUsedFromStorage = localStorage.getItem("vCellUndosUsed") || "0";
     const undosUsed = parseInt(undosUsedFromStorage);
+    appState.moveEvaluator.setUndosAllowed(undosAllowed);
 
     const currentBoardFromStorage = JSON.parse(
       localStorage.getItem("vCellCurrentBoard") || "{}"
@@ -63,11 +64,9 @@ const LocalStorageServerHelper = observer(() => {
       !winningBoardFromStorage
     ) {
       // restore state
-      appState.moveEvaluator.setUndosAllowed(undosAllowed);
-      appState.moveEvaluator.setUndosUsed(undosUsed);
+
       appState.restoreGameState(currentBoardFromStorage);
       appState.setHistory(moveHistoryFromStorage);
-      appState.moveEvaluator.setUndosAllowed(undosAllowed);
       appState.moveEvaluator.setUndosUsed(undosUsed);
       appState.timer.setTimeElapsed(timeElapsedFromStorage);
       appState.timer.setIsVisible(timerIsVisibleFromStorage);
