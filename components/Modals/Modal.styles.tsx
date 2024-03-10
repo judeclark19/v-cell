@@ -61,7 +61,7 @@ export const ModalStyle = styled.div<{
     position: relative;
     margin: 10px;
     max-width: calc(100vw - 20px);
-    max-height: calc(100vh - 20px);
+    max-height: 800px;
     overflow-y: auto;
 
     @media screen and (max-width: 768px) {
@@ -307,6 +307,24 @@ export const SettingsModalStyle = styled.div`
   }
 `;
 
+export const SettingSelect = styled.div`
+  display: flex;
+
+  label {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    #undo-select,
+    #layout-select {
+      padding: 4px;
+      font-size: 16px;
+    }
+  }
+`;
+
 export const PauseModalStyle = styled.div`
   > div {
     text-align: center;
@@ -323,13 +341,20 @@ export const PauseModalStyle = styled.div`
 export const HighScoresModalStyle = styled.div`
   table {
     border-collapse: collapse;
+
+    @media screen and (max-width: 480px) {
+      font-size: 14px;
+    }
+
     th {
       padding: 8px;
       text-align: left;
     }
 
     tr {
-      border-bottom: 1px solid white;
+      &:not(:last-child) {
+        border-bottom: 1px solid white;
+      }
 
       &:nth-child(even) {
         background-color: #1b1b1b;
