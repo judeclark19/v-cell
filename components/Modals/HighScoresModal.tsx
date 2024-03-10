@@ -121,7 +121,7 @@ const HighScoresModal = observer(() => {
               textAlign: "center"
             }}
           >
-            No {getBoardLayoutDisplayName(layout)} games played yet
+            No {getBoardLayoutDisplayName(layout)} games won yet
           </div>
         )}
         {history.length > 0 && (
