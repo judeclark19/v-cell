@@ -117,7 +117,9 @@ export class AppState {
     this.canAutoComplete = false;
     this.moveEvaluator.setUndosUsed(0);
     for (let modal in this.modals) {
-      this.modals[modal as ModalName].close();
+      if (modal !== "settings") {
+        this.modals[modal as ModalName].close();
+      }
     }
 
     for (let i = 0; i < 7; i++) {

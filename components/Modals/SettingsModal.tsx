@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { GameTitle } from "../Board/Board.styles";
 import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
-import { ModalStyle, SettingsModalStyle } from "./Modal.styles";
+import { ModalStyle, SettingSelect, SettingsModalStyle } from "./Modal.styles";
 import { luckyGuy, poppins, questrial } from "../Board/Board";
 import { boardLayout } from "@/logic/types";
 
@@ -11,18 +11,22 @@ const SettingsModal = observer(() => {
     ? JSON.parse(localStorage.getItem("vCellWinHistory") as string)
     : [];
   const [isClosing, setIsClosing] = useState(false);
+
+  function closeModal() {
+    setIsClosing(true);
+    // .3 seconds same amount of time as keyframe animation
+    setTimeout(() => {
+      appState.modals.settings.close();
+      setIsClosing(false);
+    }, 300);
+  }
+
   useEffect(() => {
     // queryselect .modal-shade
     const modalShade = document.querySelector(".modal-shade");
     modalShade?.addEventListener("click", (e) => {
       if (e.target === e.currentTarget) {
-        setIsClosing(true);
-        // .3 seconds same amount of time as keyframe animation
-
-        setTimeout(() => {
-          appState.modals.settings.close();
-          setIsClosing(false);
-        }, 300);
+        closeModal();
       }
     });
 
@@ -56,15 +60,7 @@ const SettingsModal = observer(() => {
     <ModalStyle className="modal-shade" $isClosing={isClosing}>
       <SettingsModalStyle className={questrial.className}>
         <span
-          onClick={() => {
-            setIsClosing(true);
-            // .3 seconds same amount of time as keyframe animation
-
-            setTimeout(() => {
-              appState.modals.settings.close();
-              setIsClosing(false);
-            }, 300);
-          }}
+          onClick={closeModal}
           className={`modal-close ${luckyGuy.className}`}
         >
           X
@@ -86,8 +82,8 @@ const SettingsModal = observer(() => {
             section will start a new game!
           </p>
           <div className="dropdowns">
-            <div className="layout-select">
-              {/* TODO: generate from types list? */}
+            <SettingSelect>
+              {/* TODO: g1qenerate from types list? */}
               <label htmlFor="layout-select">
                 <span className="label-text">Layout</span>
                 <select
@@ -96,6 +92,7 @@ const SettingsModal = observer(() => {
                   value={appState.layoutName}
                   onChange={(e) => {
                     appState.setLayout(e.target.value as boardLayout);
+                    closeModal();
                   }}
                 >
                   <option value="classic">Classic</option>
@@ -104,8 +101,8 @@ const SettingsModal = observer(() => {
                   <option value="tripleV">Triple V</option>
                 </select>
               </label>
-            </div>
-            <div className="undo-select">
+            </SettingSelect>
+            <SettingSelect>
               {/* undo settings */}
               <label htmlFor="undo-select">
                 <span className="label-text">
@@ -122,6 +119,7 @@ const SettingsModal = observer(() => {
                       parseFloat(e.target.value)
                     );
                     appState.dealCards();
+                    closeModal();
                   }}
                 >
                   <option value="Infinity">Unlimited</option>
@@ -130,7 +128,7 @@ const SettingsModal = observer(() => {
                   <option value="5">5</option>
                 </select>
               </label>
-            </div>
+            </SettingSelect>
           </div>
         </div>
         <br />
@@ -183,17 +181,7 @@ const SettingsModal = observer(() => {
         >
           Reset win count
         </button>
-        <button
-          className={questrial.className}
-          onClick={() => {
-            setIsClosing(true);
-            // .3 seconds same amount of time as keyframe animation
-            setTimeout(() => {
-              appState.modals.settings.close();
-              setIsClosing(false);
-            }, 300);
-          }}
-        >
+        <button className={questrial.className} onClick={closeModal}>
           Close settings
         </button>
       </SettingsModalStyle>

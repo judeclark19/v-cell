@@ -317,8 +317,7 @@ export const SettingSelect = styled.div`
     align-items: center;
     width: 100%;
 
-    #undo-select,
-    #layout-select {
+    select {
       padding: 4px;
       font-size: 16px;
     }
