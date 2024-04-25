@@ -84,7 +84,7 @@ export function formatTime(milliseconds: number) {
   return formattedTime;
 }
 
-export function getBoardLayoutDisplayName(layout: boardLayout) {
+export function getBoardLayoutDisplayName(layout: boardLayout | "all") {
   switch (layout) {
     case "classic":
       return "Classic";
@@ -94,5 +94,7 @@ export function getBoardLayoutDisplayName(layout: boardLayout) {
       return "Double V";
     case "tripleV":
       return "Triple V";
+    case "all":
+      return "";
   }
 }
