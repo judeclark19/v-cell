@@ -34,6 +34,7 @@ import {
 import LocalStorageServerHelper from "@/logic/LocalStorageServerHelper";
 import TimerUI from "./TimerUI";
 import { ModalName } from "@/logic/types";
+import Loader from "../Loader";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
@@ -95,7 +96,20 @@ const Board = observer(() => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <HeaderImage>
+          <Image
+            src={headerImage}
+            width={1700}
+            height={400}
+            alt="V-Cell header image"
+            priority
+          />
+        </HeaderImage>
+        <Loader />
+      </>
+    );
   }
 
   return (

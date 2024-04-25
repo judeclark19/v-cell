@@ -3,6 +3,9 @@ import { RecoilRoot } from "recoil";
 import Board, { questrial } from "@/components/Board/Board";
 import styled from "styled-components";
 import TapAnimation from "@/components/TapAnimation";
+import { useServerInsertedHTML } from "next/navigation";
+import { ServerStyleSheet, StyleSheetManager } from "styled-components";
+import { useState } from "react";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -66,37 +69,59 @@ const Footer = styled.footer`
   }
 `;
 
+function StyledComponentsRegistry({ children }: { children: React.ReactNode }) {
+  // Only create stylesheet once with lazy initial state
+  // x-ref: https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
+  const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet());
+
+  useServerInsertedHTML(() => {
+    const styles = styledComponentsStyleSheet.getStyleElement();
+    styledComponentsStyleSheet.instance.clearTag();
+    return <>{styles}</>;
+  });
+
+  if (typeof window !== "undefined") return <>{children}</>;
+
+  return (
+    <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
+      {children}
+    </StyleSheetManager>
+  );
+}
+
 export default function Home() {
   return (
-    <PageWrapper>
-      <div className="flex-grow">
-        <TapAnimation />
+    <StyledComponentsRegistry>
+      <PageWrapper>
         <RecoilRoot>
-          <Board />
+          <TapAnimation />
+          <div className="flex-grow">
+            <Board />
+          </div>
         </RecoilRoot>
-      </div>
 
-      <Footer className={questrial.className}>
-        <div className="top">
-          <div>
-            A 2023-2024&nbsp;
-            <strong>
-              <a href="https://github.com/judeclark19">Code Couture</a>
-            </strong>
-            &nbsp;creation
+        <Footer className={questrial.className}>
+          <div className="top">
+            <div>
+              A 2023-2024&nbsp;
+              <strong>
+                <a href="https://github.com/judeclark19">Code Couture</a>
+              </strong>
+              &nbsp;creation
+            </div>
+            <div className="vertical-line">|</div>
+            <hr />
+            <div>
+              Built by
+              <strong>
+                &nbsp;
+                <a href="https://github.com/judeclark19/v-cell">Jude Clark</a>
+              </strong>
+            </div>
           </div>
-          <div className="vertical-line">|</div>
-          <hr />
-          <div>
-            Built by
-            <strong>
-              &nbsp;
-              <a href="https://github.com/judeclark19/v-cell">Jude Clark</a>
-            </strong>
-          </div>
-        </div>
-        <div className="bottom">Last updated April 25, 2024</div>
-      </Footer>
-    </PageWrapper>
+          <div className="bottom">Last updated April 25, 2024</div>
+        </Footer>
+      </PageWrapper>
+    </StyledComponentsRegistry>
   );
 }
