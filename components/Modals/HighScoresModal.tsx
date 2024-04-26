@@ -23,9 +23,9 @@ const HighScoresModal = observer(() => {
       : [];
 
     const sortedWinHistory = winHistory
-      .filter((win: any) => {
-        return win.date;
-      })
+      // .filter((win: any) => {
+      //   return win.date;
+      // })
       .filter((win: any) => {
         if (layout === "all") return true;
         else return win.layout === layout;
