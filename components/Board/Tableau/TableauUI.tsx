@@ -17,7 +17,7 @@ const TableauStyles = styled.div<{
   justify-content: space-between;
   width: 100%;
   gap: 4px;
-  height: ${(props) => `${props.$cardHeight + props.$offset * 20}px`};
+  height: ${(props) => `${props.$cardHeight + props.$offset * 16}px`};
 `;
 
 const TableauUI = observer(() => {
