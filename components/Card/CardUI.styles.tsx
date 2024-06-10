@@ -42,7 +42,7 @@ export const cardSizes = {
     width: 30,
     spotPadding: 2,
     top: 0,
-    offset: 22,
+    offset: 20,
     shadowSize: 2,
     confettiSize: 65,
     titleSuitSize: 12,
@@ -59,7 +59,7 @@ export const CardStyle = styled.div<{
   $isBeingDragged: boolean;
   $offset?: number;
   $isActive?: boolean;
-  $isFaceUp?: boolean;
+  $isFaceUp?: boolean | null;
   $locationOnBoard?: string | null;
 }>`
   overflow: hidden;
@@ -74,9 +74,10 @@ export const CardStyle = styled.div<{
       return "1";
     }
   }};
-  background-color: white;
+  background-color: transparent;
   color: black;
-  border: 1px solid gray;
+  border: 1px solid
+    ${(props) => (props.$isFaceUp === null ? "transparent" : "gray")};
   border-radius: 5px;
   height: ${(props) => cardSizes[props.$size].height}px;
   width: ${(props) => cardSizes[props.$size].width}px;
@@ -112,11 +113,13 @@ export const CardStyle = styled.div<{
 
   transition: left 0.2s ease-in-out;
 
-  box-shadow: ${(props) => {
-    return `${cardSizes[props.$size].shadowSize}px ${
+  ${(props) =>
+    props.$isFaceUp !== null &&
+    `
+    box-shadow: ${cardSizes[props.$size].shadowSize}px ${
       cardSizes[props.$size].shadowSize
-    }px 5px rgba(0, 0, 0, 0.5)`;
-  }};
+    }px 5px rgba(0, 0, 0, 0.5);
+  `}
 
   ${(props) =>
     props.$isActive &&

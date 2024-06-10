@@ -37,8 +37,14 @@ export class Column {
     for (let i = this.arrayOfCards.length - 1; i >= 0; i--) {
       // last card in column is active
       if (i === this.arrayOfCards.length - 1) {
-        this.arrayOfCards[i].setIsActive(true);
-        this.arrayOfCards[i].setIsFaceUp(true);
+        const currentCard = this.arrayOfCards[i];
+        currentCard.setIsActive(true);
+        if (currentCard.isFaceUp === false) {
+          currentCard.setIsFaceUp(null);
+          setTimeout(() => {
+            currentCard.setIsFaceUp(true);
+          }, 600);
+        }
       } else {
         // check if current card is stackable with i+1
         const currentCard = this.arrayOfCards[i];

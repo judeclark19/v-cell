@@ -6,7 +6,7 @@ class CardClass {
   suit: Suit;
   id: string;
   isActive: boolean;
-  isFaceUp: boolean;
+  isFaceUp: boolean | null;
   locationOnBoard: string | null;
 
   constructor(value: Value, suit: Suit) {
@@ -23,7 +23,7 @@ class CardClass {
     this.isActive = isActive;
   }
 
-  setIsFaceUp(isFaceUp: boolean) {
+  setIsFaceUp(isFaceUp: boolean | null) {
     this.isFaceUp = isFaceUp;
   }
 

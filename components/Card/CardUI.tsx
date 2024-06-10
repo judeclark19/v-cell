@@ -1,12 +1,13 @@
 import { CardStyle, cardSizeType, cardSizes } from "./CardUI.styles";
 import CardClass from "./CardClass";
 import appState from "@/logic/AppState";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { questrial } from "../Board/Board";
 import Image from "next/image";
 import cardBackImage from "@/assets/images/V.png";
 import SuitIcon from "./SuitIcon";
+import Flipping from "./Flipping";
 
 const CardUI = observer(
   ({
@@ -23,6 +24,17 @@ const CardUI = observer(
   }) => {
     const [lastTapTimestamp, setLastTapTimestamp] = useState(0);
     const [hoverColor, setHoverColor] = useState("goldAlpha");
+    const [thisCardIsFaceUp, setThisCardIsFaceUp] = useState<boolean | null>(
+      card.isFaceUp
+    );
+
+    useEffect(() => {
+      if (card.isFaceUp === null) {
+        setTimeout(() => {
+          setThisCardIsFaceUp(true);
+        }, 600);
+      }
+    }, [card.isFaceUp]);
 
     function createIcons() {
       const icons = [];
@@ -124,30 +136,42 @@ const CardUI = observer(
         }}
         className={`card ${questrial.className}`}
       >
-        <div className="card-front">
-          <div className="card-title">
-            <h1>{getCardTitle()}</h1>{" "}
-            {(size === "tiny" || size === "small") && (
-              <SuitIcon suit={card.suit} size={cardSizes[size].titleSuitSize} />
-            )}
-          </div>
-          <div className="emojis">
-            {createIcons().map((icon, i) => (
-              <span key={`${icon}${i}`}>{icon}</span>
-            ))}
-          </div>
-        </div>
-        <div className="card-back">
-          <div className="card-back-interior">
-            <Image
-              src={cardBackImage}
-              width={240}
-              height={245}
-              alt="V-Cell logo"
-              priority
-            />
-          </div>
-        </div>
+        {thisCardIsFaceUp === null && (
+          <>
+            <Flipping card={card} size={size} />
+          </>
+        )}
+        {thisCardIsFaceUp !== null && (
+          <>
+            <div className="card-front">
+              <div className="card-title">
+                <h1>{getCardTitle()}</h1>{" "}
+                {(size === "tiny" || size === "small") && (
+                  <SuitIcon
+                    suit={card.suit}
+                    size={cardSizes[size].titleSuitSize}
+                  />
+                )}
+              </div>
+              <div className="emojis">
+                {createIcons().map((icon, i) => (
+                  <span key={`${icon}${i}`}>{icon}</span>
+                ))}
+              </div>
+            </div>
+            <div className="card-back">
+              <div className="card-back-interior">
+                <Image
+                  src={cardBackImage}
+                  width={240}
+                  height={245}
+                  alt="V-Cell logo"
+                  priority
+                />
+              </div>
+            </div>
+          </>
+        )}
       </CardStyle>
     );
   }

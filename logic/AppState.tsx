@@ -49,7 +49,7 @@ export class AppState {
   };
   moveEvaluator = new MoveEvaluator(this);
 
-  constructor(layoutName: boardLayout = "classic") {
+  constructor(layoutName: boardLayout = "tripleV") {
     this.layoutName = layoutName;
     makeAutoObservable(this);
   }
