@@ -133,7 +133,7 @@ export const CardStyle = styled.div<{
 `}
 
   .card-front {
-    display: ${(props) => (props.$isFaceUp ? "flex" : "none")};
+    display: ${(props) => (props.$isFaceUp === true ? "flex" : "none")};
     flex-direction: column;
     height: 100%;
     position: relative;
@@ -261,7 +261,7 @@ export const CardStyle = styled.div<{
   }
 
   .card-back {
-    display: ${(props) => (props.$isFaceUp ? "none" : "grid")};
+    display: ${(props) => (props.$isFaceUp === false ? "grid" : "none")};
     place-items: center;
     background-color: white;
     border-radius: 2px;

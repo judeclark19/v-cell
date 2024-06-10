@@ -19,7 +19,6 @@ export const CardInner = styled.div<CardInnerProps>`
   position: relative;
   height: 100%;
   width: 100%;
-  border-radius: 5px;
   text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
@@ -33,6 +32,7 @@ export const CardFace = styled.div<{
   position: absolute;
   width: 100%;
   height: 100%;
+  border-radius: 5px;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   box-shadow: ${(props) =>

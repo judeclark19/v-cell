@@ -141,37 +141,31 @@ const CardUI = observer(
             <Flipping card={card} size={size} />
           </>
         )}
-        {thisCardIsFaceUp !== null && (
-          <>
-            <div className="card-front">
-              <div className="card-title">
-                <h1>{getCardTitle()}</h1>{" "}
-                {(size === "tiny" || size === "small") && (
-                  <SuitIcon
-                    suit={card.suit}
-                    size={cardSizes[size].titleSuitSize}
-                  />
-                )}
-              </div>
-              <div className="emojis">
-                {createIcons().map((icon, i) => (
-                  <span key={`${icon}${i}`}>{icon}</span>
-                ))}
-              </div>
-            </div>
-            <div className="card-back">
-              <div className="card-back-interior">
-                <Image
-                  src={cardBackImage}
-                  width={240}
-                  height={245}
-                  alt="V-Cell logo"
-                  priority
-                />
-              </div>
-            </div>
-          </>
-        )}
+
+        <div className="card-front">
+          <div className="card-title">
+            <h1>{getCardTitle()}</h1>{" "}
+            {(size === "tiny" || size === "small") && (
+              <SuitIcon suit={card.suit} size={cardSizes[size].titleSuitSize} />
+            )}
+          </div>
+          <div className="emojis">
+            {createIcons().map((icon, i) => (
+              <span key={`${icon}${i}`}>{icon}</span>
+            ))}
+          </div>
+        </div>
+        <div className="card-back">
+          <div className="card-back-interior">
+            <Image
+              src={cardBackImage}
+              width={240}
+              height={245}
+              alt="V-Cell logo"
+              priority
+            />
+          </div>
+        </div>
       </CardStyle>
     );
   }
