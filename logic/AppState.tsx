@@ -13,7 +13,8 @@ import {
   valuesArray,
   boardLayouts,
   boardLayout,
-  ModalName
+  ModalName,
+  theme
 } from "./types";
 import { makeAutoObservable } from "mobx";
 import Foundations from "../components/Board/Foundations/FoundationsClass";
@@ -26,6 +27,7 @@ import Timer from "./Timer";
 export class AppState {
   deck: CardClass[] = [];
   layoutName: boardLayout;
+  themeName: theme;
   timer = new Timer();
   currentBoard: BoardType = {
     foundations: new Foundations(),
@@ -49,8 +51,12 @@ export class AppState {
   };
   moveEvaluator = new MoveEvaluator(this);
 
-  constructor(layoutName: boardLayout = "tripleV") {
+  constructor(
+    layoutName: boardLayout = "tripleV",
+    themeName: theme = "classic"
+  ) {
     this.layoutName = layoutName;
+    this.themeName = themeName;
     makeAutoObservable(this);
   }
 
@@ -97,6 +103,10 @@ export class AppState {
   setLayout(layoutName: boardLayout) {
     this.layoutName = layoutName;
     this.dealCards();
+  }
+
+  setTheme(theme: theme) {
+    this.themeName = theme;
   }
 
   clearBoard() {

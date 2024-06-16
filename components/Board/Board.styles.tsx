@@ -108,7 +108,7 @@ export const BoardContainer = styled.div<{
 }>`
   user-select: none;
   padding: 20px;
-  background-color: var(--pokerGreen);
+  background-color: var(--page-background);
   box-sizing: border-box;
   width: ${(props) => {
     let buffer;

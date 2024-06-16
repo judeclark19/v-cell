@@ -4,7 +4,7 @@ import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 import { ModalStyle, SettingSelect, SettingsModalStyle } from "./Modal.styles";
 import { luckyGuy, poppins, questrial } from "../Board/Board";
-import { boardLayout } from "@/logic/types";
+import { boardLayout, theme } from "@/logic/types";
 
 const SettingsModal = observer(() => {
   const winHistory = localStorage.getItem("vCellWinHistory")
@@ -140,28 +140,48 @@ const SettingsModal = observer(() => {
           >
             Appearance
           </h2>
-          <div className="timer-toggle">
-            <span className="label-text">Timer</span>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px"
-              }}
-            >
-              Hide
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  onChange={(e) => {
-                    appState.timer.setIsVisible(e.target.checked);
-                  }}
-                  checked={appState.timer.isVisible}
-                />
-                <span className="slider round"></span>
-              </label>
-              Show
+          <div className="dropdowns">
+            <div className="timer-toggle">
+              <span className="label-text">Timer</span>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px"
+                }}
+              >
+                Hide
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    onChange={(e) => {
+                      appState.timer.setIsVisible(e.target.checked);
+                    }}
+                    checked={appState.timer.isVisible}
+                  />
+                  <span className="slider round"></span>
+                </label>
+                Show
+              </div>
             </div>
+            <SettingSelect>
+              {/* undo settings */}
+              <label htmlFor="theme-select">
+                <span className="label-text">Theme</span>
+                <select
+                  id="theme-select"
+                  className={questrial.className}
+                  value={appState.themeName}
+                  onChange={(e) => {
+                    appState.setTheme(e.target.value as theme);
+                    document.body.className = e.target.value;
+                  }}
+                >
+                  <option value="classic">Classic</option>
+                  <option value="times">Times</option>
+                </select>
+              </label>
+            </SettingSelect>
           </div>
         </div>
 

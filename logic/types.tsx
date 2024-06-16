@@ -139,3 +139,5 @@ export const boardLayouts = {
 };
 
 export type ModalName = "win" | "instructions" | "settings" | "pause";
+
+export type theme = "classic" | "times";

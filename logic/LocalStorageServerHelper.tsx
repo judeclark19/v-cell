@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import appState from "./AppState";
-import { ModalName, boardLayout } from "./types";
+import { ModalName, boardLayout, theme } from "./types";
 import { cardSizeState } from "./RecoilAtoms";
 import { useRecoilValue } from "recoil";
 import { throwConfetti } from "./UIFunctions";
@@ -38,6 +38,12 @@ const LocalStorageServerHelper = observer(() => {
     const layoutFromStorage = localStorage.getItem("vCellLayout");
     if (layoutFromStorage) {
       appState.setLayout(layoutFromStorage as boardLayout);
+    }
+
+    const themeFromStorage = localStorage.getItem("vCellTheme");
+    if (themeFromStorage) {
+      document.body.className = themeFromStorage;
+      appState.setTheme(themeFromStorage as theme);
     }
 
     const undosAllowedFromStorage =
@@ -114,6 +120,10 @@ const LocalStorageServerHelper = observer(() => {
   useEffect(() => {
     localStorage.setItem("vCellLayout", appState.layoutName);
   }, [appState.layoutName]);
+
+  useEffect(() => {
+    localStorage.setItem("vCellTheme", appState.themeName);
+  }, [appState.themeName]);
 
   useEffect(() => {
     localStorage.setItem(

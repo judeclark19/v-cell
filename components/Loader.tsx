@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { poppins } from "./Board/Board";
+import { questrial } from "./Board/Board";
 
 const spin = keyframes`
   0% {
@@ -36,7 +36,7 @@ export const Tailspin = styled.div`
 export default function Loader() {
   return (
     <div
-      className={poppins.className}
+      className={questrial.className}
       style={{
         fontSize: "24px",
         display: "flex",

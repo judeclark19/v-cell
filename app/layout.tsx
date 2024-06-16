@@ -1,22 +1,7 @@
-import type { Metadata } from "next";
+"use client";
 
-import "./globals.css";
-
-export const metadata: Metadata = {
-  title: {
-    default: "V-Cell",
-    template: "V-Cell | %s"
-  },
-  description: "Game concept by Jim Fox - Web app by Jude Clark",
-  icons: {
-    icon: ["/favicon.ico"],
-    apple: ["/apple-touch-icon.png"],
-    shortcut: ["/apple-touch-icon.png"]
-  },
-  manifest: "/site.webmanifest"
-};
-
-// https://favicon.io/favicon-converter/
+import StyledComponentsRegistry from "@/lib/registry";
+import GlobalStyles from "@/lib/GlobalStyles";
 
 export default function RootLayout({
   children
@@ -24,8 +9,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html>
+      <body>
+        <StyledComponentsRegistry>
+          <GlobalStyles />
+          {children}
+        </StyledComponentsRegistry>
+      </body>
     </html>
   );
 }
