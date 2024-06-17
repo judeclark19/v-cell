@@ -28,14 +28,8 @@ There are three main areas on the board:
 
 ## Three different themes to enjoy:
 
-### "Poker"
-![image](https://github.com/judeclark19/v-cell/assets/69258086/42ecdcc4-cc32-4e9f-b6d3-598503c8405d)
+![image](https://github.com/judeclark19/v-cell/assets/69258086/da172890-e48e-4dd1-997b-a79ca2bc204d)
 
-### "Times Light"
-![image](https://github.com/judeclark19/v-cell/assets/69258086/40c2169c-aa63-4da3-ba88-fef5f967b45f)
-
-### "Times Dark"
-![image](https://github.com/judeclark19/v-cell/assets/69258086/4d4a6d31-d465-4ff4-9169-42a5504db69a)
 
 
 ## Todo/Feature wishlist
