@@ -40,13 +40,13 @@ const AutoCompleteDiv = styled.div<{
   padding: 0 10px;
   position: absolute;
   padding-top: 10px;
+  padding-bottom: ${(props) => (props.$isWinningBoard ? "24px" : "0px")};
   z-index: 0;
   width: 100%;
-  margin-bottom: 1rem;
   background-color: var(--page-background);
   transform: ${(props) =>
     props.$isWinningBoard ? "translateY(-70px)" : "none"};
-  transition: transform 0.5s;
+  transition: all 0.5s;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
 `;

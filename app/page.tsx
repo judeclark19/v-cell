@@ -1,9 +1,15 @@
-import { Metadata } from "next";
-import { metadata as pageMetadata } from "@/lib/metadata";
+"use client";
+
 import Home from "./Home";
 
-export const metadata: Metadata = pageMetadata;
+import StyledComponentsRegistry from "@/lib/registry";
+import GlobalStyles from "@/lib/GlobalStyles";
 
 export default function Page() {
-  return <Home />;
+  return (
+    <StyledComponentsRegistry>
+      <GlobalStyles />
+      <Home />
+    </StyledComponentsRegistry>
+  );
 }

@@ -356,7 +356,7 @@ export const HighScoresModalStyle = styled.div`
       }
 
       &:nth-child(even) {
-        background-color: #1b1b1b;
+        background-color: var(--highscore-table-even-row);
       }
     }
 

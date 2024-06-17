@@ -44,6 +44,7 @@ const LocalStorageServerHelper = observer(() => {
     if (themeFromStorage) {
       document.body.className = themeFromStorage;
       appState.setTheme(themeFromStorage as theme);
+      document.cookie = `theme=${themeFromStorage}; path=/; max-age=31536000`; // 1 year expiry
     } else document.body.className = "poker";
 
     const undosAllowedFromStorage =
@@ -123,6 +124,7 @@ const LocalStorageServerHelper = observer(() => {
 
   useEffect(() => {
     localStorage.setItem("vCellTheme", appState.themeName);
+    document.cookie = `theme=${appState.themeName}; path=/; max-age=31536000`;
   }, [appState.themeName]);
 
   useEffect(() => {

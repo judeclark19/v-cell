@@ -32,6 +32,7 @@ body.poker {
     --card-spot-label-color: rgba(255, 255, 255, 0.5);
     --hand-border-color: #000080;
     --modal-background-color:  black;
+    --highscore-table-even-row: #1b1b1b;
     --settings-section-background: #222;
     --settings-section-divider: white;
     --footer-background-color: #1c5f3d;
@@ -54,11 +55,12 @@ body.poker {
     --board-border-width: 1.5px;
     --board-border-radius: 2px;
     --board-box-shadow: none;
-    --scroll-area-background: #fafafa;
+    --scroll-area-background: #f8f8f8;
     --card-spot-border-color:rgba(0, 0, 0, 0.7);
     --card-spot-label-color: rgba(0, 0, 0, 0.5);
     --hand-border-color: #000080;
     --modal-background-color:  white;
+    --highscore-table-even-row: var(--scroll-area-background);
     --settings-section-background: var(--scroll-area-background);
     --settings-section-divider: black;
     --footer-background-color: white;
@@ -87,6 +89,7 @@ body.poker {
   --card-spot-label-color: var(--pearl);
   --hand-border-color: #e8e8ff;
   --modal-background-color:  black;
+  --highscore-table-even-row: #1b1b1b;
   --settings-section-background: var(--scroll-area-background);
   --settings-section-divider: black;
   --footer-background-color: var(--page-background);

@@ -1,21 +1,20 @@
-"use client";
+import { Metadata } from "next";
+import { metadata as pageMetadata } from "@/lib/metadata";
+import { cookies } from "next/headers";
 
-import StyledComponentsRegistry from "@/lib/registry";
-import GlobalStyles from "@/lib/GlobalStyles";
+export const metadata: Metadata = pageMetadata;
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = cookies();
+  const theme = cookieStore.get("theme")?.value || "poker";
+  console.log(theme);
   return (
     <html>
-      <body className="poker">
-        <StyledComponentsRegistry>
-          <GlobalStyles />
-          {children}
-        </StyledComponentsRegistry>
-      </body>
+      <body className={theme}>{children}</body>
     </html>
   );
 }
