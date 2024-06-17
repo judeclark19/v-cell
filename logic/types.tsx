@@ -140,4 +140,4 @@ export const boardLayouts = {
 
 export type ModalName = "win" | "instructions" | "settings" | "pause";
 
-export type theme = "poker" | "times";
+export type theme = "poker" | "times-light" | "times-dark";

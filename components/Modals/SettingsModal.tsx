@@ -178,7 +178,8 @@ const SettingsModal = observer(() => {
                     }}
                   >
                     <option value="poker">Poker</option>
-                    <option value="times">Times</option>
+                    <option value="times-light">Times Light</option>
+                    <option value="times-dark">Times Dark</option>
                   </select>
                 </label>
               </SettingSelect>

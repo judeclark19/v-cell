@@ -30,7 +30,7 @@ const ScrollableArea = styled.div<{
   justify-content: space-between;
   width: 100%;
   gap: 4px;
-  height: ${(props) => (props.$isWinningBoard ? "calc(100% - 30px)" : "100%")};
+  height: ${(props) => (props.$isWinningBoard ? "calc(100% - 40px)" : "100%")};
   overflow-x: hidden;
   overflow-y: auto;
   transition: height 0.5s;

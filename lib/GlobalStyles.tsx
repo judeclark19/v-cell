@@ -17,7 +17,6 @@ body.poker {
     --goldAlpha: #fede4dbf;
     --gold: #fede4d;
     --page-background: #35654d;
-    --lime: lime;
     --textColor: white;
     --header-footer-border-color: transparent;
     --timer-shadow: 0px 0px 5px var(--goldAlpha);
@@ -31,23 +30,23 @@ body.poker {
     --scroll-area-background: #487860;
     --card-spot-border-color: var(--goldAlpha);
     --card-spot-label-color: rgba(255, 255, 255, 0.5);
+    --hand-border-color: #000080;
     --modal-background-color:  black;
     --settings-section-background: #222;
     --settings-section-divider: white;
     --footer-background-color: #1c5f3d;
  }
 
- body.times {
+ body.times-light {
     color-scheme: light;
-   --red: #ef3e56;
+    --red: #ef3e56;
     --goldAlpha: #b59410bf;
     --gold: #b59410;
     --page-background: white;
-    --lime: lime;
-     --light-gray: #d3d6da;
+    --light-gray: #d3d6da;
     --textColor: black;
-     --header-footer-border-color: var(--light-gray);
-        --timer-shadow: none;
+    --header-footer-border-color: var(--light-gray);
+    --timer-shadow: none;
     --control-button-background: white;
     --control-button-color: black;
     --control-button-border: black;
@@ -58,11 +57,41 @@ body.poker {
     --scroll-area-background: #fafafa;
     --card-spot-border-color:rgba(0, 0, 0, 0.7);
     --card-spot-label-color: rgba(0, 0, 0, 0.5);
+    --hand-border-color: #000080;
     --modal-background-color:  white;
     --settings-section-background: var(--scroll-area-background);
-     --settings-section-divider: black;
+    --settings-section-divider: black;
     --footer-background-color: white;
   }
+
+  body.times-dark {
+  color-scheme: dark;
+  --red: #ef3e56;
+  --goldAlpha: #d7b428bf;
+  --gold: #d7b428;
+  --pearl: #f8f8f8;
+  --page-background: #121214;
+  --light-gray: #3a3a3c; 
+  --textColor: white;
+  --header-footer-border-color: var(--light-gray);
+  --timer-shadow: none;
+  --control-button-background: black;
+  --control-button-color: white;
+  --control-button-border: white;
+  --board-border-color: var(--light-gray);
+  --board-border-width: 1.5px;
+  --board-border-radius: 2px;
+  --board-box-shadow: none;
+  --scroll-area-background: #1a1a1a;
+  --card-spot-border-color: var(--pearl);
+  --card-spot-label-color: var(--pearl);
+  --hand-border-color: #e8e8ff;
+  --modal-background-color:  black;
+  --settings-section-background: var(--scroll-area-background);
+  --settings-section-divider: black;
+  --footer-background-color: var(--page-background);
+}
+
 
   * {
     box-sizing: border-box;

@@ -30,13 +30,14 @@ const HandStyles = styled.div`
   background-color: var(--page-background);
 
   ${Spot} {
-    border: 2px solid #000080;
+    border: 2px solid var(--hand-border-color);
   }
 `;
 
 const AutoCompleteDiv = styled.div<{
   $isWinningBoard?: boolean;
 }>`
+  padding: 0 10px;
   position: absolute;
   padding-top: 10px;
   z-index: 0;
@@ -44,7 +45,7 @@ const AutoCompleteDiv = styled.div<{
   margin-bottom: 1rem;
   background-color: var(--page-background);
   transform: ${(props) =>
-    props.$isWinningBoard ? "translateY(-60px)" : "none"};
+    props.$isWinningBoard ? "translateY(-70px)" : "none"};
   transition: transform 0.5s;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
