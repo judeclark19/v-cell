@@ -7,9 +7,8 @@ export const GameTitle = styled.h1`
   width: 100%;
   color: var(--textColor);
   text-align: center;
-  margin-top: 40px;
-  margin-bottom: 20px;
-  font-size: 70px;
+  margin: 40px auto;
+  font-size: 60px;
 
   @media screen and (max-width: 992px) {
     margin-top: 20px;

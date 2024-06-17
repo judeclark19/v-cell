@@ -2,9 +2,8 @@ import { observer } from "mobx-react-lite";
 import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 import { ModalStyle, PauseModalStyle } from "./Modal.styles";
-import { luckyGuy, poppins, questrial } from "../Board/Board";
+import { alfaSlabOne, luckyGuy, questrial } from "../Board/Board";
 import { GameTitle } from "../Board/Board.styles";
-import { formatTime, getBoardLayoutDisplayName } from "@/logic/UIFunctions";
 
 const PauseModal = observer(() => {
   const [isClosing, setIsClosing] = useState(false);
@@ -57,11 +56,19 @@ const PauseModal = observer(() => {
               setIsClosing(false);
             }, 300);
           }}
-          className={`modal-close ${luckyGuy.className}`}
+          className={`modal-close ${questrial.className}`}
         >
           X
         </span>
-        <GameTitle className={luckyGuy.className}>Paused</GameTitle>
+        <GameTitle
+          className={
+            appState.themeName === "poker"
+              ? luckyGuy.className
+              : alfaSlabOne.className
+          }
+        >
+          Paused
+        </GameTitle>
 
         <button
           className={questrial.className}

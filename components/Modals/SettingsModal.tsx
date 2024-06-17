@@ -3,7 +3,7 @@ import { GameTitle } from "../Board/Board.styles";
 import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 import { ModalStyle, SettingSelect, SettingsModalStyle } from "./Modal.styles";
-import { luckyGuy, poppins, questrial } from "../Board/Board";
+import { luckyGuy, poppins, questrial, alfaSlabOne } from "../Board/Board";
 import { boardLayout, theme } from "@/logic/types";
 
 const SettingsModal = observer(() => {
@@ -61,12 +61,20 @@ const SettingsModal = observer(() => {
       <SettingsModalStyle className={questrial.className}>
         <span
           onClick={closeModal}
-          className={`modal-close ${luckyGuy.className}`}
+          className={`modal-close ${questrial.className}`}
         >
           X
         </span>
         <div>
-          <GameTitle className={luckyGuy.className}>Settings</GameTitle>
+          <GameTitle
+            className={
+              appState.themeName === "poker"
+                ? luckyGuy.className
+                : alfaSlabOne.className
+            }
+          >
+            Settings
+          </GameTitle>
         </div>
 
         {/* I am envisioning the sections becoming accordions later */}

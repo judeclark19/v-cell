@@ -54,7 +54,8 @@ export const ModalStyle = styled.div<{
             ${growIn} 0.3s ease-out forwards
           `};
     transform-origin: center;
-    padding: 40px;
+    padding: 30px;
+    padding-top: 0px;
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.2);
@@ -143,9 +144,8 @@ export const WinModalStyle = styled.div`
 `;
 
 export const InstructionsModalStyle = styled.div`
-  line-height: 20px;
-
   .slide {
+    line-height: 20px;
     box-sizing: border-box;
     width: 500px;
     display: flex;

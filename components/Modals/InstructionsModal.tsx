@@ -4,7 +4,7 @@ import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 
 import { GameControlButtons, GameTitle } from "../Board/Board.styles";
-import { luckyGuy, poppins } from "../Board/Board";
+import { alfaSlabOne, luckyGuy, poppins } from "../Board/Board";
 
 const InstructionsModal = observer(() => {
   const [slideNumber, setSlideNumber] = useState(0);
@@ -47,14 +47,22 @@ const InstructionsModal = observer(() => {
               setIsClosing(false);
             }, 300);
           }}
-          className={`modal-close ${luckyGuy.className}`}
+          className={`modal-close ${questrial.className}`}
         >
           X
         </span>
 
         {slideNumber === 0 && (
           <>
-            <GameTitle className={luckyGuy.className}>How To Play</GameTitle>
+            <GameTitle
+              className={
+                appState.themeName === "poker"
+                  ? luckyGuy.className
+                  : alfaSlabOne.className
+              }
+            >
+              How To Play
+            </GameTitle>
             <div className="slide">
               <p>There are three main areas on the board:</p>
               <ol>
@@ -73,7 +81,15 @@ const InstructionsModal = observer(() => {
         )}
         {slideNumber === 1 && (
           <>
-            <GameTitle className={luckyGuy.className}>Foundations</GameTitle>
+            <GameTitle
+              className={
+                appState.themeName === "poker"
+                  ? luckyGuy.className
+                  : alfaSlabOne.className
+              }
+            >
+              Foundations
+            </GameTitle>
             <div className="slide">
               <p>
                 The main objective of the game is to{" "}
@@ -90,7 +106,15 @@ const InstructionsModal = observer(() => {
         )}
         {slideNumber === 2 && (
           <>
-            <GameTitle className={luckyGuy.className}>Tableau</GameTitle>
+            <GameTitle
+              className={
+                appState.themeName === "poker"
+                  ? luckyGuy.className
+                  : alfaSlabOne.className
+              }
+            >
+              Tableau
+            </GameTitle>
             <div className="slide">
               <p>
                 The Tableau consists of seven (7) columns with seven (7) cards
@@ -110,7 +134,15 @@ const InstructionsModal = observer(() => {
 
         {slideNumber === 3 && (
           <>
-            <GameTitle className={luckyGuy.className}>Free Cells</GameTitle>
+            <GameTitle
+              className={
+                appState.themeName === "poker"
+                  ? luckyGuy.className
+                  : alfaSlabOne.className
+              }
+            >
+              Free Cells
+            </GameTitle>
             <div className="slide">
               <p>
                 You have <span className="gold">five (5) free cells</span>,

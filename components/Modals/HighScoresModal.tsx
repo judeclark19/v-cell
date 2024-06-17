@@ -6,7 +6,7 @@ import {
   ModalStyle,
   SettingSelect
 } from "./Modal.styles";
-import { luckyGuy, poppins, questrial } from "../Board/Board";
+import { luckyGuy, poppins, questrial, alfaSlabOne } from "../Board/Board";
 import { GameTitle } from "../Board/Board.styles";
 import { formatTime, getBoardLayoutDisplayName } from "@/logic/UIFunctions";
 import { boardLayout } from "@/logic/types";
@@ -88,11 +88,19 @@ const HighScoresModal = observer(() => {
               setIsClosing(false);
             }, 300);
           }}
-          className={`modal-close ${luckyGuy.className}`}
+          className={`modal-close ${questrial.className}`}
         >
           X
         </span>
-        <GameTitle className={luckyGuy.className}>Fastest Games</GameTitle>
+        <GameTitle
+          className={
+            appState.themeName === "poker"
+              ? luckyGuy.className
+              : alfaSlabOne.className
+          }
+        >
+          Fastest Games
+        </GameTitle>
 
         {/* dropdown select layout */}
         <SettingSelect style={{ margin: "0.8rem auto" }}>

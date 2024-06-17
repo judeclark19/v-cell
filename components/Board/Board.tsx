@@ -24,7 +24,12 @@ import {
   WinModal
 } from "../Modals";
 import { FaCog, FaTrophy, FaQuestionCircle } from "react-icons/fa";
-import { Luckiest_Guy, Questrial, Poppins } from "next/font/google";
+import {
+  Luckiest_Guy,
+  Questrial,
+  Poppins,
+  Alfa_Slab_One
+} from "next/font/google";
 import {
   handlePointerDown,
   handlePointerMove,
@@ -35,6 +40,10 @@ import { ModalName } from "@/logic/types";
 import Loader from "../Loader";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
+export const alfaSlabOne = Alfa_Slab_One({
+  weight: "400",
+  subsets: ["latin"]
+});
 export const questrial = Questrial({ weight: "400", subsets: ["latin"] });
 export const poppins = Poppins({
   weight: ["400", "500", "700"],
@@ -120,7 +129,11 @@ const Board = observer(() => {
 
   return (
     <>
-      {/* <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
+      {/* <GameTitle className={
+              appState.themeName === "poker"
+                ? luckyGuy.className
+                : alfaSlabOne.className
+            }>V-Cell</GameTitle>
        */}
       <LocalStorageServerHelper />
 

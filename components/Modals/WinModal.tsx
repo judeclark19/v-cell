@@ -3,7 +3,7 @@ import { GameControlButtons, GameTitle } from "../Board/Board.styles";
 import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
-import { luckyGuy, questrial } from "../Board/Board";
+import { alfaSlabOne, luckyGuy, questrial } from "../Board/Board";
 import { formatTime } from "@/logic/UIFunctions";
 
 const WinModal = observer(() => {
@@ -45,11 +45,19 @@ const WinModal = observer(() => {
               setIsClosing(false);
             }, 300);
           }}
-          className={`modal-close ${luckyGuy.className}`}
+          className={`modal-close ${questrial.className}`}
         >
           X
         </span>
-        <GameTitle className={luckyGuy.className}>You Win!</GameTitle>
+        <GameTitle
+          className={
+            appState.themeName === "poker"
+              ? luckyGuy.className
+              : alfaSlabOne.className
+          }
+        >
+          You Win!
+        </GameTitle>
         <p className="time-elapsed">
           Time elapsed: {formatTime(appState.timer.timeElapsed)}
         </p>
