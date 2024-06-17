@@ -2,12 +2,46 @@
 
 **Link to deployed app: [http://vcell.codecouture.site](http://vcell.codecouture.site/)**
 
-![image](https://github.com/judeclark19/v-cell/assets/69258086/6ece0c50-7c48-4cb0-bb75-eb4f6a343a8b)
+## How to play:
+There are three main areas on the board:
+1. **The Foundations**
+2. **The Tableau**
+3. **The Free Cells**
+
+**Foundations:**  The main objective of the game is to get all of the cards stacked in
+                sequence in the foundations, starting with Aces and continuing
+                all the way through Kings. There are four (4) Foundations,
+                one for each suit.
+
+**Tableau:**  The Tableau consists of seven (7) columns with seven (7) cards
+                each, randomly shuffled at the beginning of each game.
+               Click and drag cards to rearrange
+                them into sequences of decreasing value and alternating suits.
+                Multiple cards can be moved simultaneously if they are part of a
+                correctly stacked sequence.
+
+**Free Cells:** You have five (5) free cells,
+                three of which are randomly populated when the game starts.
+                The free cells can contain any where from 0 to 5 cards at any
+                given time and are used to strategically store cards from the
+                tableau as you build your sequential stacks.
+
+## Three different themes to enjoy:
+
+### "Poker"
+![image](https://github.com/judeclark19/v-cell/assets/69258086/42ecdcc4-cc32-4e9f-b6d3-598503c8405d)
+
+### "Times Light"
+![image](https://github.com/judeclark19/v-cell/assets/69258086/40c2169c-aa63-4da3-ba88-fef5f967b45f)
+
+### "Times Dark"
+![image](https://github.com/judeclark19/v-cell/assets/69258086/4d4a6d31-d465-4ff4-9169-42a5504db69a)
+
 
 ## Todo/Feature wishlist
 
 - [ ] "Magnetic" hit boxes
-- [ ] Consolidate modal closing logic
+- [ ] Consolidate modal logic
 - [ ] Dyanmic card sizes
 - [ ] Suggest next move
 - [ ] Extra difficulty: foundations can be played from or not for difficulty
