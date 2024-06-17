@@ -85,7 +85,7 @@ export const WoodenBorder = styled.div<{
   $theme: theme;
 }>`
   background-image: ${(props) =>
-    props.$theme === "classic" ? `url(${wood.src})` : "none"};
+    props.$theme === "poker" ? `url(${wood.src})` : "none"};
   background-size: cover;
   width: fit-content;
   margin: auto;

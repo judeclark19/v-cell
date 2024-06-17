@@ -51,10 +51,7 @@ export class AppState {
   };
   moveEvaluator = new MoveEvaluator(this);
 
-  constructor(
-    layoutName: boardLayout = "classic",
-    themeName: theme = "classic"
-  ) {
+  constructor(layoutName: boardLayout = "classic", themeName: theme = "poker") {
     this.layoutName = layoutName;
     this.themeName = themeName;
     makeAutoObservable(this);

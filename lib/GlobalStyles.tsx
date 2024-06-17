@@ -10,7 +10,7 @@ const GlobalStyles = createGlobalStyle`
 
   }
 
-body.classic {
+body.poker {
    color-scheme: dark;
     /* other red shades: #dc3a3a; #c33f32 */
     --red: #ef3e56;

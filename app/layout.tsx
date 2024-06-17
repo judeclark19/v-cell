@@ -10,7 +10,7 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body className="classic">
+      <body className="poker">
         <StyledComponentsRegistry>
           <GlobalStyles />
           {children}

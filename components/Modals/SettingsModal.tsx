@@ -96,9 +96,9 @@ const SettingsModal = observer(() => {
                   }}
                 >
                   <option value="classic">Classic</option>
-                  <option value="faceUp">Face Up</option>
                   <option value="doubleV">Double V</option>
                   <option value="tripleV">Triple V</option>
+                  <option value="faceUp">Face Up</option>
                 </select>
               </label>
             </SettingSelect>
@@ -177,7 +177,7 @@ const SettingsModal = observer(() => {
                       document.body.className = e.target.value;
                     }}
                   >
-                    <option value="classic">Classic</option>
+                    <option value="poker">Poker</option>
                     <option value="times">Times</option>
                   </select>
                 </label>

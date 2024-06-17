@@ -40,12 +40,11 @@ const LocalStorageServerHelper = observer(() => {
       appState.setLayout(layoutFromStorage as boardLayout);
     }
 
-    // const themeFromStorage = localStorage.getItem("vCellTheme");
-    // if (themeFromStorage) {
-    //   document.body.className = themeFromStorage;
-    // appState.setTheme(themeFromStorage as theme);
-    document.body.className = "classic";
-    // }
+    const themeFromStorage = localStorage.getItem("vCellTheme");
+    if (themeFromStorage) {
+      document.body.className = themeFromStorage;
+      appState.setTheme(themeFromStorage as theme);
+    } else document.body.className = "poker";
 
     const undosAllowedFromStorage =
       localStorage.getItem("vCellUndosAllowed") || "Infinity";
@@ -122,9 +121,9 @@ const LocalStorageServerHelper = observer(() => {
     localStorage.setItem("vCellLayout", appState.layoutName);
   }, [appState.layoutName]);
 
-  // useEffect(() => {
-  //   localStorage.setItem("vCellTheme", appState.themeName);
-  // }, [appState.themeName]);
+  useEffect(() => {
+    localStorage.setItem("vCellTheme", appState.themeName);
+  }, [appState.themeName]);
 
   useEffect(() => {
     localStorage.setItem(
