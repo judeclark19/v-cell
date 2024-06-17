@@ -19,7 +19,7 @@ export const cardSizes = {
     height: 100,
     width: 75,
     spotPadding: 6,
-    top: 1.5,
+    top: 1,
     offset: 33,
     shadowSize: 4,
     confettiSize: 60,
