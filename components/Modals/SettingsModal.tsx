@@ -164,26 +164,24 @@ const SettingsModal = observer(() => {
                 Show
               </div>
             </div>
-            {process.env.NODE_ENV === "development" && (
-              <SettingSelect>
-                <label htmlFor="theme-select">
-                  <span className="label-text">Theme</span>
-                  <select
-                    id="theme-select"
-                    className={questrial.className}
-                    value={appState.themeName}
-                    onChange={(e) => {
-                      appState.setTheme(e.target.value as theme);
-                      document.body.className = e.target.value;
-                    }}
-                  >
-                    <option value="poker">Poker</option>
-                    <option value="times-light">Times Light</option>
-                    <option value="times-dark">Times Dark</option>
-                  </select>
-                </label>
-              </SettingSelect>
-            )}
+            <SettingSelect>
+              <label htmlFor="theme-select">
+                <span className="label-text">Theme</span>
+                <select
+                  id="theme-select"
+                  className={questrial.className}
+                  value={appState.themeName}
+                  onChange={(e) => {
+                    appState.setTheme(e.target.value as theme);
+                    document.body.className = e.target.value;
+                  }}
+                >
+                  <option value="poker">Poker</option>
+                  <option value="times-light">Times Light</option>
+                  <option value="times-dark">Times Dark</option>
+                </select>
+              </label>
+            </SettingSelect>
           </div>
         </div>
 
