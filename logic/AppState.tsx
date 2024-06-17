@@ -52,7 +52,7 @@ export class AppState {
   moveEvaluator = new MoveEvaluator(this);
 
   constructor(
-    layoutName: boardLayout = "tripleV",
+    layoutName: boardLayout = "classic",
     themeName: theme = "classic"
   ) {
     this.layoutName = layoutName;

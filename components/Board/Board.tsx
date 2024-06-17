@@ -4,10 +4,9 @@ import {
   ControlsBar,
   GameControlButtons,
   HeaderImage,
-  HowToPlay,
   WoodenBorder
 } from "./Board.styles";
-import headerImage from "@/assets/images/v-cell_header1.png";
+import headerImage from "@/assets/images/v-cell_header_trim.png";
 import Image from "next/image";
 import appState from "@/logic/AppState";
 import { observer } from "mobx-react-lite";
@@ -24,7 +23,7 @@ import {
   SettingsModal,
   WinModal
 } from "../Modals";
-import { FaCog, FaInfoCircle, FaTrophy } from "react-icons/fa";
+import { FaCog, FaTrophy, FaQuestionCircle } from "react-icons/fa";
 import { Luckiest_Guy, Questrial, Poppins } from "next/font/google";
 import {
   handlePointerDown,
@@ -32,7 +31,6 @@ import {
   handlePointerUp
 } from "@/logic/UIFunctions";
 import LocalStorageServerHelper from "@/logic/LocalStorageServerHelper";
-import TimerUI from "./TimerUI";
 import { ModalName } from "@/logic/types";
 import Loader from "../Loader";
 
@@ -98,15 +96,23 @@ const Board = observer(() => {
   if (isLoading) {
     return (
       <>
-        <HeaderImage>
-          <Image
-            src={headerImage}
-            width={1700}
-            height={400}
-            alt="V-Cell header image"
-            priority
-          />
-        </HeaderImage>
+        <div
+          style={{
+            padding: "20px",
+            display: "flex",
+            justifyContent: "center"
+          }}
+        >
+          <HeaderImage>
+            <Image
+              src={headerImage}
+              width={1700}
+              height={400}
+              alt="V-Cell header image"
+              priority
+            />
+          </HeaderImage>
+        </div>
         <Loader />
       </>
     );
@@ -117,60 +123,59 @@ const Board = observer(() => {
       {/* <GameTitle className={luckyGuy.className}>V-Cell</GameTitle>
        */}
       <LocalStorageServerHelper />
-      <HeaderImage>
-        <Image
-          src={headerImage}
-          width={1700}
-          height={400}
-          alt="V-Cell header image"
-          priority
-        />
-      </HeaderImage>
 
       <ControlsBar>
-        <HowToPlay
-          className={questrial.className}
-          onClick={() => {
-            for (let modal in appState.modals) {
-              if (modal === "instructions") {
-                appState.modals[modal as ModalName].open();
-              } else appState.modals[modal as ModalName].close();
-            }
-          }}
-          $isInstructionsModalOpen={appState.modals.instructions.isOpen}
-        >
-          <span>How to play</span> <FaInfoCircle className="info-icon" />
-        </HowToPlay>
-        <div className="hs-and-settings">
-          <button
-            aria-label="High Scores"
-            onClick={() => {
-              for (let modal in appState.modals) {
-                if (modal === "highScores") {
-                  appState.modals[modal as ModalName].open();
-                } else appState.modals[modal as ModalName].close();
-              }
-            }}
-          >
-            <FaTrophy />
-          </button>
-          <button
-            aria-label="Settings"
-            onClick={() => {
-              for (let modal in appState.modals) {
-                if (modal === "settings") {
-                  appState.modals[modal as ModalName].open();
-                } else appState.modals[modal as ModalName].close();
-              }
-            }}
-          >
-            <FaCog />
-          </button>
+        <div>
+          <HeaderImage>
+            <Image
+              src={headerImage}
+              width={1700}
+              height={400}
+              alt="V-Cell header image"
+              priority
+            />
+          </HeaderImage>
+          <div className="hs-and-settings">
+            <button
+              aria-label="How to play"
+              onClick={() => {
+                for (let modal in appState.modals) {
+                  if (modal === "instructions") {
+                    appState.modals[modal as ModalName].open();
+                  } else appState.modals[modal as ModalName].close();
+                }
+              }}
+            >
+              <FaQuestionCircle className="info-icon" />
+            </button>
+            <button
+              aria-label="High Scores"
+              onClick={() => {
+                for (let modal in appState.modals) {
+                  if (modal === "highScores") {
+                    appState.modals[modal as ModalName].open();
+                  } else appState.modals[modal as ModalName].close();
+                }
+              }}
+            >
+              <FaTrophy />
+            </button>
+            <button
+              aria-label="Settings"
+              onClick={() => {
+                for (let modal in appState.modals) {
+                  if (modal === "settings") {
+                    appState.modals[modal as ModalName].open();
+                  } else appState.modals[modal as ModalName].close();
+                }
+              }}
+            >
+              <FaCog />
+            </button>
+          </div>
         </div>
       </ControlsBar>
-      <WoodenBorder>
-        <TimerUI />
-
+      <WoodenBorder $theme={appState.themeName}>
         <BoardContainer
           $isModalOpen={
             // some modal is open
@@ -190,9 +195,7 @@ const Board = observer(() => {
             <CardsBeingDragged dragPosition={dragPosition} />
           )}
           <FoundationsUI />
-          <div className="scroll">
-            <TableauUI />
-          </div>
+          <TableauUI />
           <HandUI />
         </BoardContainer>
       </WoodenBorder>
@@ -232,18 +235,28 @@ const Board = observer(() => {
         </button>
 
         {process.env.NODE_ENV !== "production" && (
-          <button
-            onClick={() => {
-              appState.setIsWinningBoard(true);
-              for (let modal in appState.modals) {
-                if (modal === "win") {
-                  appState.modals[modal as ModalName].open();
-                } else appState.modals[modal as ModalName].close();
-              }
-            }}
-          >
-            win
-          </button>
+          <>
+            <button
+              onClick={() => {
+                appState.setIsWinningBoard(true);
+                for (let modal in appState.modals) {
+                  if (modal === "win") {
+                    appState.modals[modal as ModalName].open();
+                  } else appState.modals[modal as ModalName].close();
+                }
+              }}
+            >
+              win
+            </button>
+            <br />
+            <button
+              onClick={() => {
+                appState.setIsWinningBoard(!appState.winningBoard);
+              }}
+            >
+              toggle autocomplete
+            </button>
+          </>
         )}
       </GameControlButtons>
     </>

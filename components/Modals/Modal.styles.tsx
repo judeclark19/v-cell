@@ -31,7 +31,7 @@ export const ModalStyle = styled.div<{
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 100;
   display: grid;
   place-items: center;
@@ -43,7 +43,7 @@ export const ModalStyle = styled.div<{
   }
 
   > div {
-    background-color: black;
+    background-color: var(--modal-background-color);
     border-radius: 12px;
     animation: ${(props) =>
       props.$isClosing
@@ -181,13 +181,13 @@ export const InstructionsModalStyle = styled.div`
 
 export const SettingsModalStyle = styled.div`
   .settings-section {
-    background-color: #222;
+    background-color: var(--settings-section-background);
     padding: 1rem;
     border-radius: 8px;
 
     h2 {
       padding-bottom: 0.5rem;
-      border-bottom: 3px solid white;
+      border-bottom: 3px solid var(--settings-section-divider);
     }
 
     .dropdowns {

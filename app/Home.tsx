@@ -16,9 +16,10 @@ const PageWrapper = styled.div`
 
 const Footer = styled.footer`
   padding: 40px;
-  color: white;
+  color: var(--textColor);
   margin-top: 10px;
-  background-color: #1c5f3d;
+  background-color: var(--footer-background-color);
+  border-top: 1px solid var(--header-footer-border-color);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -69,7 +70,6 @@ const Footer = styled.footer`
 export default function Home() {
   return (
     <PageWrapper>
-      <metadata />
       <RecoilRoot>
         <TapAnimation />
         <div className="flex-grow">

@@ -6,13 +6,12 @@ import FoundationUI from "./FoundationUI";
 import { foundationKeys } from "@/logic/types";
 import { useRecoilValue } from "recoil";
 import { cardSizeState } from "@/logic/RecoilAtoms";
-import { questrial } from "../Board";
 import {
-  AutocompleteDiv,
-  FoundationFlex,
-  FoundationsStyle
+  Filler,
+  FoundationsStyle,
+  TimerPosition
 } from "./FoundationsUI.styles";
-import { throwConfetti } from "@/logic/UIFunctions";
+import TimerUI from "../TimerUI";
 
 const FoundationsUI = observer(() => {
   const foundations = appState.currentBoard.foundations;
@@ -21,39 +20,15 @@ const FoundationsUI = observer(() => {
   return (
     <>
       <FoundationsStyle>
-        <AutocompleteDiv>
-          {appState.winningBoard && (
-            <button
-              style={{
-                backgroundColor: "#33d849",
-                borderColor: "#33d849"
-              }}
-              className={questrial.className}
-              disabled={!appState.canAutoComplete}
-              onClick={() => {
-                appState.autoComplete();
-                throwConfetti(cardSize);
-              }}
-            >
-              Autocomplete
-            </button>
-          )}
-          {process.env.NODE_ENV !== "production" && (
-            <button
-              onClick={() => {
-                throwConfetti(cardSize);
-              }}
-            >
-              confetti
-            </button>
-          )}
-        </AutocompleteDiv>
-
-        <FoundationFlex $cardSize={cardSize}>
-          {foundationKeys.map((key) => {
-            return <FoundationUI key={key} foundationData={foundations[key]} />;
-          })}
-        </FoundationFlex>
+        <Filler $cardSize={cardSize} />
+        <Filler $cardSize={cardSize} />
+        <Filler $cardSize={cardSize} />
+        <TimerPosition>
+          <TimerUI />
+        </TimerPosition>
+        {foundationKeys.map((key) => {
+          return <FoundationUI key={key} foundationData={foundations[key]} />;
+        })}
       </FoundationsStyle>
     </>
   );

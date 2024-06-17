@@ -164,24 +164,25 @@ const SettingsModal = observer(() => {
                 Show
               </div>
             </div>
-            <SettingSelect>
-              {/* undo settings */}
-              <label htmlFor="theme-select">
-                <span className="label-text">Theme</span>
-                <select
-                  id="theme-select"
-                  className={questrial.className}
-                  value={appState.themeName}
-                  onChange={(e) => {
-                    appState.setTheme(e.target.value as theme);
-                    document.body.className = e.target.value;
-                  }}
-                >
-                  <option value="classic">Classic</option>
-                  <option value="times">Times</option>
-                </select>
-              </label>
-            </SettingSelect>
+            {process.env.NODE_ENV === "development" && (
+              <SettingSelect>
+                <label htmlFor="theme-select">
+                  <span className="label-text">Theme</span>
+                  <select
+                    id="theme-select"
+                    className={questrial.className}
+                    value={appState.themeName}
+                    onChange={(e) => {
+                      appState.setTheme(e.target.value as theme);
+                      document.body.className = e.target.value;
+                    }}
+                  >
+                    <option value="classic">Classic</option>
+                    <option value="times">Times</option>
+                  </select>
+                </label>
+              </SettingSelect>
+            )}
           </div>
         </div>
 

@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { cardSizeType, cardSizes } from "../Card/CardUI.styles";
 import wood from "@/assets/images/wood.webp";
+import { theme } from "@/logic/types";
 
 export const GameTitle = styled.h1`
   width: 100%;
-  color: white;
+  color: var(--textColor);
   text-align: center;
   margin-top: 40px;
   margin-bottom: 20px;
@@ -18,56 +19,45 @@ export const GameTitle = styled.h1`
 `;
 
 export const HeaderImage = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 30px auto 0 auto;
-  width: calc(100vw - 20px);
-  max-width: 1100px;
   border-radius: 4px;
   img {
-    width: 100%;
-    max-width: 700px;
-    height: auto;
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    max-height: 60px;
   }
 `;
 
 export const ControlsBar = styled.div`
-  padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  max-width: 600px;
-  margin: 0 auto 30px auto;
+  padding: 20px;
+  border-bottom: 1px solid var(--header-footer-border-color);
+  width: 100%;
+  margin-bottom: 1.5rem;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    gap: 1rem;
+  }
 
   .hs-and-settings {
     display: flex;
     gap: 1rem;
 
     button {
-      padding: 8px 8px 6px 8px;
-      background-color: transparent;
-      border: 2px outset #1b3427;
-    }
-  }
-`;
-
-export const HowToPlay = styled.div<{
-  $isInstructionsModalOpen: boolean;
-}>`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  opacity: ${(props) => (props.$isInstructionsModalOpen ? "0.5" : "1")};
-  ${(props) => (props.$isInstructionsModalOpen ? "pointer-events: none;" : "")}
-
-  &:hover {
-    cursor: pointer;
-    span {
-      text-decoration: underline;
-      color: var(--gold);
-    }
-
-    .info-icon {
-      color: var(--gold);
+      height: 40px;
+      width: 40px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--control-button-background);
+      color: var(--control-button-color);
+      border: 2px outset var(--control-button-border);
     }
   }
 `;
@@ -91,15 +81,19 @@ export const GameControlButtons = styled.div`
   }
 `;
 
-export const WoodenBorder = styled.div`
-  background-image: url(${wood.src});
+export const WoodenBorder = styled.div<{
+  $theme: theme;
+}>`
+  background-image: ${(props) =>
+    props.$theme === "classic" ? `url(${wood.src})` : "none"};
   background-size: cover;
   width: fit-content;
   margin: auto;
   box-sizing: border-box;
-  padding: 4px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
+  padding: var(--board-border-width);
+  border-radius: var(--board-border-radius);
+  box-shadow: var(--board-box-shadow);
+  background-color: var(--board-border-color);
 `;
 
 export const BoardContainer = styled.div<{
@@ -107,7 +101,7 @@ export const BoardContainer = styled.div<{
   $cardSize: cardSizeType;
 }>`
   user-select: none;
-  padding: 20px;
+  padding: 20px 10px;
   background-color: var(--page-background);
   box-sizing: border-box;
   width: ${(props) => {
@@ -139,26 +133,19 @@ export const BoardContainer = styled.div<{
   margin: auto;
   display: flex;
   flex-direction: column;
-  border-radius: 4px;
+  border-radius: var(--board-border-radius);
   position: ${(props) => (props.$isModalOpen ? "relative" : "static")};
 
   @media screen and (max-width: 768px) {
     gap: 10px;
     min-height: fit-content;
   }
-
-  .scroll {
-    background-color: #487860;
-    border-radius: 4px;
-    overflow-y: auto;
-    padding: 10px;
-  }
 `;
 
 export const Spot = styled.div<{
   $size: cardSizeType;
 }>`
-  border: 2px solid var(--goldAlpha);
+  border: 2px solid var(--card-spot-border-color);
   border-radius: 5px;
   height: ${(props) =>
     cardSizes[props.$size].height + cardSizes[props.$size].spotPadding}px;
@@ -186,6 +173,6 @@ export const Spot = styled.div<{
           return "28px";
       }
     }};
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--card-spot-label-color);
   }
 `;

@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import { Spot } from "../Board.styles";
-import { cardSizeType } from "@/components/Card/CardUI.styles";
+import { cardSizeType, cardSizes } from "@/components/Card/CardUI.styles";
 
 export const FoundationsStyle = styled.div`
   display: flex;
+  justify-content: space-between;
+  padding: 0px 10px;
+  position: relative;
 
   ${Spot} {
     display: grid;
@@ -11,19 +14,22 @@ export const FoundationsStyle = styled.div`
   }
 `;
 
-export const AutocompleteDiv = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
+export const TimerPosition = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 
-export const FoundationFlex = styled.div<{
+export const Filler = styled.div<{
   $cardSize: cardSizeType;
 }>`
-  display: flex;
-  gap: ${(props) => {
-    if (props.$cardSize === "large" || props.$cardSize === "medium") {
-      return "50px";
-    } else return "10px";
-  }};
+  height: ${(props) =>
+    `${
+      cardSizes[props.$cardSize].height + cardSizes[props.$cardSize].spotPadding
+    }px`};
+  width: ${(props) =>
+    `${
+      cardSizes[props.$cardSize].width + cardSizes[props.$cardSize].spotPadding
+    }px`};
+  pointer-events: none;
 `;
