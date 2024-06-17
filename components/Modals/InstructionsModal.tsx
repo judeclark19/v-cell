@@ -4,7 +4,7 @@ import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 
 import { GameControlButtons, GameTitle } from "../Board/Board.styles";
-import { alfaSlabOne, luckyGuy, poppins } from "../Board/Board";
+import { alfaSlabOne, luckyGuy, poppins, questrial } from "../Board/Board";
 
 const InstructionsModal = observer(() => {
   const [slideNumber, setSlideNumber] = useState(0);
