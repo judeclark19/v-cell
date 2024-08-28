@@ -55,7 +55,7 @@ export const ModalStyle = styled.div<{
           `};
     transform-origin: center;
     padding: 30px;
-    padding-top: 0px;
+    /* padding-top: 0px; */
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.2);
@@ -76,8 +76,8 @@ export const ModalStyle = styled.div<{
   .modal-close {
     cursor: pointer;
     position: absolute;
-    right: 18px;
-    top: 18px;
+    right: 16px;
+    top: 14px;
     font-size: 28px;
     opacity: 0.7;
     transition: all 150ms ease-in-out;
