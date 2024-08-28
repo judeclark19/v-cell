@@ -15,5 +15,7 @@
   ],
   "theme_color": "#ef3e56",
   "background_color": "#35654d",
-  "display": "standalone"
+  "display": "standalone",
+  "start_url": "/",
+  "description": "Game concept by Jim Fox - Web app by Jude Clark"
 }

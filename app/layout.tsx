@@ -11,7 +11,6 @@ export default async function RootLayout({
 }) {
   const cookieStore = cookies();
   const theme = cookieStore.get("theme")?.value || "poker";
-  console.log(theme);
   return (
     <html>
       <body className={theme}>{children}</body>
