@@ -55,7 +55,6 @@ export const ModalStyle = styled.div<{
           `};
     transform-origin: center;
     padding: 30px;
-    /* padding-top: 0px; */
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.2);
