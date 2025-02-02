@@ -80,7 +80,7 @@ export default function Home() {
       <Footer className={questrial.className}>
         <div className="top">
           <div>
-            A 2023-2024&nbsp;
+            A 2023-2025&nbsp;
             <strong>
               <a href="https://github.com/judeclark19">Code Couture</a>
             </strong>
@@ -96,7 +96,7 @@ export default function Home() {
             </strong>
           </div>
         </div>
-        <div className="bottom">Last updated August 28, 2024</div>
+        <div className="bottom">Last updated February 1, 2025</div>
       </Footer>
     </PageWrapper>
   );

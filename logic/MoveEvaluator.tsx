@@ -267,6 +267,11 @@ class MoveEvaluator {
     const targetFoundation =
       this.appState.currentBoard.foundations[foundationKey];
 
+    if (card.value === "A" && targetFoundation.arrayOfCards.length > 0) {
+      // if cards is Ace and foundation is not empty, return
+      return false;
+    }
+
     if (card.value !== "A" && targetFoundation.arrayOfCards.length === 0) {
       // only aces can be moved to empty foundations
       return false;
@@ -395,6 +400,11 @@ class MoveEvaluator {
     if (!foundationKey) return;
     const targetFoundation =
       this.appState.currentBoard.foundations[foundationKey];
+
+    if (card.value === "A" && targetFoundation.arrayOfCards.length > 0) {
+      // if cards is Ace and foundation is not empty, return
+      return false;
+    }
 
     if (card.value !== "A" && targetFoundation.arrayOfCards.length === 0) {
       // only aces can be moved to empty foundations

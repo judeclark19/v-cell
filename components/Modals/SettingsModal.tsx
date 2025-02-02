@@ -37,7 +37,7 @@ const SettingsModal = observer(() => {
   }, []);
 
   function getFirstWinDate() {
-    const date = new Date(winHistory[0]);
+    const date = new Date(winHistory[0].date);
 
     const optionsDate: Intl.DateTimeFormatOptions = {
       year: "numeric",
