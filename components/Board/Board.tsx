@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   BoardContainer,
+  BoardWrapper,
   ControlsBar,
   GameControlButtons,
   HeaderImage,
@@ -128,7 +129,7 @@ const Board = observer(() => {
   }
 
   return (
-    <>
+    <BoardWrapper>
       {/* <GameTitle className={
               appState.themeName === "poker"
                 ? luckyGuy.className
@@ -272,7 +273,7 @@ const Board = observer(() => {
           </>
         )}
       </GameControlButtons>
-    </>
+    </BoardWrapper>
   );
 });
 

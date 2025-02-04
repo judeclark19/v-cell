@@ -11,7 +11,7 @@ export const calculateCardSize = (
   windowHeight: number
 ) => {
   if (windowHeight < 700 || windowWidth < 700) return "tiny";
-  else if (windowHeight < 900 || windowWidth < 900) return "small";
-  else if (windowHeight < 1200 || windowWidth < 1200) return "medium";
+  else if (windowHeight < 1100 || windowWidth < 1100) return "small";
+  else if (windowHeight < 1400 || windowWidth < 1400) return "medium";
   else return "large";
 };

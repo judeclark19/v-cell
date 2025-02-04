@@ -49,6 +49,18 @@ const HighScoresModal = observer(() => {
     return sortedWinHistory;
   }
 
+  function getWinRatio() {
+    const winRatioFromStorage = JSON.parse(
+      localStorage.getItem("vCellWinRatio")!
+    );
+
+    return winRatioFromStorage.totalGames === 0
+      ? "0%"
+      : `${Math.round(
+          (winRatioFromStorage.wins / winRatioFromStorage.totalGames) * 100
+        )}%`;
+  }
+
   useEffect(() => {
     const modalShade = document.querySelector(".modal-shade");
     modalShade?.addEventListener("click", (e) => {
@@ -99,13 +111,28 @@ const HighScoresModal = observer(() => {
               : alfaSlabOne.className
           }
         >
-          Fastest Games
+          Win Stats
         </GameTitle>
+
+        <div className={poppins.className} style={{ fontSize: "20px" }}>
+          Your ratio of games won to games started is {""}
+          <span>
+            <strong
+              style={{
+                color: "var(--gold)"
+              }}
+            >
+              {getWinRatio()}
+            </strong>
+          </span>
+        </div>
 
         {/* dropdown select layout */}
         <SettingSelect style={{ margin: "0.8rem auto" }}>
           <label htmlFor="layout-select" style={{ justifyContent: "center" }}>
-            <span className={questrial.className}>Layout</span>
+            <span className={questrial.className}>
+              Choose layout to see fastest games:
+            </span>
             <select
               id="
               -select"

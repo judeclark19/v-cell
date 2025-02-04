@@ -180,6 +180,21 @@ const LocalStorageServerHelper = observer(() => {
     appState.modals.highScores.isOpen
   ]);
 
+  useEffect(() => {
+    const winRatioFromStorage = JSON.parse(
+      localStorage.getItem("vCellWinRatio") || '{"wins": 0, "totalGames": 0}'
+    );
+
+    if (appState.gameHasStarted) {
+      winRatioFromStorage.totalGames++;
+    }
+    if (appState.winningBoard) {
+      winRatioFromStorage.wins++;
+    }
+
+    localStorage.setItem("vCellWinRatio", JSON.stringify(winRatioFromStorage));
+  }, [appState.gameHasStarted, appState.winningBoard]);
+
   return null;
 });
 

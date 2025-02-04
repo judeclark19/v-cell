@@ -311,7 +311,7 @@ export const SettingSelect = styled.div`
 
   label {
     display: flex;
-    gap: 30px;
+    gap: 1rem;
     justify-content: space-between;
     align-items: center;
     width: 100%;

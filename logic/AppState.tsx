@@ -34,6 +34,7 @@ export class AppState {
     tableau: new Tableau(),
     hand: new Hand()
   };
+  gameHasStarted = false;
 
   history: BoardType[] = [];
   cardsBeingTouched: CardClass[] | null = null;
@@ -123,6 +124,7 @@ export class AppState {
     this.timer.clearInterval();
     this.canAutoComplete = false;
     this.moveEvaluator.setUndosUsed(0);
+    this.gameHasStarted = false;
     for (let modal in this.modals) {
       if (modal !== "settings") {
         this.modals[modal as ModalName].close();
@@ -183,6 +185,7 @@ export class AppState {
       !fromStorage
     ) {
       this.winCount++;
+      this.gameHasStarted = false;
     }
 
     if (isWinningBoard) {
@@ -228,6 +231,7 @@ export class AppState {
     if (prevLength === 0 && newLength === 1) {
       // first move
       this.timer.startInterval();
+      this.gameHasStarted = true;
     }
   }
 

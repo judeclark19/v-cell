@@ -7,7 +7,7 @@ export const GameTitle = styled.h1`
   width: 100%;
   color: var(--textColor);
   text-align: center;
-  margin: 40px auto;
+  margin: 20px auto 0px auto;
   font-size: 60px;
 
   @media screen and (max-width: 992px) {
@@ -27,6 +27,15 @@ export const HeaderImage = styled.div`
   }
 `;
 
+export const BoardWrapper = styled.div`
+  @media screen and (orientation: landscape) {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-top: 2rem;
+    gap: 1rem;
+  }
+`;
+
 export const ControlsBar = styled.div`
   padding: 20px;
   border-bottom: 1px solid var(--header-footer-border-color);
@@ -41,6 +50,9 @@ export const ControlsBar = styled.div`
     max-width: 500px;
     margin: auto;
     gap: 1rem;
+    @media screen and (orientation: landscape) {
+      flex-direction: column;
+    }
   }
 
   .hs-and-settings {
@@ -67,6 +79,12 @@ export const GameControlButtons = styled.div`
   justify-content: center;
   gap: 40px;
   margin: 40px auto;
+
+  @media screen and (orientation: landscape) {
+    align-items: unset;
+    flex-wrap: wrap;
+    height: fit-content;
+  }
 
   @media screen and (max-width: 992px) {
     gap: 20px;
