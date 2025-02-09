@@ -114,7 +114,10 @@ const HighScoresModal = observer(() => {
           Win Stats
         </GameTitle>
 
-        <div className={poppins.className} style={{ fontSize: "20px" }}>
+        <div
+          className={poppins.className}
+          style={{ fontSize: "16px", textAlign: "center" }}
+        >
           Your ratio of games won to games started is {""}
           <span>
             <strong
@@ -167,7 +170,7 @@ const HighScoresModal = observer(() => {
               className={poppins.className}
               style={{
                 marginBottom: "1rem",
-                fontSize: "20px",
+                fontSize: "18px",
                 textAlign: "center"
               }}
             >

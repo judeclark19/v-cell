@@ -3,7 +3,7 @@ import { GameControlButtons, GameTitle } from "../Board/Board.styles";
 import appState from "@/logic/AppState";
 import { useEffect, useState } from "react";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
-import { alfaSlabOne, luckyGuy, questrial } from "../Board/Board";
+import { alfaSlabOne, luckyGuy, poppins, questrial } from "../Board/Board";
 import { formatTime } from "@/logic/UIFunctions";
 
 const WinModal = observer(() => {
@@ -11,7 +11,17 @@ const WinModal = observer(() => {
     ? JSON.parse(localStorage.getItem("vCellWinHistory") as string)
     : [];
   const [isClosing, setIsClosing] = useState(false);
+  function getWinRatio() {
+    const winRatioFromStorage = JSON.parse(
+      localStorage.getItem("vCellWinRatio")!
+    );
 
+    return winRatioFromStorage.totalGames === 0
+      ? "0%"
+      : `${Math.round(
+          (winRatioFromStorage.wins / winRatioFromStorage.totalGames) * 100
+        )}%`;
+  }
   useEffect(() => {
     const modalShade = document.querySelector(".modal-shade");
     modalShade?.addEventListener("click", (e) => {
@@ -70,6 +80,19 @@ const WinModal = observer(() => {
               {winHistory.length === 1 ? "game" : "games"} of V-Cell&nbsp;
             </span>
             <span>on this device.</span>
+          </p>
+          <p>
+            {" "}
+            Your ratio of games won to games started is {""}
+            <span>
+              <strong
+                style={{
+                  color: "var(--gold)"
+                }}
+              >
+                {getWinRatio()}
+              </strong>
+            </span>
           </p>
         </div>
         <GameControlButtons>
