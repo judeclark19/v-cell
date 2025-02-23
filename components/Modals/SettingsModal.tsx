@@ -36,26 +36,6 @@ const SettingsModal = observer(() => {
     };
   }, []);
 
-  function getFirstWinDate() {
-    const date = new Date(winHistory[0].date);
-
-    const optionsDate: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    };
-    const optionsTime: Intl.DateTimeFormatOptions = {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true
-    };
-    const formattedDate = date.toLocaleDateString("en-US", optionsDate);
-    const formattedTime = date.toLocaleTimeString("en-US", optionsTime);
-
-    const combinedDateTime = `${formattedDate} at ${formattedTime}`;
-    return combinedDateTime;
-  }
-
   return (
     <ModalStyle className="modal-shade" $isClosing={isClosing}>
       <SettingsModalStyle className={questrial.className}>
@@ -192,26 +172,6 @@ const SettingsModal = observer(() => {
             </SettingSelect>
           </div>
         </div>
-
-        <button
-          className={`reset ${questrial.className}`}
-          style={{ color: "white" }}
-          disabled={winHistory.length === 0}
-          onClick={() => {
-            const confirm = window.confirm(
-              `You have won ${
-                winHistory.length
-              } games of V-Cell on this device since ${getFirstWinDate()}.\nAre you sure you want to reset your win count?`
-            );
-            if (!confirm) return;
-            localStorage.removeItem("vCellWinHistory");
-          }}
-        >
-          Reset win count
-        </button>
-        <button className={questrial.className} onClick={closeModal}>
-          Close settings
-        </button>
       </SettingsModalStyle>
     </ModalStyle>
   );
