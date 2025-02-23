@@ -14,8 +14,19 @@ import { boardLayout } from "@/logic/types";
 const HighScoresModal = observer(() => {
   const [isClosing, setIsClosing] = useState(false);
   const [history, setHistory] = useState<any[]>([]);
+  const [winRatio, setWinRatio] = useState<{
+    percent: string;
+    wins: number;
+    totalGames: number;
+  }>({
+    percent: "0%",
+    wins: 0,
+    totalGames: 0
+  });
   const [layout, setLayout] = useState<boardLayout | "all">("all");
-
+  const winHistory = localStorage.getItem("vCellWinHistory")
+    ? JSON.parse(localStorage.getItem("vCellWinHistory") as string)
+    : [];
   function getWins() {
     // fetch history
     const winHistory = localStorage.getItem("vCellWinHistory")
@@ -23,9 +34,6 @@ const HighScoresModal = observer(() => {
       : [];
 
     const sortedWinHistory = winHistory
-      // .filter((win: any) => {
-      //   return win.date;
-      // })
       .filter((win: any) => {
         if (layout === "all") return true;
         else return win.layout === layout;
@@ -50,15 +58,16 @@ const HighScoresModal = observer(() => {
   }
 
   function getWinRatio() {
-    const winRatioFromStorage = JSON.parse(
+    const { wins, totalGames } = JSON.parse(
       localStorage.getItem("vCellWinRatio")!
     );
 
-    return winRatioFromStorage.totalGames === 0
-      ? "0%"
-      : `${Math.round(
-          (winRatioFromStorage.wins / winRatioFromStorage.totalGames) * 100
-        )}%`;
+    return {
+      percent:
+        totalGames === 0 ? "0%" : `${Math.round((wins / totalGames) * 100)}%`,
+      wins,
+      totalGames
+    };
   }
 
   useEffect(() => {
@@ -76,6 +85,7 @@ const HighScoresModal = observer(() => {
     });
 
     setHistory(getWins());
+    setWinRatio(getWinRatio());
 
     //cleanup
     return () => {
@@ -86,6 +96,26 @@ const HighScoresModal = observer(() => {
   useEffect(() => {
     setHistory(getWins());
   }, [layout]);
+
+  function getFirstWinDate() {
+    const date = new Date(winHistory[0].date);
+
+    const optionsDate: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    };
+    const optionsTime: Intl.DateTimeFormatOptions = {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true
+    };
+    const formattedDate = date.toLocaleDateString("en-US", optionsDate);
+    const formattedTime = date.toLocaleTimeString("en-US", optionsTime);
+
+    const combinedDateTime = `${formattedDate} at ${formattedTime}`;
+    return combinedDateTime;
+  }
 
   return (
     <ModalStyle className="modal-shade" $isClosing={isClosing}>
@@ -125,7 +155,7 @@ const HighScoresModal = observer(() => {
                 color: "var(--gold)"
               }}
             >
-              {getWinRatio()}
+              {winRatio.percent}
             </strong>
           </span>
         </div>
@@ -158,7 +188,9 @@ const HighScoresModal = observer(() => {
           <div
             className={questrial.className}
             style={{
-              textAlign: "center"
+              textAlign: "center",
+              marginTop: "1rem",
+              marginBottom: "1rem"
             }}
           >
             No {getBoardLayoutDisplayName(layout)} games won yet
@@ -209,6 +241,56 @@ const HighScoresModal = observer(() => {
             </table>
           </>
         )}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            marginTop: "1rem"
+          }}
+        >
+          <button
+            className={`danger ${questrial.className}`}
+            disabled={winRatio.totalGames === 0 && winRatio.wins === 0}
+            onClick={() => {
+              const confirm = window.confirm(
+                `\nYou have won ${winRatio.wins} of the last ${
+                  winRatio.totalGames
+                } ${winRatio.totalGames === 1 ? "game" : "games"}.
+              \nAre you sure you want set your win ratio back to zero and start measuring again?
+              \nThis will NOT delete your entire win history.`
+              );
+              if (!confirm) return;
+              localStorage.removeItem("vCellWinRatio");
+              setWinRatio({
+                percent: "0%",
+                wins: 0,
+                totalGames: 0
+              });
+            }}
+          >
+            Reset win ratio
+          </button>
+          <button
+            className={`danger ${questrial.className}`}
+            disabled={winHistory.length === 0}
+            onClick={() => {
+              const confirm = window.confirm(
+                `You have won ${
+                  winHistory.length
+                } games of V-Cell on this device since ${getFirstWinDate()}.
+              \nAre you sure you want to reset your entire win history?`
+              );
+              if (!confirm) return;
+              console.log("Delete history");
+              localStorage.removeItem("vCellWinHistory");
+              localStorage.removeItem("vCellWinRatio");
+              setHistory([]);
+            }}
+          >
+            Delete history
+          </button>
+        </div>
       </HighScoresModalStyle>
     </ModalStyle>
   );

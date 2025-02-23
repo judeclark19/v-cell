@@ -227,13 +227,6 @@ export const SettingsModalStyle = styled.div`
     }
   }
 
-  .reset {
-    margin: 30px auto 10px auto;
-    background-color: var(--red);
-    border-color: var(--red);
-    width: 100%;
-  }
-
   // https://www.w3schools.com/howto/howto_css_switch.asp
   .timer-toggle {
     display: flex;
@@ -362,5 +355,10 @@ export const HighScoresModalStyle = styled.div`
     td {
       padding: 8px;
     }
+  }
+  .danger {
+    background-color: var(--red);
+    border-color: var(--red);
+    color: white;
   }
 `;
