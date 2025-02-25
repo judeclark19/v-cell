@@ -227,26 +227,41 @@ const Board = observer(() => {
         >
           Deal again
         </button>
-        <button
-          style={{
-            backgroundColor: "var(--red)",
-            borderColor: "var(--red)"
-          }}
-          className={questrial.className}
-          disabled={appState.moveEvaluator.getIsUndoButtonDisabled()}
-          onClick={() => {
-            appState.undo();
-          }}
-        >
-          Undo{" "}
-          {appState.moveEvaluator.undosAllowed > 0 &&
-          appState.moveEvaluator.undosAllowed !== Infinity
-            ? `(${
-                appState.moveEvaluator.undosAllowed -
-                appState.moveEvaluator.undosUsed
-              })`
-            : ""}
-        </button>
+        <div>
+          <button
+            style={{
+              backgroundColor: "var(--red)",
+              borderColor: "var(--red)"
+            }}
+            className={questrial.className}
+            disabled={appState.history.length === 0}
+            onClick={() => {
+              appState.reset();
+            }}
+          >
+            Reset
+          </button>
+          <button
+            style={{
+              backgroundColor: "var(--red)",
+              borderColor: "var(--red)"
+            }}
+            className={questrial.className}
+            disabled={appState.moveEvaluator.getIsUndoButtonDisabled()}
+            onClick={() => {
+              appState.undo();
+            }}
+          >
+            Undo{" "}
+            {appState.moveEvaluator.undosAllowed > 0 &&
+            appState.moveEvaluator.undosAllowed !== Infinity
+              ? `(${
+                  appState.moveEvaluator.undosAllowed -
+                  appState.moveEvaluator.undosUsed
+                })`
+              : ""}
+          </button>
+        </div>
 
         {process.env.NODE_ENV !== "production" && (
           <>

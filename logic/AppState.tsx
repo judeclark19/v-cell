@@ -255,6 +255,17 @@ export class AppState {
     this.restoreGameState(stateToRestore);
   }
 
+  reset() {
+    if (this.history.length === 0) return;
+    // undo all the way back to the beginning
+    while (this.history.length > 0) {
+      this.undo();
+    }
+    this.timer.clearInterval();
+    // set timer back to 0
+    this.timer.setTimeElapsed(0);
+  }
+
   restoreGameState(stateToRestore: BoardType) {
     // foundation
     foundationKeys.forEach((key) => {
