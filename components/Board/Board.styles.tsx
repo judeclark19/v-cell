@@ -77,24 +77,24 @@ export const GameControlButtons = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 40px;
+  gap: 1rem;
   margin: 40px auto;
 
   @media screen and (orientation: landscape) {
     align-items: unset;
     flex-wrap: wrap;
     height: fit-content;
+    padding-right: 1rem;
   }
 
   @media screen and (max-width: 992px) {
-    gap: 20px;
     margin: 20px auto;
   }
 
   > div {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 1rem;
   }
 `;
 
