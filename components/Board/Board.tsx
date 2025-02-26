@@ -225,7 +225,7 @@ const Board = observer(() => {
           }}
           disabled={appState.winningBoard && appState.canAutoComplete}
         >
-          Deal again
+          New deal
         </button>
         <div>
           <button
