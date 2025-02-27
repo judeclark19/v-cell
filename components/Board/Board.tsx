@@ -227,7 +227,14 @@ const Board = observer(() => {
         >
           New deal
         </button>
-        <div>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            flexWrap: "wrap",
+            justifyContent: "center"
+          }}
+        >
           <button
             style={{
               backgroundColor: "var(--red)",
@@ -239,7 +246,7 @@ const Board = observer(() => {
               appState.reset();
             }}
           >
-            Reset
+            Restart&nbsp;this&nbsp;deal
           </button>
           <button
             style={{
@@ -277,7 +284,6 @@ const Board = observer(() => {
             >
               win
             </button>
-            <br />
             <button
               onClick={() => {
                 appState.setIsWinningBoard(!appState.winningBoard);

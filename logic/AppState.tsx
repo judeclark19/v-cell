@@ -261,9 +261,6 @@ export class AppState {
     while (this.history.length > 0) {
       this.undo();
     }
-    this.timer.clearInterval();
-    // set timer back to 0
-    this.timer.setTimeElapsed(0);
   }
 
   restoreGameState(stateToRestore: BoardType) {
