@@ -241,7 +241,7 @@ const Board = observer(() => {
               borderColor: "var(--red)"
             }}
             className={questrial.className}
-            disabled={appState.history.length === 0}
+            disabled={appState.history.length === 0 || appState.winningBoard}
             onClick={() => {
               appState.reset();
             }}

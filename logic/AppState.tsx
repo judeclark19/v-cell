@@ -256,7 +256,7 @@ export class AppState {
   }
 
   reset() {
-    if (this.history.length === 0) return;
+    if (this.history.length === 0 || this.winningBoard) return;
     // undo all the way back to the beginning
     while (this.history.length > 0) {
       this.undo();
