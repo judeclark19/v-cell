@@ -11,6 +11,7 @@ const WinModal = observer(() => {
     ? JSON.parse(localStorage.getItem("vCellWinHistory") as string)
     : [];
   const [isClosing, setIsClosing] = useState(false);
+
   function getWinRatio() {
     const winRatioFromStorage = JSON.parse(
       localStorage.getItem("vCellWinRatio")!
@@ -22,6 +23,14 @@ const WinModal = observer(() => {
           (winRatioFromStorage.wins / winRatioFromStorage.totalGames) * 100
         )}%`;
   }
+
+  function getTotalGames() {
+    const winRatioFromStorage = JSON.parse(
+      localStorage.getItem("vCellWinRatio")!
+    );
+    return winRatioFromStorage ? winRatioFromStorage.totalGames : 0;
+  }
+
   useEffect(() => {
     const modalShade = document.querySelector(".modal-shade");
     modalShade?.addEventListener("click", (e) => {
@@ -82,8 +91,8 @@ const WinModal = observer(() => {
             <span>on this device.</span>
           </p>
           <p>
-            {" "}
-            Your ratio of games won to games started is {""}
+            In the last {getTotalGames()} games, your ratio of games won to
+            games started is {""}
             <span>
               <strong
                 style={{

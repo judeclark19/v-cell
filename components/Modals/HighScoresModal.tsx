@@ -148,7 +148,8 @@ const HighScoresModal = observer(() => {
           className={poppins.className}
           style={{ fontSize: "16px", textAlign: "center" }}
         >
-          Your ratio of games won to games started is {""}
+          In the last {winRatio.totalGames} games, your ratio of games won to
+          games started is {""}
           <span>
             <strong
               style={{
