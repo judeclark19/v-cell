@@ -10,6 +10,7 @@ import { luckyGuy, poppins, questrial, alfaSlabOne } from "../Board/Board";
 import { GameTitle } from "../Board/Board.styles";
 import { formatTime, getBoardLayoutDisplayName } from "@/logic/UIFunctions";
 import { boardLayout } from "@/logic/types";
+import { getWinRatio } from ".";
 
 const HighScoresModal = observer(() => {
   const [isClosing, setIsClosing] = useState(false);
@@ -55,19 +56,6 @@ const HighScoresModal = observer(() => {
       });
 
     return sortedWinHistory;
-  }
-
-  function getWinRatio() {
-    const { wins, totalGames } = JSON.parse(
-      localStorage.getItem("vCellWinRatio")!
-    );
-
-    return {
-      percent:
-        totalGames === 0 ? "0%" : `${Math.round((wins / totalGames) * 100)}%`,
-      wins,
-      totalGames
-    };
   }
 
   useEffect(() => {
@@ -148,15 +136,14 @@ const HighScoresModal = observer(() => {
           className={poppins.className}
           style={{ fontSize: "16px", textAlign: "center" }}
         >
-          In the last {winRatio.totalGames} games, your ratio of games won to
-          games started is {""}
+          In the last {winRatio.totalGames} games, you have won {winRatio.wins}{" "}
           <span>
             <strong
               style={{
                 color: "var(--gold)"
               }}
             >
-              {winRatio.percent}
+              ({winRatio.percent})
             </strong>
           </span>
         </div>
@@ -207,7 +194,7 @@ const HighScoresModal = observer(() => {
                 textAlign: "center"
               }}
             >
-              Total {getBoardLayoutDisplayName(layout)} games won:{" "}
+              Total {getBoardLayoutDisplayName(layout)} games won all time:{" "}
               <span>
                 <strong
                   style={{

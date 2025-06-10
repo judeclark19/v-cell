@@ -11,3 +11,19 @@ export {
   SettingsModal,
   WinModal
 };
+
+export function getWinRatio() {
+  const { wins, totalGames } = JSON.parse(
+    localStorage.getItem("vCellWinRatio")!
+  );
+
+  const percent =
+    totalGames === 0
+      ? "0%"
+      : `${((wins / totalGames) * 100).toFixed(2).replace(/\.?0+$/, "")}%`;
+  return {
+    percent,
+    wins,
+    totalGames
+  };
+}

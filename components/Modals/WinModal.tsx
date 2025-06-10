@@ -5,31 +5,22 @@ import { useEffect, useState } from "react";
 import { ModalStyle, WinModalStyle } from "./Modal.styles";
 import { alfaSlabOne, luckyGuy, poppins, questrial } from "../Board/Board";
 import { formatTime } from "@/logic/UIFunctions";
+import { getWinRatio } from ".";
 
 const WinModal = observer(() => {
   const winHistory = localStorage.getItem("vCellWinHistory")
     ? JSON.parse(localStorage.getItem("vCellWinHistory") as string)
     : [];
   const [isClosing, setIsClosing] = useState(false);
-
-  function getWinRatio() {
-    const winRatioFromStorage = JSON.parse(
-      localStorage.getItem("vCellWinRatio")!
-    );
-
-    return winRatioFromStorage.totalGames === 0
-      ? "0%"
-      : `${Math.round(
-          (winRatioFromStorage.wins / winRatioFromStorage.totalGames) * 100
-        )}%`;
-  }
-
-  function getTotalGames() {
-    const winRatioFromStorage = JSON.parse(
-      localStorage.getItem("vCellWinRatio")!
-    );
-    return winRatioFromStorage ? winRatioFromStorage.totalGames : 0;
-  }
+  const [winRatio, setWinRatio] = useState<{
+    percent: string;
+    wins: number;
+    totalGames: number;
+  }>({
+    percent: "0%",
+    wins: 0,
+    totalGames: 0
+  });
 
   useEffect(() => {
     const modalShade = document.querySelector(".modal-shade");
@@ -44,6 +35,8 @@ const WinModal = observer(() => {
         }, 300);
       }
     });
+
+    setWinRatio(getWinRatio());
 
     //cleanup
     return () => {
@@ -91,15 +84,15 @@ const WinModal = observer(() => {
             <span>on this device.</span>
           </p>
           <p>
-            In the last {getTotalGames()} games, your ratio of games won to
-            games started is {""}
+            In the last {winRatio.totalGames} games, you have won{" "}
+            {winRatio.wins}{" "}
             <span>
               <strong
                 style={{
                   color: "var(--gold)"
                 }}
               >
-                {getWinRatio()}
+                ({winRatio.percent})
               </strong>
             </span>
           </p>
