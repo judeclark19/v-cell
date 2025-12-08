@@ -1,12 +1,9 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import ColumnUI from "./ColumnUI";
 import styled from "styled-components";
 import appState from "@/logic/AppState";
 import { columnKeys } from "@/logic/types";
 import { cardSizeType, cardSizes } from "@/components/Card/CardUI.styles";
-import { useRecoilValue } from "recoil";
-import { cardSizeState } from "@/logic/RecoilAtoms";
 
 export const TableauStyles = styled.div<{
   $cardSize: cardSizeType;
@@ -38,7 +35,7 @@ const ScrollableArea = styled.div<{
 
 const TableauUI = observer(() => {
   const tableau = appState.currentBoard.tableau;
-  const cardSize = useRecoilValue(cardSizeState);
+  const cardSize = appState.cardSize;
   return (
     <TableauStyles $cardSize={cardSize}>
       <ScrollableArea

@@ -1,5 +1,4 @@
 "use client";
-import { RecoilRoot } from "recoil";
 import Board, { questrial } from "@/components/Board/Board";
 import styled from "styled-components";
 import TapAnimation from "@/components/TapAnimation";
@@ -70,12 +69,10 @@ const Footer = styled.footer`
 export default function Home() {
   return (
     <PageWrapper>
-      <RecoilRoot>
-        <TapAnimation />
-        <div className="flex-grow">
-          <Board />
-        </div>
-      </RecoilRoot>
+      <TapAnimation />
+      <div className="flex-grow">
+        <Board />
+      </div>
 
       <Footer className={questrial.className}>
         <div className="top">
@@ -96,7 +93,7 @@ export default function Home() {
             </strong>
           </div>
         </div>
-        <div className="bottom">Last updated June 9, 2025</div>
+        <div className="bottom">Last updated December 8, 2025</div>
       </Footer>
     </PageWrapper>
   );

@@ -4,12 +4,11 @@ import DropSpot from "../DropSpot/DropSpot";
 import { Spot } from "../Board.styles";
 import CardUI from "@/components/Card/CardUI";
 import { questrial } from "../Board";
-import { useRecoilValue } from "recoil";
-import { cardSizeState } from "@/logic/RecoilAtoms";
 import { cardSizes } from "@/components/Card/CardUI.styles";
+import appState from "@/logic/AppState";
 
 const ColumnUI = observer(({ columnData }: { columnData: Column }) => {
-  const cardSize = useRecoilValue(cardSizeState);
+  const cardSize = appState.cardSize;
 
   if (columnData.arrayOfCards.length === 0) {
     return (

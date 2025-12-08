@@ -23,6 +23,7 @@ import Hand from "@/components/Board/Hand/HandClass";
 import Modal from "./Modals";
 import MoveEvaluator from "./MoveEvaluator";
 import Timer from "./Timer";
+import { cardSizeType } from "@/components/Card/CardUI.styles";
 
 export class AppState {
   deck: CardClass[] = [];
@@ -35,6 +36,7 @@ export class AppState {
     hand: new Hand()
   };
   gameHasStarted = false;
+  cardSize: cardSizeType = "tiny";
 
   history: BoardType[] = [];
   cardsBeingTouched: CardClass[] | null = null;
@@ -68,6 +70,10 @@ export class AppState {
     }
 
     return answer;
+  }
+
+  setCardSize(size: cardSizeType) {
+    this.cardSize = size;
   }
 
   createDeck() {

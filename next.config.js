@@ -14,7 +14,8 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 const nextConfig = {
   compiler: {
     styledComponents: true
-  }
+  },
+  turbopack: {}
 };
 
 module.exports = withPWA(nextConfig);

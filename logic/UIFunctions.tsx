@@ -4,6 +4,16 @@ import JSConfetti from "js-confetti";
 import { cardSizeType, cardSizes } from "@/components/Card/CardUI.styles";
 import { boardLayout } from "./types";
 
+export const calculateCardSize = (
+  windowWidth: number,
+  windowHeight: number
+) => {
+  if (windowHeight < 700 || windowWidth < 700) return "tiny";
+  else if (windowHeight < 1100 || windowWidth < 1100) return "small";
+  else if (windowHeight < 1400 || windowWidth < 1400) return "medium";
+  else return "large";
+};
+
 export const handlePointerDown = () => {
   appState.setIsDragging(false);
 };

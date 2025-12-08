@@ -1,7 +1,5 @@
 import { observer } from "mobx-react-lite";
 import { cardSizeType, cardSizes } from "./Card/CardUI.styles";
-import { useRecoilValue } from "recoil";
-import { cardSizeState } from "@/logic/RecoilAtoms";
 import styled from "styled-components";
 import CardUI from "./Card/CardUI";
 import CardClass from "./Card/CardClass";
@@ -30,7 +28,7 @@ export const CardsBeingDraggedStyle = styled.div.attrs<CardsBeingDraggedProps>(
 
 const CardsBeingDragged = observer(
   ({ dragPosition }: { dragPosition: { left: number; top: number } }) => {
-    const cardSize = useRecoilValue(cardSizeState);
+    const cardSize = appState.cardSize;
 
     return (
       <CardsBeingDraggedStyle
