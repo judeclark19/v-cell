@@ -1,16 +1,14 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Foundation } from "./FoundationsClass";
 import DropSpot from "../DropSpot/DropSpot";
 import CardUI from "@/components/Card/CardUI";
 import { Spot } from "../Board.styles";
-import { useRecoilValue } from "recoil";
-import { cardSizeState } from "@/logic/RecoilAtoms";
 import { questrial } from "../Board";
+import appState from "@/logic/AppState";
 
 const FoundationUI = observer(
   ({ foundationData }: { foundationData: Foundation }) => {
-    const cardSize = useRecoilValue(cardSizeState);
+    const cardSize = appState.cardSize;
 
     return (
       <DropSpot

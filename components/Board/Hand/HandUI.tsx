@@ -1,13 +1,10 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import styled from "styled-components";
 import { Spot } from "../Board.styles";
 import appState from "@/logic/AppState";
 import DropSpot from "../DropSpot/DropSpot";
 import CardUI from "@/components/Card/CardUI";
 import { handKeys } from "@/logic/types";
-import { useRecoilValue } from "recoil";
-import { cardSizeState } from "@/logic/RecoilAtoms";
 import { questrial } from "../Board";
 import { throwConfetti } from "@/logic/UIFunctions";
 import { cardSizeType, cardSizes } from "@/components/Card/CardUI.styles";
@@ -53,7 +50,7 @@ const AutoCompleteDiv = styled.div<{
 
 const HandUI = observer(() => {
   const hand = appState.currentBoard.hand;
-  const cardSize = useRecoilValue(cardSizeState);
+  const cardSize = appState.cardSize;
 
   return (
     <HandAndAutoComplete $cardSize={cardSize}>

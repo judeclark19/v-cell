@@ -2,14 +2,10 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import appState from "./AppState";
 import { ModalName, boardLayout, theme } from "./types";
-import { cardSizeState } from "./RecoilAtoms";
-import { useRecoilValue } from "recoil";
-import { throwConfetti } from "./UIFunctions";
+import { calculateCardSize, throwConfetti } from "./UIFunctions";
 
 // Since GameState.tsx cannot read localStorage from the client directly, the purpose of this component is to mirror the gameState to the localStorage.
 const LocalStorageServerHelper = observer(() => {
-  const cardSize = useRecoilValue(cardSizeState);
-
   useEffect(() => {
     // upon application load, get saved game state from localStorage
 
@@ -142,7 +138,8 @@ const LocalStorageServerHelper = observer(() => {
   }, [appState.moveEvaluator.undosUsed]);
 
   useEffect(() => {
-    if (appState.manualWins > 0) {
+    if (appState.manualWins > 0 && typeof window !== "undefined") {
+      const cardSize = calculateCardSize(window.innerWidth, window.innerHeight);
       throwConfetti(cardSize);
     }
   }, [appState.manualWins]);

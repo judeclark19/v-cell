@@ -1,11 +1,9 @@
 import appState from "@/logic/AppState";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import FoundationUI from "./FoundationUI";
 
 import { foundationKeys } from "@/logic/types";
-import { useRecoilValue } from "recoil";
-import { cardSizeState } from "@/logic/RecoilAtoms";
+// import { calculateCardSize } from "@/logic/UIFunctions";
 import {
   Filler,
   FoundationsStyle,
@@ -15,7 +13,7 @@ import TimerUI from "../TimerUI";
 
 const FoundationsUI = observer(() => {
   const foundations = appState.currentBoard.foundations;
-  const cardSize = useRecoilValue(cardSizeState);
+  const cardSize = appState.cardSize;
 
   return (
     <>

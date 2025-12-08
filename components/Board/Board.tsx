@@ -14,8 +14,7 @@ import { observer } from "mobx-react-lite";
 import FoundationsUI from "./Foundations/FoundationsUI";
 import TableauUI from "./Tableau/TableauUI";
 import HandUI from "./Hand/HandUI";
-import { useRecoilState } from "recoil";
-import { cardSizeState, calculateCardSize } from "@/logic/RecoilAtoms";
+import { calculateCardSize } from "@/logic/UIFunctions";
 import CardsBeingDragged from "../CardsBeingDragged";
 import {
   HighScoresModal,
@@ -39,6 +38,7 @@ import {
 import LocalStorageServerHelper from "@/logic/LocalStorageServerHelper";
 import { ModalName } from "@/logic/types";
 import Loader from "../Loader";
+// import { cardSizeType } from "../Card/CardUI.styles";
 
 export const luckyGuy = Luckiest_Guy({ weight: "400", subsets: ["latin"] });
 export const alfaSlabOne = Alfa_Slab_One({
@@ -54,7 +54,6 @@ export const poppins = Poppins({
 const Board = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [dragPosition, setDragPosition] = useState({ left: 0, top: 0 });
-  const [cardSize, setCardSize] = useRecoilState(cardSizeState);
 
   useEffect(() => {
     setIsLoading(false);
@@ -80,7 +79,9 @@ const Board = observer(() => {
 
   useEffect(() => {
     const handleResize = () => {
-      setCardSize(calculateCardSize(window.innerWidth, window.innerHeight));
+      appState.setCardSize(
+        calculateCardSize(window.innerWidth, window.innerHeight)
+      );
     };
 
     document.addEventListener("pointermove", (e) => {
@@ -195,7 +196,7 @@ const Board = observer(() => {
             // some modal is open
             appState.anyModalIsOpen()
           }
-          $cardSize={cardSize}
+          $cardSize={appState.cardSize}
           onPointerLeave={(e) => {
             handlePointerUp(e as unknown as PointerEvent);
           }}
