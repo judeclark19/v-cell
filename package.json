@@ -40,6 +40,7 @@
     "webpack": "^5.105.0"
   },
   "overrides": {
-    "serialize-javascript": ">=7.0.5"
+    "serialize-javascript": ">=7.0.5",
+    "@babel/plugin-transform-modules-systemjs": "7.29.4"
   }
 }
